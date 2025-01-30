@@ -8,6 +8,7 @@ public class PasticceriaBackendApplication {
 	
 //	asd
 //	commento daniel
+//commento latte
 
 	public static void main(String[] args) {
 		SpringApplication.run(PasticceriaBackendApplication.class, args);
