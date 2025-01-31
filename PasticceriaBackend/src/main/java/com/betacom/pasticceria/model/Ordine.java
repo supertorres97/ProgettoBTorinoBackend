@@ -1,9 +1,6 @@
 package com.betacom.pasticceria.model;
 
 import java.util.Date;
-
-import com.betacom.pasticceria.utils.Status;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
