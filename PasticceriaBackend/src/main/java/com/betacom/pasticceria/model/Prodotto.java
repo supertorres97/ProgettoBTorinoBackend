@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,6 +45,9 @@ public class Prodotto {
 	
 	@ManyToMany(mappedBy = "prodotti", fetch = FetchType.LAZY)
 	private List<Carrello> carrelli;
+	
+	@OneToMany
+	private DettagliOrdine dettagliOrdine;
 
 	public Integer getId() {
 		return id;

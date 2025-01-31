@@ -23,9 +23,11 @@ public class Carrello {
 	@JoinTable(
 			name="carrello_prodotto",
 			joinColumns = @JoinColumn(name="id_carrello"),
-			inverseJoinColumns = @JoinColumn(name = "id_prodotto"))
+			inverseJoinColumns = @JoinColumn(name = "id_prodotto")
+			)
 	private List<Prodotto> prodotti;
-
+	
+	
 	public Integer getId() {
 		return id;
 	}
