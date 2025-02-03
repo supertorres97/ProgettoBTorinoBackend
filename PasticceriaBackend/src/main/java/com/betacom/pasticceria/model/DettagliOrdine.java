@@ -20,15 +20,59 @@ public class DettagliOrdine {
 	private Integer id;
 	
 	@OneToOne
+	@JoinColumn(name = "id_ordine", nullable = false)
 	private Ordine ordine;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_prodotto", nullable = false)
-	private List<Prodotto> prodotti;
+	private Prodotto prodotto;
 	
 	@Column(nullable = false)
-	private Double totale;
+	private Double prezzoTotale;
 
 	@Column(nullable = false)
-	private Integer quantita;
+	private Integer quantitaFinale;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Ordine getOrdine() {
+		return ordine;
+	}
+
+	public void setOrdine(Ordine ordine) {
+		this.ordine = ordine;
+	}
+
+	public Prodotto getProdotto() {
+		return prodotto;
+	}
+
+	public void setProdotto(Prodotto prodotto) {
+		this.prodotto = prodotto;
+	}
+
+	public Double getPrezzoTotale() {
+		return prezzoTotale;
+	}
+
+	public void setPrezzoTotale(Double prezzoTotale) {
+		this.prezzoTotale = prezzoTotale;
+	}
+
+	public Integer getQuantitaFinale() {
+		return quantitaFinale;
+	}
+
+	public void setQuantitaFinale(Integer quantitaFinale) {
+		this.quantitaFinale = quantitaFinale;
+	}
+
+	
+	
 }

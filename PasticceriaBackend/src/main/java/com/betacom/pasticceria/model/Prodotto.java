@@ -1,125 +1,110 @@
 package com.betacom.pasticceria.model;
 
 import java.util.List;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="prodotto")
 public class Prodotto {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_tipoProdotto", nullable= false)
-	private TipoProdotto tipo;
-		
-	@Column(nullable = false)
-	private String nome;
-	
-	@Column(nullable = false)
-	private String descrizione;
-	
-	@Column(nullable = false)
-	private Double peso;
-	
-	@Column(nullable = false)
-	private Double prezzo;
-	
-	@Column(nullable = false)
-	private Integer stock;
-	
-	@Column(nullable = false)
-	public Boolean disponibile;
-	
-	@ManyToMany(mappedBy = "prodotti", fetch = FetchType.LAZY)
-	private List<Carrello> carrelli;
-	
-	@OneToMany
-	private DettagliOrdine dettagliOrdine;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "id_tipoProdotto", nullable= false)
+    private TipoProdotto tipo;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(nullable = false)
+    private String nome;
 
-	public TipoProdotto getTipo() {
-		return tipo;
-	}
+    @Column(nullable = false)
+    private String descrizione;
 
-	public void setTipo(TipoProdotto tipo) {
-		this.tipo = tipo;
-	}
+    @Column(nullable = false)
+    private Double peso;
 
-	public String getNome() {
-		return nome;
-	}
+    @Column(nullable = false)
+    private Double prezzo;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    @Column(nullable = false)
+    private Integer stock;
 
-	public String getDescrizione() {
-		return descrizione;
-	}
+    @Column(nullable = false)
+    public Boolean disponibile;
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
-	}
+    @OneToMany(mappedBy = "prodotto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CarrelloProdotto> carrelliProdotti;
 
-	public Double getPeso() {
-		return peso;
-	}
+    // Getters e Setters
+    public Integer getId() {
+        return id;
+    }
 
-	public void setPeso(Double peso) {
-		this.peso = peso;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Double getPrezzo() {
-		return prezzo;
-	}
+    public TipoProdotto getTipo() {
+        return tipo;
+    }
 
-	public void setPrezzo(Double prezzo) {
-		this.prezzo = prezzo;
-	}
+    public void setTipo(TipoProdotto tipo) {
+        this.tipo = tipo;
+    }
 
-	public Integer getStock() {
-		return stock;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setStock(Integer stock) {
-		this.stock = stock;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public Boolean getDisponibile() {
-		return disponibile;
-	}
+    public String getDescrizione() {
+        return descrizione;
+    }
 
-	public void setDisponibile(Boolean disponibile) {
-		this.disponibile = disponibile;
-	}
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
 
-	public List<Carrello> getCarrelli() {
-		return carrelli;
-	}
+    public Double getPeso() {
+        return peso;
+    }
 
-	public void setCarrelli(List<Carrello> carrelli) {
-		this.carrelli = carrelli;
-	}
-	
-	
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
+    public Double getPrezzo() {
+        return prezzo;
+    }
+
+    public void setPrezzo(Double prezzo) {
+        this.prezzo = prezzo;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Boolean getDisponibile() {
+        return disponibile;
+    }
+
+    public void setDisponibile(Boolean disponibile) {
+        this.disponibile = disponibile;
+    }
+
+    public List<CarrelloProdotto> getCarrelliProdotti() {
+        return carrelliProdotti;
+    }
+
+    public void setCarrelliProdotti(List<CarrelloProdotto> carrelliProdotti) {
+        this.carrelliProdotti = carrelliProdotti;
+    }
 }

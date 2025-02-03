@@ -20,7 +20,7 @@ public class TipoProdotto {
 	@Column(nullable = false)
 	private String descrizione;
 	
-	@OneToMany(mappedBy = "prodotti")
+	@OneToMany(mappedBy = "tipo")
 	private List<Prodotto> prodotti;
 
 	public Integer getId() {

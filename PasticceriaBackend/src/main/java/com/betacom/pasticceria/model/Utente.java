@@ -1,11 +1,15 @@
 package com.betacom.pasticceria.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -25,15 +29,25 @@ public class Utente {
 	@Column(nullable = true)
 	private String cFiscale;
 	
-	@Column(nullable = false)
-	private String indirizzo;
-	
 	@Column(unique = true, nullable = false)
 	private String email;
 	
 	@OneToOne
 	@JoinColumn(name = "id_carrello", referencedColumnName = "id", nullable = false, unique = true)
 	private Carrello carrello;
+	
+	@OneToMany(mappedBy = "utente",
+			fetch = FetchType.LAZY)
+	private List<Feedback> feedback;
+	
+	@Column(nullable = false)
+	private String via;
+	
+	@Column(nullable = false)
+	private String CAP;
+	
+	@Column(nullable = false)
+	private String citta;
 
 	public Integer getId() {
 		return id;
@@ -67,13 +81,6 @@ public class Utente {
 		this.cFiscale = cFiscale;
 	}
 
-	public String getIndirizzo() {
-		return indirizzo;
-	}
-
-	public void setIndirizzo(String indirizzo) {
-		this.indirizzo = indirizzo;
-	}
 
 	public String getEmail() {
 		return email;
@@ -90,6 +97,39 @@ public class Utente {
 	public void setCarrello(Carrello carrello) {
 		this.carrello = carrello;
 	}
+
+	public List<Feedback> getFeedback() {
+		return feedback;
+	}
+
+	public void setFeedback(List<Feedback> feedback) {
+		this.feedback = feedback;
+	}
+
+	public String getVia() {
+		return via;
+	}
+
+	public void setVia(String via) {
+		this.via = via;
+	}
+
+	public String getCAP() {
+		return CAP;
+	}
+
+	public void setCAP(String cAP) {
+		CAP = cAP;
+	}
+
+	public String getCitta() {
+		return citta;
+	}
+
+	public void setCitta(String citta) {
+		this.citta = citta;
+	}
+	
 	
 	
 }
