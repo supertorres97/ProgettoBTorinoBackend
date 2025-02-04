@@ -32,10 +32,6 @@ public class Utente {
 	@Column(unique = true, nullable = false)
 	private String email;
 	
-	@OneToOne
-	@JoinColumn(name = "id_carrello", referencedColumnName = "id", nullable = false, unique = true)
-	private Carrello carrello;
-	
 	@OneToMany(mappedBy = "utente",
 			fetch = FetchType.LAZY)
 	private List<Feedback> feedback;
@@ -48,7 +44,10 @@ public class Utente {
 	
 	@Column(nullable = false)
 	private String citta;
-
+	
+	@OneToOne(mappedBy = "utente") 
+    private Carrello carrello;
+	
 	public Integer getId() {
 		return id;
 	}

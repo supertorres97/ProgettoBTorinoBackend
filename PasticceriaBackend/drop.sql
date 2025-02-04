@@ -1,4 +1,8 @@
 
+    alter table carrello 
+       drop 
+       foreign key FKimyxl9cko6g83slko5cldpbh;
+
     alter table carrello_prodotto 
        drop 
        foreign key FKir1jaswo6kpbtaq20jtudt07;
@@ -46,10 +50,6 @@
     alter table prodotto 
        drop 
        foreign key FK24wbwkji4r4c7i0s9y3uq06vi;
-
-    alter table utente 
-       drop 
-       foreign key FKk4qiyjk45tgmvunurkjfeuf02;
 
     drop table if exists carrello;
 

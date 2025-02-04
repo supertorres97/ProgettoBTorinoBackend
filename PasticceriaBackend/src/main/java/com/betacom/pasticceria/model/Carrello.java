@@ -12,7 +12,11 @@ public class Carrello {
 
     @OneToMany(mappedBy = "carrello", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CarrelloProdotto> prodottiCarrello;
-
+    
+    @OneToOne
+	@JoinColumn(name = "id_utente", referencedColumnName = "id", nullable = false, unique = true)
+	private Utente utente;
+    
     public Integer getId() {
         return id;
     }

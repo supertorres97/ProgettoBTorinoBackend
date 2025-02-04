@@ -1,6 +1,7 @@
 
     create table carrello (
         id integer not null auto_increment,
+        id_utente integer not null,
         primary key (id)
     ) engine=InnoDB;
 
@@ -56,7 +57,7 @@
         totale float(53) not null,
         data_ordine datetime(6) not null,
         indirizzo varchar(255) not null,
-        status enum ('Cancellato','Completato','Consegnato','InElaborazione','InSpedizione','Spedito'),
+        status enum ('Annullato','Confermato','Consegnato','InElaborazione','Spedito'),
         primary key (id)
     ) engine=InnoDB;
 
@@ -86,7 +87,6 @@
 
     create table utente (
         id integer not null auto_increment,
-        id_carrello integer not null,
         c_fiscale varchar(255),
         cap varchar(255) not null,
         citta varchar(255) not null,
@@ -97,20 +97,22 @@
         primary key (id)
     ) engine=InnoDB;
 
+    alter table carrello 
+       add constraint UKl287dga2nb4ahi1j34on39ruk unique (id_utente);
+
     alter table credenziali 
        add constraint UK55rv5to43fyaahrohm7d4t7q1 unique (id_utente);
 
     alter table credenziali 
        add constraint UKmomch2qmcwhvr1f1dvk1kah4w unique (username);
 
-    alter table dettagli_ordine 
-       add constraint UK7a4pjdegfc8p8as89rkhp3c0i unique (id_ordine);
-
-    alter table utente 
-       add constraint UKuef6aao0h4p3kacpsrwb3jwc unique (id_carrello);
-
     alter table utente 
        add constraint UKgxvq4mjswnupehxnp35vawmo2 unique (email);
+
+    alter table carrello 
+       add constraint FKimyxl9cko6g83slko5cldpbh 
+       foreign key (id_utente) 
+       references utente (id);
 
     alter table carrello_prodotto 
        add constraint FKir1jaswo6kpbtaq20jtudt07 
@@ -171,8 +173,3 @@
        add constraint FK24wbwkji4r4c7i0s9y3uq06vi 
        foreign key (id_tipo_prodotto) 
        references tipo_prodotto (id);
-
-    alter table utente 
-       add constraint FKk4qiyjk45tgmvunurkjfeuf02 
-       foreign key (id_carrello) 
-       references carrello (id);

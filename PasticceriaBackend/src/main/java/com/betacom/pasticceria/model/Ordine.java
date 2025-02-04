@@ -37,12 +37,11 @@ public class Ordine {
 	private Date dataOrdine;
 	
 	private enum Stato {
-		Cancellato,
+		Annullato,
 		InElaborazione,
-		InSpedizione,
 		Spedito,
-		Completato,
-		Consegnato
+		Consegnato,
+		Confermato
 	}
 	
 	@Column
@@ -52,6 +51,11 @@ public class Ordine {
 	@OneToMany(mappedBy = "ordine",
 			fetch = FetchType.LAZY)
 	private List<Feedback> feedback;
+	
+	@OneToMany(mappedBy = "ordine",
+			fetch = FetchType.LAZY)
+	private List<DettagliOrdine> dettagliOrdine;
+	
 	
 	public Integer getId() {
 		return id;

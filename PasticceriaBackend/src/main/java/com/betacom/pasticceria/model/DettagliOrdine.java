@@ -19,7 +19,7 @@ public class DettagliOrdine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_ordine", nullable = false)
 	private Ordine ordine;
 	
