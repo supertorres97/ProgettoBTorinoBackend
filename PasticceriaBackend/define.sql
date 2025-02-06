@@ -47,6 +47,7 @@
 
     create table messaggi_sistema (
         id integer not null auto_increment,
+        codice varchar(255) not null,
         messaggio varchar(255),
         primary key (id)
     ) engine=InnoDB;
@@ -105,6 +106,9 @@
 
     alter table credenziali 
        add constraint UKmomch2qmcwhvr1f1dvk1kah4w unique (username);
+
+    alter table messaggi_sistema 
+       add constraint UKkaf1a347fh5bclqeejk8sk4w3 unique (codice);
 
     alter table utente 
        add constraint UKgxvq4mjswnupehxnp35vawmo2 unique (email);
