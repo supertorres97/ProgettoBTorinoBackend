@@ -2,6 +2,7 @@ package com.betacom.pasticceria.services.implementations;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,14 +94,41 @@ public class UtenteImpl implements UtenteService{
 
 	@Override
 	public List<UtenteDTO> listAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Utente> lU = utenteR.findAll();
+		
+		return lU.stream()
+				.map(u -> new UtenteDTO.Builder()
+					.setAttivo(u.getAttivo())
+					.setCAP(u.getCAP())
+					.setcFiscale(u.getcFiscale())
+					.setCitta(u.getCitta())
+					.setCognome(u.getCognome())
+					.setNome(u.getNome())
+					.setEmail(u.getEmail())
+					.setId(u.getId())
+					.setVia(u.getVia())
+					.build())
+				.collect(Collectors.toList());		
 	}
 
 	@Override
 	public UtenteDTO findById(Integer id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Utente> u = utenteR.findById(id);
+		
+		if(u.isEmpty())
+			throw new Exception("utente inesistente");
+		
+		return new UtenteDTO.Builder()
+				.setAttivo(u.get().getAttivo())
+				.setCAP(u.get().getCAP())
+				.setcFiscale(u.get().getcFiscale())
+				.setCitta(u.get().getCitta())
+				.setCognome(u.get().getCognome())
+				.setNome(u.get().getNome())
+				.setEmail(u.get().getEmail())
+				.setId(u.get().getId())
+				.setVia(u.get().getVia())
+				.build();
 	}
 
 	

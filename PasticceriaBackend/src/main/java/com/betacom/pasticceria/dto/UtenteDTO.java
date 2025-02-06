@@ -63,40 +63,49 @@ public class UtenteDTO {
         	return dto;
         }//build
 
-		public void setId(Integer id) {
+		public Builder setId(Integer id) {
 			this.id = id;
+			return this;
 		}
 
-		public void setNome(String nome) {
+		public Builder setNome(String nome) {
 			this.nome = nome;
+			return this;
 		}
 
-		public void setCognome(String cognome) {
+		public Builder setCognome(String cognome) {
 			this.cognome = cognome;
+			return this;
 		}
 
-		public void setcFiscale(String cFiscale) {
+		public Builder setcFiscale(String cFiscale) {
 			this.cFiscale = cFiscale;
+			return this;
 		}
 
-		public void setEmail(String email) {
+		public Builder setEmail(String email) {
 			this.email = email;
+			return this;
 		}
 
-		public void setVia(String via) {
+		public Builder setVia(String via) {
 			this.via = via;
+			return this;
 		}
 
-		public void setCAP(String cAP) {
+		public Builder setCAP(String cAP) {
 			CAP = cAP;
+			return this;
 		}
 
-		public void setCitta(String citta) {
+		public Builder setCitta(String citta) {
 			this.citta = citta;
+			return this;
 		}
 
-		public void setAttivo(Boolean attivo) {
+		public Builder setAttivo(Boolean attivo) {
 			this.attivo = attivo;
+			return this;
 		}
 
 //		public void setCarrello(CarrelloDTO carrello) {
