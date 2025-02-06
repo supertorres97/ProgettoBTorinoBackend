@@ -20,6 +20,7 @@ public class UtenteDTO {
 	private String via;
 	private String CAP;
 	private String citta; 
+	private Boolean attivo;
 //    private CarrelloDTO carrello;
 //    private CredenzialiDTO credenziali;
 //    private List<FeedbackDTO> feedbackUtente;
@@ -36,6 +37,7 @@ public class UtenteDTO {
     	private String via;
     	private String CAP;
     	private String citta; 
+    	private Boolean attivo;
 //        private CarrelloDTO carrello;
 //        private CredenzialiDTO credenziali;
 //        private List<FeedbackDTO> feedbackUtente;
@@ -53,6 +55,7 @@ public class UtenteDTO {
         	dto.via = this.via;
         	dto.CAP = this.CAP;
         	dto.citta = this.citta;
+        	dto.attivo = this.attivo;
 //        	dto.carrello = this.carrello;
 //        	dto.credenziali = this.credenziali;
 //       	dto.feedbackUtente = this.feedbackUtente;
@@ -90,6 +93,10 @@ public class UtenteDTO {
 
 		public void setCitta(String citta) {
 			this.citta = citta;
+		}
+
+		public void setAttivo(Boolean attivo) {
+			this.attivo = attivo;
 		}
 
 //		public void setCarrello(CarrelloDTO carrello) {
@@ -150,10 +157,13 @@ public class UtenteDTO {
 //	}
 //	
 	
-	//DA FARE IN ATTESA DELLE CLASSI DTO MANCANTI
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
 	@Override
 	public String toString() {
 		return "UtenteDTO [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", cFiscale=" + cFiscale + ", email="
-				+ email + ", via=" + via + ", CAP=" + CAP + ", citta=" + citta + "]";
+				+ email + ", via=" + via + ", CAP=" + CAP + ", citta=" + citta + ", attivo=" + attivo + "]";
 	}
 }

@@ -50,6 +50,25 @@ public class Utente {
 	@OneToOne(mappedBy = "utente")
 	private Credenziali credenziali;
 	
+	@Column(nullable = true)
+	private Boolean attivo;
+	
+	public Credenziali getCredenziali() {
+		return credenziali;
+	}
+
+	public void setCredenziali(Credenziali credenziali) {
+		this.credenziali = credenziali;
+	}
+
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
+	}
+
 	public Integer getId() {
 		return id;
 	}

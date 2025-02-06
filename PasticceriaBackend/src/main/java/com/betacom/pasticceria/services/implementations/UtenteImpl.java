@@ -45,6 +45,7 @@ public class UtenteImpl implements UtenteService{
 //		u.setCAP(req.getCAP());
 //		u.setVia(req.getVia());
 //		u.setCitta(req.getCitta());
+//		u,setAttivo(true);
 //		
 //		u = utenteR.save(u);
 //		
