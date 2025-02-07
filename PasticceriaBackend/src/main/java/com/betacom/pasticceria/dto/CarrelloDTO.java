@@ -1,5 +1,9 @@
 package com.betacom.pasticceria.dto;
 
-public class CarrelloDTO {
+import java.util.List;
 
+import com.betacom.pasticceria.model.CarrelloProdotto;
+
+public class CarrelloDTO {
+	
 }

@@ -1,11 +1,10 @@
 package com.betacom.pasticceria.request;
 
-import com.betacom.pasticceria.model.Utente;
-
 public class CarrelloReq {
 
 	private Integer id;
 	private Integer utente;
+	
 	public Integer getId() {
 		return id;
 	}
