@@ -1,47 +1,32 @@
 package com.betacom.pasticceria.dto;
 
-import com.betacom.pasticceria.model.Utente;
-
 public class CredenzialiDTO {
 
     private Integer id;
-    private Utente id_utente;
+    private UtenteDTO id_utente;
     private String username;
     private String password;
 
-    // Costruttore privato per il builder
-    private CredenzialiDTO(Builder builder) {
-        this.id = builder.id;
-        this.id_utente = builder.id_utente;
-        this.username = builder.username;
-        this.password = builder.password;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-    public Utente getId_utente() {
-        return id_utente;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public String getPassword() {
-        return password;
-    }
-
     public static class Builder {
         private Integer id;
-        private Utente id_utente;
+        private UtenteDTO id_utente;
         private String username;
         private String password;
-
+        
+        public CredenzialiDTO build() {
+            CredenzialiDTO dto = new CredenzialiDTO();
+            dto.id = this.id;
+            dto.id_utente = this.id_utente;
+            dto.username = this.username;
+            dto.password = this.password;
+            return dto;
+        }
         public Builder setId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public Builder setId_utente(Utente id_utente) {
+        public Builder setId_utente(UtenteDTO id_utente) {
             this.id_utente = id_utente;
             return this;
         }
@@ -56,8 +41,20 @@ public class CredenzialiDTO {
             return this;
         }
 
-        public CredenzialiDTO build() {
-            return new CredenzialiDTO(this);
-        }
     }
+    
+    public Integer getId() {
+        return id;
+    }
+    public UtenteDTO getId_utente() {
+        return id_utente;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    
 }
