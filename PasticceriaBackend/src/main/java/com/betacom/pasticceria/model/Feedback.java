@@ -1,5 +1,7 @@
 package com.betacom.pasticceria.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,27 +36,21 @@ public class Feedback {
 	@Column(nullable = false)
 	private String descrizione;
 	
-	public enum Voto {
-	    UNO(1),
-	    DUE(2),
-	    TRE(3),
-	    QUATTRO(4),
-	    CINQUE(5);
-
-	    private final int valore;
-	    
-	    Voto(int valore) {
-	        this.valore = valore;
-	    }
-
-	    public int getValore() {
-	        return valore;
-	    }
-	}
-
 	@Column(nullable = false)
+	
 	@Enumerated(EnumType.STRING)
 	private Voto voto;
+	
+	@Column(nullable = false)
+    private Date dataFeedback;
+    
+	public Date getDataFeedback() {
+		return dataFeedback;
+	}
+
+	public void setDataFeedback(Date dataFeedback) {
+		this.dataFeedback = dataFeedback;
+	}
 
 	public Integer getId() {
 		return id;

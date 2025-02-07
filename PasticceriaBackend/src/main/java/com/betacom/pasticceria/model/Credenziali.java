@@ -1,5 +1,6 @@
 package com.betacom.pasticceria.model;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -38,9 +39,11 @@ public class Credenziali {
         inverseJoinColumns = @JoinColumn(name = "id_ruolo")
     )
     private List<Ruoli> ruoli;
-
-
-    public Integer getId() {
+    
+    @Column(nullable = false)
+    private Boolean attivo;
+    
+	public Integer getId() {
         return id;
     }
 
