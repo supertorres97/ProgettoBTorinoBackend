@@ -8,34 +8,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.pasticceria.dto.ProdottoDTO;
-import com.betacom.pasticceria.request.ProdottoReq;
+import com.betacom.pasticceria.dto.TipoProdottoDTO;
+import com.betacom.pasticceria.request.TipoProdottoReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
-import com.betacom.pasticceria.services.interfaces.ProdottoService;
+import com.betacom.pasticceria.services.interfaces.TipoProdottoService;
 
 @RestController
-@RequestMapping("/rest/prodotto")
-public class ProdottoController {
-	
-	private ProdottoService prodS;
+@RequestMapping("/rest/tipoprodotto")
+public class TipoProdottoController {
+	private TipoProdottoService tPS;
 	private Logger log;
 	
 	@Autowired
-	public ProdottoController(ProdottoService prodS, Logger log) {
+	public TipoProdottoController(TipoProdottoService tPS, Logger log) {
 		super();
-		this.prodS = prodS;
+		this.tPS = tPS;
 		this.log = log;
 	}
 	
 	@PostMapping("/create")
-	public ResponseBase create(@RequestBody(required = true) ProdottoReq req) {
+	public ResponseBase create(@RequestBody(required = true) TipoProdottoReq req) {
 		log.debug("Create prodotto: " + req);
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);
 		try {
-			prodS.create(req);
+			tPS.create(req);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
@@ -45,12 +44,12 @@ public class ProdottoController {
 	}
 	
 	@PostMapping("/update")
-	public ResponseBase update(@RequestBody(required = true) ProdottoReq req) {
+	public ResponseBase update(@RequestBody(required = true) TipoProdottoReq req) {
 		log.debug("Update prodotto: " + req);
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);
 		try {
-			prodS.update(req);
+			tPS.update(req);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
@@ -60,12 +59,12 @@ public class ProdottoController {
 	}
 	
 	@PostMapping("/delete")
-	public ResponseBase delete(@RequestBody(required = true) ProdottoReq req) {
+	public ResponseBase delete(@RequestBody(required = true) TipoProdottoReq req) {
 		log.debug("Delete prodotto: " + req);
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);
 		try {
-			prodS.delete(req);
+			tPS.delete(req);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
@@ -75,11 +74,11 @@ public class ProdottoController {
 	}
 	
 	@GetMapping("/listByID")
-	public ResponseObject<ProdottoDTO> listByID(Integer id){	
-		ResponseObject<ProdottoDTO> r = new ResponseObject<ProdottoDTO>();
+	public ResponseObject<TipoProdottoDTO> listByID(Integer id){	
+		ResponseObject<TipoProdottoDTO> r = new ResponseObject<TipoProdottoDTO>();
 		r.setRc(true);
 		try {
-			r.setDati(prodS.listByID(id));
+			r.setDati(tPS.listByID(id));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
@@ -89,12 +88,12 @@ public class ProdottoController {
 	}
 	
 	@GetMapping("/listAll")
-	public ResponseList<ProdottoDTO> listAll() {
-		log.debug("Lista Prodotto: ");
-		ResponseList<ProdottoDTO> r = new ResponseList<ProdottoDTO>();
+	public ResponseList<TipoProdottoDTO> listAll() {
+		log.debug("Lista tipo prodotti: ");
+		ResponseList<TipoProdottoDTO> r = new ResponseList<TipoProdottoDTO>();
 		r.setRc(true);
 		try {
-			r.setDati(prodS.listAll());
+			r.setDati(tPS.listAll());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
