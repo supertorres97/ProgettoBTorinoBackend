@@ -20,8 +20,8 @@ public class UtenteDTO {
 	private String via;
 	private String CAP;
 	private String citta; 
-//    private CarrelloDTO carrello;
-//    private CredenzialiDTO credenziali;
+    private CarrelloDTO carrello;
+    private CredenzialiDTO credenziali;
     private List<FeedbackDTO> feedbackUtente;
     
     private UtenteDTO() {}
@@ -36,8 +36,8 @@ public class UtenteDTO {
     	private String via;
     	private String CAP;
     	private String citta; 
-//        private CarrelloDTO carrello;
-//        private CredenzialiDTO credenziali;
+        private CarrelloDTO carrello;
+        private CredenzialiDTO credenziali;
         private List<FeedbackDTO> feedbackUtente;
         
         public Builder() {}
@@ -53,8 +53,8 @@ public class UtenteDTO {
         	dto.via = this.via;
         	dto.CAP = this.CAP;
         	dto.citta = this.citta;
-//        	dto.carrello = this.carrello;
-//        	dto.credenziali = this.credenziali;
+        	dto.carrello = this.carrello;
+        	dto.credenziali = this.credenziali;
         	dto.feedbackUtente = this.feedbackUtente;
         	
         	return dto;
@@ -99,13 +99,13 @@ public class UtenteDTO {
 			this.citta = citta;
 			return this;
 		}
-//		public void setCarrello(CarrelloDTO carrello) {
-//			this.carrello = carrello;
-//		}
+		public void setCarrello(CarrelloDTO carrello) {
+			this.carrello = carrello;
+		}
 
-//		public void setCredenziali(CredenzialiDTO credenziali) {
-//			this.credenziali = credenziali;
-//		}
+		public void setCredenziali(CredenzialiDTO credenziali) {
+			this.credenziali = credenziali;
+		}
 
 		public void setFeedbackUtente(List<FeedbackDTO> feedbackUtente) {
 			this.feedbackUtente = feedbackUtente;
@@ -144,13 +144,13 @@ public class UtenteDTO {
 		return citta;
 	}
 
-//	public CarrelloDTO getCarrello() {
-//		return carrello;
-//	}
-//
-//	public CredenzialiDTO getCredenziali() {
-//		return credenziali;
-//	}
+	public CarrelloDTO getCarrello() {
+		return carrello;
+	}
+
+	public CredenzialiDTO getCredenziali() {
+		return credenziali;
+	}
 
 	public List<FeedbackDTO> getFeedbackUtente() {
 		return feedbackUtente;
