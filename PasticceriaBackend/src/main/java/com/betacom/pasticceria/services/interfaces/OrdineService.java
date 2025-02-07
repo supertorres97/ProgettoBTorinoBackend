@@ -8,4 +8,8 @@ public interface OrdineService {
 	
 	void update(OrdineReq req) throws Exception;
 
+	void logicalDelete(Integer id) throws Exception;
+	
+	// TODO: listAll e listById
+
 }

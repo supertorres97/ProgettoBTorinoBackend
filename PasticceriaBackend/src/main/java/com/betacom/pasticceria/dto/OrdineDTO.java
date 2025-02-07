@@ -5,7 +5,7 @@ import java.util.Date;
 public class OrdineDTO {
 	
 	private Integer id;
-//	private UtenteDTO utente;
+	private UtenteDTO utente;
 	private Double totale;
 	private String indirizzo;
 	private String status;
@@ -18,7 +18,7 @@ public class OrdineDTO {
 	public static class Builder {
 		
 		private Integer id;
-//		private UtenteDTO utente;
+		private UtenteDTO utente;
 		private Double totale;
 		private String indirizzo;
 		private String status;
@@ -31,7 +31,7 @@ public class OrdineDTO {
 		public OrdineDTO build() {
 			OrdineDTO dto = new OrdineDTO();
 			dto.id= this.id;
-//			dto.utente= this.utente;
+			dto.utente= this.utente;
 			dto.totale= this.totale;
 			dto.indirizzo= this.indirizzo;
 			dto.status= this.status;
@@ -47,10 +47,10 @@ public class OrdineDTO {
 			return this;
 		}
 
-//		public Builder setUtente(UtenteDTO utente) {
-//			this.utente = utente;
-//			return this;
-//		}
+		public Builder setUtente(UtenteDTO utente) {
+			this.utente = utente;
+			return this;
+		}
 
 		public Builder setTotale(Double totale) {
 			this.totale = totale;
@@ -78,9 +78,9 @@ public class OrdineDTO {
 		return id;
 	}
 
-//	public UtenteDTO getUtente() {
-//		return utente;
-//	}
+	public UtenteDTO getUtente() {
+		return utente;
+	}
 
 	public Double getTotale() {
 		return totale;
