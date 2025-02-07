@@ -14,10 +14,9 @@ public class PasticceriaBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PasticceriaBackendApplication.class, args);
 	}
-
-	@Bean	
-	@Scope("prototype")		
-	Logger logger (InjectionPoint ip) {
+	@Bean					//logger definition
+	@Scope("prototype")
+	Logger logger(InjectionPoint ip) {
 		return LoggerFactory.getLogger(ip.getMember().getDeclaringClass());
 	}
 }
