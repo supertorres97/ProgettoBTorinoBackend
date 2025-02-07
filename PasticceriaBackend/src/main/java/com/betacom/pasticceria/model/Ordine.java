@@ -36,17 +36,9 @@ public class Ordine {
 	@Column(nullable = false)	
 	private Date dataOrdine;
 	
-	private enum Stato {
-		Annullato,
-		InElaborazione,
-		Spedito,
-		Consegnato,
-		Confermato
-	}
-	
 	@Column
 	@Enumerated(EnumType.STRING)
-	private Stato status;
+	private Status status;
 	
 	@OneToMany(mappedBy = "ordine",
 			fetch = FetchType.LAZY)
@@ -97,11 +89,11 @@ public class Ordine {
 		this.dataOrdine = dataOrdine;
 	}
 
-	public Stato getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(Stato status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	
