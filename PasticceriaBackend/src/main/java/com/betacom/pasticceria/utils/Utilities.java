@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.betacom.pasticceria.dto.TipoProdottoDTO;
+import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.TipoProdotto;
+import com.betacom.pasticceria.model.Utente;
 
 public class Utilities {
 	private final static String PATTERN_DATE = "dd/MM/yyyy";
@@ -21,6 +23,21 @@ public class Utilities {
 				.setId(tP.getId())
 				.setDescrizione(tP.getDescrizione()).build();
 	}
+	
+	public static UtenteDTO buildUtenteDTO(Utente u){	
+		return new UtenteDTO.Builder()
+				.setCAP(u.getCAP())
+				.setcFiscale(u.getcFiscale())
+				.setCitta(u.getCitta())
+				.setCognome(u.getCognome())
+				.setNome(u.getNome())
+				.setEmail(u.getEmail())
+				.setId(u.getId())
+				.setVia(u.getVia())
+				.build();
+	}
+	
+	
 	
 	
 

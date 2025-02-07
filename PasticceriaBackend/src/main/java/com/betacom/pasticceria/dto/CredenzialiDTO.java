@@ -3,20 +3,20 @@ package com.betacom.pasticceria.dto;
 public class CredenzialiDTO {
 
     private Integer id;
-    private UtenteDTO id_utente;
+    private UtenteDTO idUtente;
     private String username;
     private String password;
 
     public static class Builder {
         private Integer id;
-        private UtenteDTO id_utente;
+        private UtenteDTO idUtente;
         private String username;
         private String password;
         
         public CredenzialiDTO build() {
             CredenzialiDTO dto = new CredenzialiDTO();
             dto.id = this.id;
-            dto.id_utente = this.id_utente;
+            dto.idUtente = this.idUtente;
             dto.username = this.username;
             dto.password = this.password;
             return dto;
@@ -26,8 +26,8 @@ public class CredenzialiDTO {
             return this;
         }
 
-        public Builder setId_utente(UtenteDTO id_utente) {
-            this.id_utente = id_utente;
+        public Builder setIdUtente(UtenteDTO idUtente) {
+            this.idUtente = idUtente;
             return this;
         }
 
@@ -46,8 +46,8 @@ public class CredenzialiDTO {
     public Integer getId() {
         return id;
     }
-    public UtenteDTO getId_utente() {
-        return id_utente;
+    public UtenteDTO getIdUtente() {
+        return idUtente;
     }
     public String getUsername() {
         return username;

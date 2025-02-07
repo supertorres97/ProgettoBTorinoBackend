@@ -13,6 +13,7 @@ import com.betacom.pasticceria.model.Credenziali;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
+import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
 @Service
 public class CredenzialiImpl implements CredenzialiService{
@@ -34,7 +35,7 @@ public class CredenzialiImpl implements CredenzialiService{
 		
 		Credenziali c = new Credenziali();
 
-        c.setUtente(req.getId_utente());
+        c.setUtente(req.getIdUtente());
 		c.setUsername(req.getUsername());
         c.setPassword(req.getPassword());
 		
@@ -51,8 +52,8 @@ public class CredenzialiImpl implements CredenzialiService{
     Optional<Credenziali> cr = credR.findById(req.getId());
     if (cr.isPresent()) {
         Credenziali c = cr.get();
-        if(req.getId_utente() != null) 
-			c.setUtente(req.getId_utente());
+        if(req.getIdUtente() != null) 
+			c.setUtente(req.getIdUtente());
 		if(req.getUsername() != null)
 			c.setUsername(req.getUsername());
 		if(req.getPassword() != null)
@@ -85,7 +86,7 @@ public class CredenzialiImpl implements CredenzialiService{
 		return lC.stream()
 				.map(c -> new CredenzialiDTO.Builder()
 				.setId(c.getId())
-				.setId_utente(c.getUtente())
+				.setIdUtente(buildUtenteDTO(c.getUtente()))
                 .setUsername(c.getUsername())
                 .setPassword(c.getPassword())
 				.build())
@@ -100,7 +101,7 @@ public class CredenzialiImpl implements CredenzialiService{
 		
 		return new CredenzialiDTO.Builder()
 				.setId(cr.get().getId())
-				.setId_utente(cr.get().getUtente())
+				.setIdUtente(buildUtenteDTO(cr.get().getUtente()))
                 .setUsername(cr.get().getUsername())
                 .setPassword(cr.get().getPassword())
 				.build();

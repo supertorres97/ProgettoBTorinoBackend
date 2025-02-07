@@ -5,15 +5,15 @@ import com.betacom.pasticceria.model.Utente;
 public class CredenzialiReq {
 
     private Integer id;
-    private Utente id_utente;
+    private Utente idUtente;
     private String username;
     private String password;
     
     public void setId(Integer id) {
         this.id = id;
     }
-    public void setId_utente(Utente id_utente) {
-        this.id_utente = id_utente;
+    public void setIdUtente(Utente idUtente) {
+        this.idUtente = idUtente;
     }
     public void setUsername(String username) {
         this.username = username;
@@ -24,8 +24,8 @@ public class CredenzialiReq {
     public Integer getId() {
         return id;
     }
-    public Utente getId_utente() {
-        return id_utente;
+    public Utente getIdUtente() {
+        return idUtente;
     }
     public String getUsername() {
         return username;
