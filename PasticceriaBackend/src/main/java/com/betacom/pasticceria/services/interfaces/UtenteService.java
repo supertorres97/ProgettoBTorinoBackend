@@ -8,7 +8,6 @@ import com.betacom.pasticceria.request.UtenteReq;
 public interface UtenteService{
 //	void create (UtenteReq req, CredenzialiReq cReq) throws Exception;
 	void update (UtenteReq req) throws Exception;
-//	void delete (UtenteReq req, CredenzialiReq cReq) throws Exception;
 	List<UtenteDTO> listAll ();
-	UtenteDTO findById (Integer id) throws Exception;
+	UtenteDTO listById (Integer id) throws Exception;
 }

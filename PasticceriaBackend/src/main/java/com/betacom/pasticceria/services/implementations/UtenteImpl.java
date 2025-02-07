@@ -86,19 +86,12 @@ public class UtenteImpl implements UtenteService{
 		utenteR.save(u);
 	}
 
-//	@Override
-//	public void delete(UtenteReq req, CredenzialiReq cReq) throws Exception {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 	@Override
 	public List<UtenteDTO> listAll() {
 		List<Utente> lU = utenteR.findAll();
 		
 		return lU.stream()
 				.map(u -> new UtenteDTO.Builder()
-					.setAttivo(u.getAttivo())
 					.setCAP(u.getCAP())
 					.setcFiscale(u.getcFiscale())
 					.setCitta(u.getCitta())
@@ -112,14 +105,13 @@ public class UtenteImpl implements UtenteService{
 	}
 
 	@Override
-	public UtenteDTO findById(Integer id) throws Exception {
+	public UtenteDTO listById(Integer id) throws Exception {
 		Optional<Utente> u = utenteR.findById(id);
 		
 		if(u.isEmpty())
 			throw new Exception("utente inesistente");
 		
 		return new UtenteDTO.Builder()
-				.setAttivo(u.get().getAttivo())
 				.setCAP(u.get().getCAP())
 				.setcFiscale(u.get().getcFiscale())
 				.setCitta(u.get().getCitta())
