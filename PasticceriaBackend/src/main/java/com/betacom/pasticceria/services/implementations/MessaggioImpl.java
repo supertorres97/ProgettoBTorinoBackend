@@ -1,6 +1,9 @@
 package com.betacom.pasticceria.services.implementations;
 
 import java.util.Optional;
+
+import org.slf4j.Logger;
+
 import com.betacom.pasticceria.model.Messaggio;
 import com.betacom.pasticceria.repositories.MessaggioRepository;
 import com.betacom.pasticceria.services.interfaces.MessaggioService;
@@ -8,16 +11,18 @@ import com.betacom.pasticceria.services.interfaces.MessaggioService;
 public class MessaggioImpl implements MessaggioService {
 
 	private MessaggioRepository messR;
+	private Logger log;
 
-	public MessaggioImpl(MessaggioRepository messR) {
-
+	public MessaggioImpl(MessaggioRepository messR, Logger log) {
 		this.messR = messR;
+		this.log = log;
 
 	}
 
 	@Override
 	public String getMessaggio(String codice) {
 		Optional<Messaggio> msg = messR.findByCodice(codice);
+		log.debug("codice: " +  codice + " messaggio: " + msg.get().getMessaggio());
 		String res = null;
 		if (msg.isEmpty()) {
 			res = codice;
