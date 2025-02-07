@@ -7,8 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @Suite
 @SelectClasses({
-	
+	TipoProdottoTest.class
 })
+
 @SpringBootTest
 class PasticceriaBackendApplicationTests {
 
