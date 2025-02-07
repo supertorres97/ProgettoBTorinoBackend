@@ -31,22 +31,22 @@ public class UtenteController {
 		this.log = log;
 	}
 	
-//	@PostMapping("/create")
-//	public ResponseBase create(@RequestBody(required = true) UtenteCredenzialiReq req) {
-//		log.debug("create utente" + req.getUtenteReq());
-//		
-//		ResponseBase r = new ResponseBase();
-//		r.setRc(true);
-//		
-//		try {
-//			utnS.create(req.getUtenteReq(), req.getCredenzialiReq());
-//		} catch (Exception e) {
-//			r.setRc(false);
-//			r.setMsg(e.getMessage());
-//			log.error(e.getMessage());
-//		}
-//		return r;
-//	}
+	@PostMapping("/create")
+	public ResponseBase create(@RequestBody(required = true) UtenteCredenzialiReq req) {
+		log.debug("create utente" + req.getUtenteReq());
+		
+		ResponseBase r = new ResponseBase();
+		r.setRc(true);
+		
+		try {
+			utnS.create(req.getUtenteReq(), req.getCredenzialiReq());
+		} catch (Exception e) {
+			r.setRc(false);
+			r.setMsg(e.getMessage());
+			log.error(e.getMessage());
+		}
+		return r;
+	}
 	
 	@PostMapping("/update")
 	public ResponseBase update (@RequestBody(required = true) UtenteReq req) {

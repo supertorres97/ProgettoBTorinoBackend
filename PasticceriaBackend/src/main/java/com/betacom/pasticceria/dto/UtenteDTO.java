@@ -22,7 +22,7 @@ public class UtenteDTO {
 	private String citta; 
 //    private CarrelloDTO carrello;
 //    private CredenzialiDTO credenziali;
-//    private List<FeedbackDTO> feedbackUtente;
+    private List<FeedbackDTO> feedbackUtente;
     
     private UtenteDTO() {}
     
@@ -38,7 +38,7 @@ public class UtenteDTO {
     	private String citta; 
 //        private CarrelloDTO carrello;
 //        private CredenzialiDTO credenziali;
-//        private List<FeedbackDTO> feedbackUtente;
+        private List<FeedbackDTO> feedbackUtente;
         
         public Builder() {}
         
@@ -55,7 +55,7 @@ public class UtenteDTO {
         	dto.citta = this.citta;
 //        	dto.carrello = this.carrello;
 //        	dto.credenziali = this.credenziali;
-//       	dto.feedbackUtente = this.feedbackUtente;
+        	dto.feedbackUtente = this.feedbackUtente;
         	
         	return dto;
         }//build
@@ -107,9 +107,9 @@ public class UtenteDTO {
 //			this.credenziali = credenziali;
 //		}
 
-//		public void setFeedbackUtente(List<FeedbackDTO> feedbackUtente) {
-//			this.feedbackUtente = feedbackUtente;
-//		}
+		public void setFeedbackUtente(List<FeedbackDTO> feedbackUtente) {
+			this.feedbackUtente = feedbackUtente;
+		}
     }//Builder
 
 	public Integer getId() {
@@ -152,10 +152,10 @@ public class UtenteDTO {
 //		return credenziali;
 //	}
 
-//	public List<FeedbackDTO> getFeedbackUtente() {
-//		return feedbackUtente;
-//	}
-//	
+	public List<FeedbackDTO> getFeedbackUtente() {
+		return feedbackUtente;
+	}
+	
 
 	@Override
 	public String toString() {

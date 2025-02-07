@@ -18,44 +18,43 @@ import com.betacom.pasticceria.services.interfaces.UtenteService;
 public class UtenteImpl implements UtenteService{
 
 	private UtenteRepository utenteR;
-//	private CredenzialiService credS;
-//	private CarrelloService cartS;
+	private CredenzialiService credS;
+	private CarrelloService cartS;
 	private Logger log;
 	
 	@Autowired
-	public UtenteImpl(UtenteRepository utenteR,/* CredenzialiService credS, CarrelloService cartS,*/ Logger log) {
+	public UtenteImpl(UtenteRepository utenteR, CredenzialiService credS, CarrelloService cartS, Logger log) {
 		this.utenteR = utenteR;
-//		this.credS = credS;
-//		this.cartS = cartS;
+		this.credS = credS;
+		this.cartS = cartS;
 		this.log = log;
 	}
 	
-//	@Override
-//	public void create(UtenteReq req, CredenzialiReq cReq) throws Exception {
-//		Optional<Utente> utn = utenteR.findByEmail(req.getEmail());
-//		
-//		if(utn.isPresent())
-//			throw new Exception("email gia esistente");
-//		
-//		Utente u = new Utente();
-//		u.setNome(req.getNome());
-//		u.setCognome(req.getCognome());
-//		u.setEmail(req.getEmail());
-//		if(req.getcFiscale() != null)
-//			u.setcFiscale(req.getcFiscale());
-//		u.setCAP(req.getCAP());
-//		u.setVia(req.getVia());
-//		u.setCitta(req.getCitta());
-//		u,setAttivo(true);
-//		
-//		u = utenteR.save(u);
-//		
-//		cReq.setUtenteId(u);
-//		
-//		credS.create(cReq);
-//		
-//		cartS.create(u);
-//	}
+	@Override
+	public void create(UtenteReq req, CredenzialiReq cReq) throws Exception {
+		Optional<Utente> utn = utenteR.findByEmail(req.getEmail());
+		
+		if(utn.isPresent())
+			throw new Exception("email gia esistente");
+		
+		Utente u = new Utente();
+		u.setNome(req.getNome());
+		u.setCognome(req.getCognome());
+		u.setEmail(req.getEmail());
+		if(req.getcFiscale() != null)
+			u.setcFiscale(req.getcFiscale());
+		u.setCAP(req.getCAP());
+		u.setVia(req.getVia());
+		u.setCitta(req.getCitta());
+		
+		u = utenteR.save(u);
+		
+		cReq.setUtenteId(u);
+		
+		credS.create(cReq);
+		
+		cartS.create(u);
+	}
 
 	@Override
 	public void update(UtenteReq req) throws Exception {
