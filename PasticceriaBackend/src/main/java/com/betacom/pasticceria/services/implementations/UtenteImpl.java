@@ -7,12 +7,17 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.UtenteRepository;
+import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.UtenteReq;
+import com.betacom.pasticceria.services.interfaces.CarrelloService;
+import com.betacom.pasticceria.services.interfaces.CredenzialiService;
 import com.betacom.pasticceria.services.interfaces.UtenteService;
+
 
 @Service
 public class UtenteImpl implements UtenteService{
@@ -31,6 +36,7 @@ public class UtenteImpl implements UtenteService{
 	}
 	
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void create(UtenteReq req, CredenzialiReq cReq) throws Exception {
 		Optional<Utente> utn = utenteR.findByEmail(req.getEmail());
 		
@@ -48,8 +54,8 @@ public class UtenteImpl implements UtenteService{
 		u.setCitta(req.getCitta());
 		
 		u = utenteR.save(u);
-		
-		cReq.setUtenteId(u);
+	
+		cReq.setIdUtente(u);
 		
 		credS.create(cReq);
 		

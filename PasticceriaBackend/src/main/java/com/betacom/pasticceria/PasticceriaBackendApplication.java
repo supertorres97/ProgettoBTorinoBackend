@@ -12,6 +12,13 @@ import org.springframework.context.annotation.Scope;
 public class PasticceriaBackendApplication {
 
 	public static void main(String[] args) {
+
+		/* Dotenv dotenv = Dotenv.configure().directory("C:/Users/messa/Desktop/archivio eclipse/ProgettoBTorinoBackend/PasticceriaBackend").filename("Variabili_ambiente.env").load();
+        System.setProperty("db_url", dotenv.get("db_url"));
+        System.setProperty("db_user", dotenv.get("db_user"));
+        System.setProperty("db_pwd", dotenv.get("db_pwd")); */
+
+
 		SpringApplication.run(PasticceriaBackendApplication.class, args);
 	}
 	@Bean					//logger definition

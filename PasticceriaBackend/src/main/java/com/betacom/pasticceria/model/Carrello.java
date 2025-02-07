@@ -32,4 +32,12 @@ public class Carrello {
     public void setProdottiCarrello(List<CarrelloProdotto> prodottiCarrello) {
         this.prodottiCarrello = prodottiCarrello;
     }
+
+	public Utente getUtente() {
+		return utente;
+	}
+
+	public void setUtente(Utente utente) {
+		this.utente = utente;
+	}
 }
