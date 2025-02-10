@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.betacom.backend.models.UserAngular;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.SignInDTO;
 import com.betacom.pasticceria.model.Credenziali;
