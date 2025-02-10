@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.betacom.pasticceria.dto.DettagliOrdineDTO;
-import com.betacom.pasticceria.dto.OrdineDTO;
-import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.model.DettagliOrdine;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
@@ -19,8 +17,7 @@ import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.request.DettagliOrdineReq;
 import com.betacom.pasticceria.services.interfaces.DettagliOrdineService;
-
-import com.betacom.pasticceria.utils.Utilities.*;
+import com.betacom.pasticceria.utils.Utilities;
 
 @Service
 public class DettagliOrdineImpl implements DettagliOrdineService {
@@ -116,8 +113,8 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
         return ld.stream()
                 .map(d -> new DettagliOrdineDTO.Builder()
                         .setId(d.getId())
-                        .setOrdine(buildOrdineDTO(d.getOrdine())) // Assicurati di avere un costruttore appropriato in OrdineDTO
-                        .setProdotto(buildProdottoDTO(d.getProdotto())) // Assicurati di avere un costruttore appropriato in ProdottoDTO
+                        .setOrdine(Utilities.buildOrdineDTO(d.getOrdine()))
+                        .setProdotto(Utilities.buildProdottoDTO(d.getProdotto()))
                         .setPrezzoTotale(d.getPrezzoTotale())
                         .setQuantitaFinale(d.getQuantitaFinale())
                         .build())
@@ -133,8 +130,8 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
         Optional<Prodotto> prodotto = prodottoR.findById(dr.get().getProdotto().getId());
         return new DettagliOrdineDTO.Builder()
                 .setId(dr.get().getId())
-                .setOrdine(buildOrdineDTO(ordine.get())) // Assicurati di avere un costruttore appropriato in OrdineDTO
-                .setProdotto(buildProdottoDTO(prodotto.get())) // Assicurati di avere un costruttore appropriato in ProdottoDTO
+                .setOrdine(Utilities.buildOrdineDTO(ordine.get()))
+                .setProdotto(Utilities.buildProdottoDTO(prodotto.get()))
                 .setPrezzoTotale(dr.get().getPrezzoTotale())
                 .setQuantitaFinale(dr.get().getQuantitaFinale())
                 .build();

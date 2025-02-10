@@ -25,24 +25,29 @@ public class DettagliOrdineDTO {
 	        return dto;
 	    }
 
-		public void setId(Integer id) {
+		public Builder setId(Integer id) {
 			this.id = id;
+			return this;
 		}
 
-		public void setOrdine(OrdineDTO ordine) {
+		public Builder setOrdine(OrdineDTO ordine) {
 			this.ordine = ordine;
+			return this;
 		}
 
-		public void setProdotto(ProdottoDTO prodotto) {
+		public Builder setProdotto(ProdottoDTO prodotto) {
 			this.prodotto = prodotto;
+			return this;
 		}
 
-		public void setPrezzoTotale(Double prezzoTotale) {
+		public Builder setPrezzoTotale(Double prezzoTotale) {
 			this.prezzoTotale = prezzoTotale;
+			return this;
 		}
 
-		public void setQuantitaFinale(Integer quantitaFinale) {
+		public Builder setQuantitaFinale(Integer quantitaFinale) {
 			this.quantitaFinale = quantitaFinale;
+			return this;
 		}
 		
 	}
