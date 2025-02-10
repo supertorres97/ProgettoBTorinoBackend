@@ -9,18 +9,18 @@ import com.betacom.pasticceria.model.Voto;
 
 public class FeedbackDTO {
 	private Integer id;
-	private Utente utente;
-	private Prodotto prodotto;
-	private Ordine ordine;
+	private UtenteDTO utente;
+	private ProdottoDTO prodotto;
+	private OrdineDTO ordine;
 	private String descrizione;
 	private Voto voto;
     private Date dataFeedback;
     
     public static class Builder {
     	private Integer id;
-    	private Utente utente;
-    	private Prodotto prodotto;
-    	private Ordine ordine;
+    	private UtenteDTO utente;
+    	private ProdottoDTO prodotto;
+    	private OrdineDTO ordine;
     	private String descrizione;
     	private Voto voto;
         private Date dataFeedback;
@@ -38,32 +38,39 @@ public class FeedbackDTO {
             return dto;
         }
 
-		public void setId(Integer id) {
+		public Builder setId(Integer id) {
 			this.id = id;
+			return this;
 		}
 
-		public void setUtente(Utente utente) {
+		public Builder setUtente(UtenteDTO utente) {
 			this.utente = utente;
+			return this;
 		}
 
-		public void setProdotto(Prodotto prodotto) {
+		public Builder setProdotto(ProdottoDTO prodotto) {
 			this.prodotto = prodotto;
+			return this;
 		}
 
-		public void setOrdine(Ordine ordine) {
+		public Builder setOrdine(OrdineDTO ordine) {
 			this.ordine = ordine;
+			return this;
 		}
 
-		public void setDescrizione(String descrizione) {
+		public Builder setDescrizione(String descrizione) {
 			this.descrizione = descrizione;
+			return this;
 		}
 
-		public void setVoto(Voto voto) {
+		public Builder setVoto(Voto voto) {
 			this.voto = voto;
+			return this;
 		}
 
-		public void setDataFeedback(Date dataFeedback) {
+		public Builder setDataFeedback(Date dataFeedback) {
 			this.dataFeedback = dataFeedback;
+			return this;
 		}
         
     }
@@ -72,17 +79,21 @@ public class FeedbackDTO {
 		return id;
 	}
 
-	public Utente getUtente() {
+	
+	public UtenteDTO getUtente() {
 		return utente;
 	}
 
-	public Prodotto getProdotto() {
+
+	public ProdottoDTO getProdotto() {
 		return prodotto;
 	}
 
-	public Ordine getOrdine() {
+
+	public OrdineDTO getOrdine() {
 		return ordine;
 	}
+
 
 	public String getDescrizione() {
 		return descrizione;
