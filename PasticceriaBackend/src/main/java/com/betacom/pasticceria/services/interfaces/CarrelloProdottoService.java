@@ -1,8 +1,8 @@
 package com.betacom.pasticceria.services.interfaces;
 
-import com.betacom.pasticceria.request.CarrelloReq;
+import com.betacom.pasticceria.request.CarrelloProdottoReq;
 
 public interface CarrelloProdottoService {
-	void create(CarrelloReq req) throws Exception;
+	void create(CarrelloProdottoReq req) throws Exception;
 	
 }

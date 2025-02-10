@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.betacom.pasticceria.repositories.CarrelloProdottoRepository;
+import com.betacom.pasticceria.request.CarrelloProdottoReq;
 import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloProdottoService;
 
@@ -19,10 +20,10 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		this.crR = crR;
 		this.log = log;
 	}
-
+	
 	@Override
-	public void create(CarrelloReq req) throws Exception {
-		// TODO Auto-generated method stub
+	public void create(CarrelloProdottoReq req) throws Exception {
+		//fai un find by prodotto e se gia esiste si aumenta la sua quantita
 		
 	}
 	
