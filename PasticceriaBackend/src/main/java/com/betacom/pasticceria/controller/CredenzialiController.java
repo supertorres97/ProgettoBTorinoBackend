@@ -1,19 +1,22 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.pasticceria.request.SignInReq;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
+import com.betacom.pasticceria.dto.SignInDTO;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -30,7 +33,17 @@ public class CredenzialiController {
 		this.credS = credS;
 		this.log = log;
 	}
-
+	
+	@RequestMapping(value = "/signin", method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> handleOptions() {
+        return ResponseEntity.ok().build();
+    }
+	
+	@PostMapping("/signin")
+	public SignInDTO signin(@RequestBody(required = true) SignInReq req) {
+		log.debug("Signin: ");		
+		return credS.signIn(req);
+	}
     
     @PostMapping("/create")
 	public ResponseBase create(@RequestBody(required = true) CredenzialiReq req) {

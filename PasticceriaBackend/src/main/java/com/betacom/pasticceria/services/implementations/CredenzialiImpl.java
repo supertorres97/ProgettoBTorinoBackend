@@ -1,5 +1,7 @@
 package com.betacom.pasticceria.services.implementations;
 
+import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,12 +10,14 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.betacom.backend.models.UserAngular;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
+import com.betacom.pasticceria.dto.SignInDTO;
 import com.betacom.pasticceria.model.Credenziali;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
+import com.betacom.pasticceria.request.SignInReq;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
-import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
 @Service
 public class CredenzialiImpl implements CredenzialiService{
@@ -106,5 +110,18 @@ public class CredenzialiImpl implements CredenzialiService{
                 .setPassword(cr.get().getPassword())
 				.build();
 	}
-    
+    @Override
+	public SignInDTO signIn(SignInReq req) {
+		log.debug("signin" + req);
+		SignInDTO resp = new SignInDTO();
+		Optional<Credenziali> usr = credR.findByUserNameAndPwd(req.getUserName(), req.getPwd());
+		if(usr.isEmpty())
+			resp.setLogged(false);
+		else {
+			resp.setLogged(true);
+			resp.setRole(usr.get().getRuoli().toString());
+		}
+		return resp;
+	}
+
 }
