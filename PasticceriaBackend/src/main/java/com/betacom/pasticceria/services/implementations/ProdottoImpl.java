@@ -20,9 +20,9 @@ import com.betacom.pasticceria.utils.Utilities;
 @Service
 public class ProdottoImpl implements ProdottoService{
 	
-	ProdottoRepository prodR;
-	TipoProdottoRepository tPR;
-	Logger log;
+	private ProdottoRepository prodR;
+	private TipoProdottoRepository tPR;
+	private Logger log;
 	
 	@Autowired
 	public ProdottoImpl(ProdottoRepository prodR, Logger log, TipoProdottoRepository tPR) {
