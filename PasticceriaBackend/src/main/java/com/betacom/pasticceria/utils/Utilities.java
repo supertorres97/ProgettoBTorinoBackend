@@ -5,8 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.betacom.pasticceria.dto.OrdineDTO;
+import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.dto.TipoProdottoDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
+import com.betacom.pasticceria.model.Ordine;
+import com.betacom.pasticceria.model.Prodotto;
+import com.betacom.pasticceria.model.Status;
 import com.betacom.pasticceria.model.TipoProdotto;
 import com.betacom.pasticceria.model.Utente;
 
@@ -37,9 +42,29 @@ public class Utilities {
 				.build();
 	}
 	
+	public static OrdineDTO buildOrdineDTO(Ordine o){
+		return new OrdineDTO.Builder()
+				.setId(o.getId())
+				.setUtente(buildUtenteDTO(o.getUtente()))
+				.setIndirizzo(o.getIndirizzo())
+				.setStatus(o.getStatus().toString())
+				.setTotale(o.getTotale())
+				.setDataOrdine(o.getDataOrdine())
+				.build();
+	}
 	
-	
-	
+	public static ProdottoDTO buildProdottoDTO(Prodotto p){
+		return new ProdottoDTO.Builder()
+				.setId(p.getId())
+				.setDescrizione(p.getDescrizione())
+				.setNome(p.getNome())
+				.setPeso(p.getPeso())
+				.setPrezzo(p.getPrezzo())
+				.setStock(p.getStock())
+				.setTipo(buildTipoProdottoDTO(p.getTipo()))
+				.setDisponibile(p.getDisponibile())
+				.build();
+	}
 
 	
 }

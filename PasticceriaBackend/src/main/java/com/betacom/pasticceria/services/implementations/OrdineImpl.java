@@ -1,12 +1,13 @@
 package com.betacom.pasticceria.services.implementations;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.betacom.pasticceria.dto.OrdineDTO;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Status;
 import com.betacom.pasticceria.model.Utente;
@@ -14,15 +15,10 @@ import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.OrdineReq;
 import com.betacom.pasticceria.services.interfaces.OrdineService;
-import static com.betacom.pasticceria.utils.Utilities.convertStringToDate;
+import com.betacom.pasticceria.utils.Utilities;
 
 @Service
-public class OrdineImpl implements OrdineService{
-	
-	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALY);
-	String dataString = formatter.format(new Date());
-	
-	
+public class OrdineImpl implements OrdineService{	
 	private OrdineRepository ordR;
 	private UtenteRepository utnR;
 	private Logger log;
@@ -33,24 +29,21 @@ public class OrdineImpl implements OrdineService{
 		this.utnR = utnR;
 	}
 
-
 	@Override
 	public void create(OrdineReq req) throws Exception {
-		Optional<Utente> utn = utnR.findById(req.getUtente());
 		Optional<Ordine> ord = ordR.findById(req.getId());
 		if(ord.isPresent()) {
 			throw new Exception("Ordine gia presente");
 		}
+		
+		Optional<Utente> utn = utnR.findById(req.getUtente());
 		if(utn.isEmpty()) {
 			throw new Exception("Nessun utente ha fatto ordine");
 		}
 		
 		Ordine o = new Ordine();
-
 		o.setUtente(utn.get());
 		o.setTotale(req.getTotale());
-		Date dataOrdine = convertStringToDate(dataString);
-		o.setDataOrdine(dataOrdine);
 		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
 		
@@ -89,6 +82,54 @@ public class OrdineImpl implements OrdineService{
 	    
 	    o.setStatus(Status.Annullato);
 	    ordR.save(o);
+	}
+
+
+	@Override
+	public List<OrdineDTO> listAll() {
+		List<Ordine> lO = ordR.findAll();
+		return lO.stream()
+				.map(o -> new OrdineDTO.Builder()
+						.setId(o.getId())
+						.setUtente(Utilities.buildUtenteDTO(o.getUtente()))
+						.setIndirizzo(o.getIndirizzo())
+						.setTotale(o.getTotale())
+						.setStatus(o.getStatus().toString())
+						.setDataOrdine(o.getDataOrdine()).build())
+				.collect(Collectors.toList());
+	}
+
+
+	@Override
+	public OrdineDTO listByID(Integer id) throws Exception {
+		Optional<Ordine> o = ordR.findById(id);
+		if(o.isEmpty())
+			throw new Exception("Id ordine non trovato");
+		
+		return new OrdineDTO.Builder()
+						.setId(o.get().getId())
+						.setUtente(Utilities.buildUtenteDTO(o.get().getUtente()))
+						.setIndirizzo(o.get().getIndirizzo())
+						.setTotale(o.get().getTotale())
+						.setStatus(o.get().getStatus().toString())
+						.setDataOrdine(o.get().getDataOrdine()).build();
+	}
+
+
+	@Override
+	public List<OrdineDTO> listByUtente(Integer idUtente) throws Exception {
+		List<Ordine> lO = ordR.findByUtente(idUtente);
+		if(lO.isEmpty())
+			throw new Exception("Utente non trovato");
+		return lO.stream()
+				.map(o -> new OrdineDTO.Builder()
+						.setId(o.getId())
+						.setUtente(Utilities.buildUtenteDTO(o.getUtente()))
+						.setIndirizzo(o.getIndirizzo())
+						.setTotale(o.getTotale())
+						.setStatus(o.getStatus().toString())
+						.setDataOrdine(o.getDataOrdine()).build())
+				.collect(Collectors.toList());
 	}
 	
 
