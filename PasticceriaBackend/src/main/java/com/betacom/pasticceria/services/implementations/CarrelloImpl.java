@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Utente;
@@ -11,6 +12,7 @@ import com.betacom.pasticceria.repositories.CarrelloRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.services.interfaces.CarrelloService;
 
+@Service
 public class CarrelloImpl implements CarrelloService{
 
 	private CarrelloRepository cartR;

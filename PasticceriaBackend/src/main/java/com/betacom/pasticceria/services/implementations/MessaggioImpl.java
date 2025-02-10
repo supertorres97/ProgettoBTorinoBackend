@@ -3,11 +3,13 @@ package com.betacom.pasticceria.services.implementations;
 import java.util.Optional;
 
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
 import com.betacom.pasticceria.model.Messaggio;
 import com.betacom.pasticceria.repositories.MessaggioRepository;
 import com.betacom.pasticceria.services.interfaces.MessaggioService;
 
+@Service
 public class MessaggioImpl implements MessaggioService {
 
 	private MessaggioRepository messR;

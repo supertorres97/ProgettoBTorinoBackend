@@ -37,7 +37,6 @@ public class Feedback {
 	private String descrizione;
 	
 	@Column(nullable = false)
-	
 	@Enumerated(EnumType.STRING)
 	private Voto voto;
 	

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
+
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Status;
 import com.betacom.pasticceria.model.Utente;
@@ -14,6 +16,7 @@ import com.betacom.pasticceria.request.OrdineReq;
 import com.betacom.pasticceria.services.interfaces.OrdineService;
 import static com.betacom.pasticceria.utils.Utilities.convertStringToDate;
 
+@Service
 public class OrdineImpl implements OrdineService{
 	
 	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ITALY);

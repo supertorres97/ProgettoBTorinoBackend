@@ -14,6 +14,7 @@
     ) engine=InnoDB;
 
     create table credenziali (
+        attivo bit not null,
         id integer not null auto_increment,
         id_utente integer,
         password varchar(255) not null,
@@ -35,6 +36,7 @@
         id_ordine integer not null,
         id_prodotto integer not null,
         id_utente integer not null,
+        data_feedback datetime(6) not null,
         descrizione varchar(255) not null,
         voto enum ('CINQUE','DUE','QUATTRO','TRE','UNO') not null,
         primary key (id)
