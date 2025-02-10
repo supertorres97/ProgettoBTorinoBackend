@@ -2,7 +2,7 @@ package com.betacom.pasticceria.request;
 
 import java.util.Date;
 
-public class FeedbackRequest {
+public class FeedbackReq {
 	private Integer id;
 	private Integer utente;
 	private Integer prodotto;
