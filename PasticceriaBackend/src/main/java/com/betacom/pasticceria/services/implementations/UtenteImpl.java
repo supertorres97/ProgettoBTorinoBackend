@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.UtenteRepository;
+import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.UtenteReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloService;
@@ -59,7 +60,10 @@ public class UtenteImpl implements UtenteService{
 		
 		credS.create(cReq);
 		
-		cartS.create(u);
+		CarrelloReq cartReq = new CarrelloReq();
+		cartReq.setUtente(u.getId());
+		
+		cartS.create(cartReq);
 	}
 
 	@Override
