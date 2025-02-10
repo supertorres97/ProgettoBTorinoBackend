@@ -113,7 +113,7 @@ public class CredenzialiImpl implements CredenzialiService{
 	public SignInDTO signIn(SignInReq req) {
 		log.debug("signin" + req);
 		SignInDTO resp = new SignInDTO();
-		Optional<Credenziali> usr = credR.findByUserNameAndPwd(req.getUserName(), req.getPwd());
+		Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUserName(), req.getPwd());
 		if(usr.isEmpty())
 			resp.setLogged(false);
 		else {
