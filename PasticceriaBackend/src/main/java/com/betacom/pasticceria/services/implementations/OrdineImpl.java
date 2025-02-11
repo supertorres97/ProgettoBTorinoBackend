@@ -32,7 +32,7 @@ public class OrdineImpl implements OrdineService{
 	}
 
 	@Override
-	public void create(OrdineReq req) throws Exception {
+	public Ordine create(OrdineReq req) throws Exception {
 		
 		Optional<Utente> utn = utnR.findById(req.getUtente());
 		if(utn.isEmpty()) {
@@ -45,7 +45,8 @@ public class OrdineImpl implements OrdineService{
 		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
 		o.setDataOrdine(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
-		ordR.save(o);
+		
+		return ordR.save(o);
 	}
 
 	@Override
@@ -62,6 +63,7 @@ public class OrdineImpl implements OrdineService{
 	    } catch (Exception e) {
 	        throw new Exception("Stato non valido: " + req.getStatus());
 	    }
+	    o.setTotale(req.getTotale());
 	    
 	    ordR.save(o);
 	}
