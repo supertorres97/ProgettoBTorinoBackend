@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.betacom.pasticceria.dto.CarrelloDTO;
 import com.betacom.pasticceria.dto.OrdineDTO;
 import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.dto.TipoProdottoDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
+import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.Status;
@@ -66,5 +68,11 @@ public class Utilities {
 				.build();
 	}
 
+	public static CarrelloDTO buildCarrelloDTO(Carrello cart){	
+		return new CarrelloDTO.Builder()
+				.setId(cart.getId())
+				.setUtente(buildUtenteDTO(cart.getUtente()))
+				.build();
+	}
 	
 }

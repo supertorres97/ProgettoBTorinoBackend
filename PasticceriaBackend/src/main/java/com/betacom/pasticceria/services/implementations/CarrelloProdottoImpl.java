@@ -1,16 +1,17 @@
 package com.betacom.pasticceria.services.implementations;
 
+import static com.betacom.pasticceria.utils.Utilities.buildCarrelloDTO;
+import static com.betacom.pasticceria.utils.Utilities.buildProdottoDTO;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.betacom.pasticceria.dto.CarrelloDTO;
 import com.betacom.pasticceria.dto.CarrelloProdottoDTO;
 import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.CarrelloProdotto;
@@ -21,13 +22,11 @@ import com.betacom.pasticceria.repositories.CarrelloRepository;
 import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.request.CarrelloProdottoReq;
-import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.request.DettagliOrdineReq;
 import com.betacom.pasticceria.request.OrdineReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloProdottoService;
 import com.betacom.pasticceria.services.interfaces.DettagliOrdineService;
 import com.betacom.pasticceria.services.interfaces.OrdineService;
-import static com.betacom.pasticceria.utils.Utilities.buildProdottoDTO;
 
 @Service
 public class CarrelloProdottoImpl implements CarrelloProdottoService{
@@ -35,17 +34,15 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	private CarrelloProdottoRepository cpR;
 	private ProdottoRepository prodR;
 	private OrdineService orderS;
-	private OrdineRepository orderR;
 	private CarrelloRepository cartR;
 	private DettagliOrdineService doS;
 	private Logger log;
 	
 	@Autowired
-	public CarrelloProdottoImpl(CarrelloProdottoRepository cpR, ProdottoRepository prodR, OrdineService orderS, OrdineRepository orderR, CarrelloRepository cartR, DettagliOrdineService doS, Logger log) {
+	public CarrelloProdottoImpl(CarrelloProdottoRepository cpR, ProdottoRepository prodR, OrdineService orderS, CarrelloRepository cartR, DettagliOrdineService doS, Logger log) {
 		this.cpR = cpR;
 		this.prodR = prodR;
 		this.orderS = orderS;
-		this.orderR = orderR;
 		this.cartR = cartR;
 		this.doS = doS;
 		this.log = log;
@@ -157,32 +154,38 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 
 	@Override
 	public List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Optional<Carrello> cart = cartR.findById(idC);
+		if(cart.isEmpty())
+			throw new Exception("Carrello insesistente");
+		
+		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
+		
+		return lCP.stream()
+				.map(cp -> new CarrelloProdottoDTO.Builder()
+						.setId(cp.getId())
+						.setQuantita(cp.getQuantita())
+						.setProdotto(buildProdottoDTO(cp.getProdotto()))
+						.setCarrello(buildCarrelloDTO(cp.getCarrello()))
+						.build())
+				.collect(Collectors.toList());
 	}
-
-//	@Override
-//	public List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception {
-//		Optional<Carrello> cart = cartR.findById(idC);
-//		if(cart.isEmpty())
-//			throw new Exception("Carrello insesistente");
-//		
-//		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
-//		
-//		return lCP.stream()
-//				.map(cp -> new CarrelloProdottoDTO.Builder()
-//						.setId(cp.getId())
-//						.setQuantita(cp.getQuantita())
-//						.setProdotto(buildProdottoDTO(cp.getProdotto()))
-//						.setCarrello(new CarrelloDTO.Builder()
-//								.setId(cp.getCarrello().getId())
-//								.setUtente(cp.getCarrello().getUtente()).build())
-//						.build())
-//				.collect(Collectors.toList())
-//						
-//	}
 	
-	
-	
-	
+	@Override
+	public List<CarrelloProdottoDTO> listByProdotto(Integer idProdotto) throws Exception {
+		Optional<Prodotto> prod = prodR.findById(idProdotto);
+		if(prod.isEmpty())
+			throw new Exception("Prodotto insesistente");
+		
+		List<CarrelloProdotto> lP = cpR.findAllByProdotto(prod.get());
+		
+		return lP.stream()
+				.map(cp -> new CarrelloProdottoDTO.Builder()
+						.setId(cp.getId())
+						.setQuantita(cp.getQuantita())
+						.setProdotto(buildProdottoDTO(cp.getProdotto()))
+						.setCarrello(buildCarrelloDTO(cp.getCarrello()))
+						.build())
+				.collect(Collectors.toList());
+	}
 }

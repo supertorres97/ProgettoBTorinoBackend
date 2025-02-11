@@ -13,4 +13,5 @@ public interface CarrelloProdottoService {
 	void update(CarrelloProdottoReq req) throws Exception;
 	void acuqista(Carrello cart) throws Exception;
 	List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception;
+	List<CarrelloProdottoDTO> listByProdotto(Integer idProdotto) throws Exception;
 }

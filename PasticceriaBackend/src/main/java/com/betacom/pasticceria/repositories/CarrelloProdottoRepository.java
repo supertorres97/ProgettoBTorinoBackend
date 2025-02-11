@@ -12,4 +12,5 @@ import com.betacom.pasticceria.model.Prodotto;
 public interface CarrelloProdottoRepository extends JpaRepository<CarrelloProdotto, Integer>{
 	Optional<CarrelloProdotto> findByProdottoAndCarrello(Prodotto prod, Carrello cart);
 	List<CarrelloProdotto> findAllByCarrello(Carrello cart);
+	List<CarrelloProdotto> findAllByProdotto(Prodotto cart);
 }
