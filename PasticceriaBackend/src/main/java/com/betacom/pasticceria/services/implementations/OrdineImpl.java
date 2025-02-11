@@ -131,6 +131,4 @@ public class OrdineImpl implements OrdineService{
 						.setDataOrdine(o.getDataOrdine()).build())
 				.collect(Collectors.toList());
 	}
-	
-
 }

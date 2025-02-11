@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.dto;
 
 public class CredenzialiDTO {
-
     private Integer id;
     private UtenteDTO idUtente;
     private String username;
@@ -55,6 +54,5 @@ public class CredenzialiDTO {
     public String getPassword() {
         return password;
     }
-
     
 }

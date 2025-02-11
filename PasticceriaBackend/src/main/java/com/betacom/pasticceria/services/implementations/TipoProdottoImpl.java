@@ -29,7 +29,6 @@ public class TipoProdottoImpl implements TipoProdottoService{
 	@Override
 	public void create(TipoProdottoReq req) throws Exception {
 		log.debug("Create tipo prodotto: " + req);
-		
 		Optional<TipoProdotto> tP = tPR.findByDescrizione(req.getDescrizione());
 		if(tP.isEmpty())
 			throw new Exception("Tipo di Prodotto non trovato");
@@ -39,7 +38,6 @@ public class TipoProdottoImpl implements TipoProdottoService{
 		
 		tPR.save(p);
 		log.debug("Nuovo tipo prodotto inserito");
-		
 	}
 
 	@Override
@@ -55,7 +53,6 @@ public class TipoProdottoImpl implements TipoProdottoService{
 			throw new Exception("Tipo di Prodotto non trovato");
 
 		tPID.get().setDescrizione(req.getDescrizione());
-		
 		tPR.save(tPID.get());
 		log.debug("Tipo prodotto modificato");		
 	}
@@ -63,14 +60,12 @@ public class TipoProdottoImpl implements TipoProdottoService{
 	@Override
 	public void delete(TipoProdottoReq req) throws Exception {
 		log.debug("Create tipo prodotto: " + req);
-		
 		Optional<TipoProdotto> tP = tPR.findById(req.getId());
 		if(tP.isEmpty())
 			throw new Exception("Tipo di Prodotto non trovato");
 
 		tPR.delete(tP.get());
 		log.debug("Nuovo tipo prodotto inserito");
-		
 	}
 
 	@Override

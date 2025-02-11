@@ -80,5 +80,4 @@ public class ProdottoReq {
 				+ ", peso=" + peso + ", prezzo=" + prezzo + ", stock=" + stock + ", disponibile=" + disponibile + "]";
 	}
 
-
 }

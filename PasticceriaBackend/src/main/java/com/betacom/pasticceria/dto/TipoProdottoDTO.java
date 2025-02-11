@@ -28,8 +28,7 @@ public class TipoProdottoDTO {
 				return this;
 			}
 	    }
-	 
-	
+	 	
 	public Integer getId() {
 		return id;
 	}

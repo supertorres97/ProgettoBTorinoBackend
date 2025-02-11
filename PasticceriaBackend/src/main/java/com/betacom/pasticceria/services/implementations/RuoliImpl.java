@@ -63,7 +63,7 @@ public class RuoliImpl implements RuoliService {
 
         Ruoli r = rr.get();
         ruoliR.delete(r);
-
+        
         log.debug("Ruolo eliminato");
     }
 

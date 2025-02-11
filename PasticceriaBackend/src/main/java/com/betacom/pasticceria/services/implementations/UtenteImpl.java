@@ -19,10 +19,8 @@ import com.betacom.pasticceria.services.interfaces.CarrelloService;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
 import com.betacom.pasticceria.services.interfaces.UtenteService;
 
-
 @Service
 public class UtenteImpl implements UtenteService{
-
 	private UtenteRepository utenteR;
 	private CredenzialiService credS;
 	private CarrelloService cartS;
@@ -55,11 +53,9 @@ public class UtenteImpl implements UtenteService{
 		u.setCitta(req.getCitta());
 		
 		u = utenteR.save(u);
-	
 		cReq.setIdUtente(u);
 		
 		credS.create(cReq);
-		
 		cartS.create(u);
 	}
 

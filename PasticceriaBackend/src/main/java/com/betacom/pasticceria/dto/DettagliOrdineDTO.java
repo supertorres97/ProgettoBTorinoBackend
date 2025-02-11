@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.dto;
 
 public class DettagliOrdineDTO {
-
 	private Integer id;
 	private OrdineDTO ordine;
 	private ProdottoDTO prodotto;
@@ -55,26 +54,21 @@ public class DettagliOrdineDTO {
 			return id;
 		}
 
-
 		public OrdineDTO getOrdine() {
 			return ordine;
 		}
-
 
 		public ProdottoDTO getProdotto() {
 			return prodotto;
 		}
 
-
 		public Double getPrezzoTotale() {
 			return prezzoTotale;
 		}
 
-
 		public Integer getQuantitaFinale() {
 			return quantitaFinale;
 		}
-
 
 		@Override
 		public String toString() {

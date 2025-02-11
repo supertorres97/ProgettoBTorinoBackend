@@ -1,20 +1,20 @@
 package com.betacom.pasticceria.request;
 
 public class SignInReq {
-	private String userName;
+	private String username;
 	private String pwd;
 	
 	@Override
 	public String toString() {
-		return "SignInReq [username=" + userName + ", pwd=" + pwd + "]";
+		return "SignInReq [username=" + username + ", pwd=" + pwd + "]";
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPwd() {
@@ -24,7 +24,5 @@ public class SignInReq {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
-	
-	
 	
 }

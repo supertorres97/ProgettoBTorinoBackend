@@ -20,11 +20,10 @@ import com.betacom.pasticceria.services.interfaces.CredenzialiService;
 
 @Service
 public class CredenzialiImpl implements CredenzialiService{
-
-    @Autowired
     private CredenzialiRepository credR;
     private Logger log;
-
+    
+    @Autowired
 	public CredenzialiImpl(CredenzialiRepository credR, Logger log) {
 		super();
 		this.credR = credR;
@@ -33,11 +32,9 @@ public class CredenzialiImpl implements CredenzialiService{
     
     @Override
     public void create(CredenzialiReq req) throws Exception {
-
 		log.debug("Create credenziali: " + req);
 		
 		Credenziali c = new Credenziali();
-
         c.setUtente(req.getIdUtente());
 		c.setUsername(req.getUsername());
         c.setPassword(req.getPassword());
@@ -49,22 +46,21 @@ public class CredenzialiImpl implements CredenzialiService{
 
     @Override
     public void update(CredenzialiReq req) throws Exception {
-	
         log.debug("Update credenziali: " + req);
 
-    Optional<Credenziali> cr = credR.findById(req.getId());
-    if (cr.isPresent()) {
-        Credenziali c = cr.get();
-        if(req.getIdUtente() != null) 
-			c.setUtente(req.getIdUtente());
-		if(req.getUsername() != null)
-			c.setUsername(req.getUsername());
-		if(req.getPassword() != null)
-			c.setPassword(req.getPassword());
-        credR.save(c);
+        Optional<Credenziali> cr = credR.findById(req.getId());
+        if (cr.isPresent()) {
+        	Credenziali c = cr.get();
+        	if(req.getIdUtente() != null) 
+        		c.setUtente(req.getIdUtente());
+        	if(req.getUsername() != null)
+        		c.setUsername(req.getUsername());
+        	if(req.getPassword() != null)
+        		c.setPassword(req.getPassword());
+        	credR.save(c);
         log.debug("Credenziali aggiornate");
-    } else {
-        throw new Exception("Credenziali non trovate");
+        } else {
+        	throw new Exception("Credenziali non trovate");
     }
 
 	}
@@ -72,6 +68,7 @@ public class CredenzialiImpl implements CredenzialiService{
     @Override
     public void delete(CredenzialiReq req) throws Exception {
 		log.debug("Delete credenziali: " + req);
+		
 		Optional<Credenziali> cr = credR.findById(req.getId());
 		if(cr.isEmpty())
 			throw new Exception("Credenziali non esistente");
@@ -79,8 +76,7 @@ public class CredenzialiImpl implements CredenzialiService{
 		Credenziali c = cr.get();		
 		credR.delete(c);
 		
-		log.debug("Credenziali Eliminato");
-		
+		log.debug("Credenziali Eliminate");
 	}
 
     @Override
@@ -113,7 +109,7 @@ public class CredenzialiImpl implements CredenzialiService{
 	public SignInDTO signIn(SignInReq req) {
 		log.debug("signin" + req);
 		SignInDTO resp = new SignInDTO();
-		Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUserName(), req.getPwd());
+		Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUsername(), req.getPwd());
 		if(usr.isEmpty())
 			resp.setLogged(false);
 		else {
