@@ -5,9 +5,12 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.betacom.pasticceria.model.Prodotto;
+
 @Suite
 @SelectClasses({
-	TipoProdottoTest.class
+	TipoProdottoTest.class,
+	ProdottoTest.class
 })
 
 @SpringBootTest

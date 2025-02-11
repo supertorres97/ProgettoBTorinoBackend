@@ -65,13 +65,15 @@ public class ProdottoImpl implements ProdottoService{
 		if(pr.isEmpty())
 			throw new Exception("Prodotto non esistente");
 		
-		Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
-		if(tP.isEmpty())
-			throw new Exception("Tipo di Prodotto non trovato");
-
 		Prodotto p = pr.get();
-		if(req.getTipo() != null) 
+		
+		if(req.getTipo() != null) {
+			Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
+			if(tP.isEmpty())
+				throw new Exception("Tipo di Prodotto non trovato");	
 			p.setTipo(tP.get());
+		}
+		
 		if(req.getNome() != null)
 			p.setNome(req.getNome());
 		if(req.getDescrizione() != null)

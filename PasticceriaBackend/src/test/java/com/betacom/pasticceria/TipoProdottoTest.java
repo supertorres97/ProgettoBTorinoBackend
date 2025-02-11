@@ -3,6 +3,7 @@ package com.betacom.pasticceria;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.pasticceria.dto.TipoProdottoDTO;
+import com.betacom.pasticceria.model.TipoProdotto;
+import com.betacom.pasticceria.repositories.TipoProdottoRepository;
 import com.betacom.pasticceria.request.TipoProdottoReq;
 import com.betacom.pasticceria.services.interfaces.TipoProdottoService;
 
@@ -24,6 +27,9 @@ public class TipoProdottoTest {
 	
 	@Autowired
 	TipoProdottoService tiPS;
+	
+	@Autowired
+	TipoProdottoRepository tpR;
 	
 	@Autowired
 	Logger log;
@@ -51,6 +57,7 @@ public class TipoProdottoTest {
 		
 		List<TipoProdottoDTO> lT = tiPS.listAll();
 		Assertions.assertThat(lT.size()).isGreaterThan(0);
+		Assertions.assertThat(lT.size()).isEqualTo(4);
 		
 	}
 	
@@ -59,11 +66,70 @@ public class TipoProdottoTest {
 	public void createTipoProdottoErrorTest() throws Exception{
 		TipoProdottoReq tP = new TipoProdottoReq();
 		
-		tP.setDescrizione("Lievitati");
+		tP.setDescrizione("Tavola Calda");
 		tiPS.create(tP);
-		tP.setDescrizione("Lievitati");
+		tP.setDescrizione("Tavola Calda");
 		
 		assertThrows(Exception.class, () -> {tiPS.create(tP);}); 
 	}
 
+	@Test
+	@Order(3)
+	public void updateTipoProdottoTest() throws Exception{
+		TipoProdottoReq tP = new TipoProdottoReq();
+		tP.setId(1);
+		tP.setDescrizione("Dolcetti");
+		tiPS.update(tP);
+		log.debug("tipo prodotto modificato con successo");
+		
+		tP.setId(2);
+		tP.setDescrizione("Mono");
+		tiPS.update(tP);
+		log.debug("tipo prodotto creato con successo");
+		Optional<TipoProdotto> tipoProd = tpR.findById(1);
+		Assertions.assertThat(tipoProd.get().getDescrizione().equalsIgnoreCase("Dolcetti"));
+		tipoProd = tpR.findById(2);
+		Assertions.assertThat(tipoProd.get().getDescrizione().equalsIgnoreCase("Mono"));
+	}
+	@Test
+	@Order(4)
+	public void updateTipoProdottoErrorTest() throws Exception{
+		TipoProdottoReq tP = new TipoProdottoReq();
+		tP.setId(9);
+		tP.setDescrizione("Panuozzo");
+		assertThrows(Exception.class, () -> {tiPS.update(tP);}); 
+	}
+	
+	@Test
+	@Order(5)
+	public void deleteTipoProdottoTest() throws Exception{
+		TipoProdottoReq tP = new TipoProdottoReq();
+		tP.setId(4);
+		
+		tiPS.delete(tP);
+		log.debug("tipo prodotto eliminato con successo");
+		
+		List<TipoProdottoDTO> lT = tiPS.listAll();
+		Assertions.assertThat(lT.size()).isGreaterThan(0);
+		Assertions.assertThat(lT.size()).isGreaterThan(2);
+		Assertions.assertThat(lT.size()).isEqualTo(4);
+		Assertions.assertThat(lT.size()).isLessThan(5);
+	}
+	
+	@Test
+	@Order(5)
+	public void listAll() throws Exception{
+		List<TipoProdottoDTO> lT = tiPS.listAll();
+		Assertions.assertThat(lT.size()).isGreaterThan(0);
+	}
+	
+	@Test
+	@Order(7)
+	public void listByIDTest() throws Exception{
+		TipoProdottoDTO lT = tiPS.listByID(3);
+		Assertions.assertThat(lT.getId() == 3);
+		Assertions.assertThat(lT != null);
+	}
+	
+	
 }
