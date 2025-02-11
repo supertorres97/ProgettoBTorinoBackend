@@ -17,6 +17,7 @@ import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.model.Voto;
+import com.betacom.pasticceria.repositories.DettagliOrdineRepository;
 import com.betacom.pasticceria.repositories.FeedbackRepository;
 import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
@@ -31,18 +32,20 @@ public class FeedbackImpl implements FeedbackService{
 	OrdineRepository ordR;
 	UtenteRepository utR;
 	ProdottoRepository prodR;
+	DettagliOrdineRepository detR;
 	Logger log;
 	
 	@Autowired
-	public FeedbackImpl(FeedbackRepository feedR, OrdineRepository ordR, UtenteRepository utR, ProdottoRepository prodR, Logger log) {
+	public FeedbackImpl(FeedbackRepository feedR, OrdineRepository ordR, UtenteRepository utR, 
+			ProdottoRepository prodR, DettagliOrdineRepository detR, Logger log) {
 		super();
 		this.feedR = feedR;
 		this.ordR = ordR;
 		this.utR = utR;
 		this.log = log;
 		this.prodR = prodR;
+		this.detR = detR;
 	}
-
 
 	@Override
 	public void create(FeedbackReq req) throws Exception {
@@ -59,6 +62,8 @@ public class FeedbackImpl implements FeedbackService{
 		if(ut.isEmpty())
 			throw new Exception("Utente non trovato.");
 		
+		
+		
 		Feedback f = new Feedback();
 		f.setDescrizione(req.getDescrizione());
 		f.setProdotto(prod.get());
@@ -70,7 +75,8 @@ public class FeedbackImpl implements FeedbackService{
 		f.setDataFeedback(req.getDataFeedback());
 		feedR.save(f);
 	}
-
+	
+	public boolean checkOrderedProduct
 
 
 	@Override
@@ -90,6 +96,7 @@ public class FeedbackImpl implements FeedbackService{
 		Optional<Ordine> ord = ordR.findById(req.getOrdine());
 		if(ut.isEmpty())
 			throw new Exception("Utente non trovato.");
+		
 		Boolean mod = false;
 		
 		Feedback f = feed.get();
