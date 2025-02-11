@@ -2,11 +2,16 @@ package com.betacom.pasticceria.services.implementations;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.pasticceria.dto.CarrelloDTO;
+import com.betacom.pasticceria.dto.CarrelloProdottoDTO;
 import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.CarrelloProdotto;
 import com.betacom.pasticceria.model.Ordine;
@@ -17,9 +22,12 @@ import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.request.CarrelloProdottoReq;
 import com.betacom.pasticceria.request.CarrelloReq;
+import com.betacom.pasticceria.request.DettagliOrdineReq;
 import com.betacom.pasticceria.request.OrdineReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloProdottoService;
+import com.betacom.pasticceria.services.interfaces.DettagliOrdineService;
 import com.betacom.pasticceria.services.interfaces.OrdineService;
+import static com.betacom.pasticceria.utils.Utilities.buildProdottoDTO;
 
 @Service
 public class CarrelloProdottoImpl implements CarrelloProdottoService{
@@ -27,15 +35,19 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	private CarrelloProdottoRepository cpR;
 	private ProdottoRepository prodR;
 	private OrdineService orderS;
+	private OrdineRepository orderR;
 	private CarrelloRepository cartR;
+	private DettagliOrdineService doS;
 	private Logger log;
 	
 	@Autowired
-	public CarrelloProdottoImpl(CarrelloProdottoRepository cpR, ProdottoRepository prodR, OrdineService orderS, CarrelloRepository cartR, Logger log) {
+	public CarrelloProdottoImpl(CarrelloProdottoRepository cpR, ProdottoRepository prodR, OrdineService orderS, OrdineRepository orderR, CarrelloRepository cartR, DettagliOrdineService doS, Logger log) {
 		this.cpR = cpR;
 		this.prodR = prodR;
 		this.orderS = orderS;
+		this.orderR = orderR;
 		this.cartR = cartR;
+		this.doS = doS;
 		this.log = log;
 	}
 	
@@ -111,6 +123,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void acuqista(Carrello cart) throws Exception {
 		Optional<Carrello> carr = cartR.findById(cart.getId());
 		if(carr.isEmpty())
@@ -122,10 +135,44 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		
 		OrdineReq oReq = new OrdineReq();
 		oReq.setUtente(cart.getUtente().getId());
-		orderS.create(oReq);
+		Ordine o = orderS.create(oReq);
 		
+		DettagliOrdineReq doReq = new DettagliOrdineReq();
+		Double totale = 0.0;
 		
+		for(CarrelloProdotto cp : lCP) {
+			doReq.setOrdine(o.getId());
+			doReq.setProdotto(cp.getProdotto().getId());
+			doReq.setQuantitaFinale(cp.getQuantita());
+			doReq.setPrezzoTotale(cp.getPrezzoTotale());
+			totale = totale + cp.getPrezzoTotale();
+			
+			doS.create(doReq);
+		}
 		
+		o.setTotale(totale);
+		
+	}
+
+	@Override
+	public List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception {
+		Optional<Carrello> cart = cartR.findById(idC);
+		if(cart.isEmpty())
+			throw new Exception("Carrello insesistente");
+		
+		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
+		
+		return lCP.stream()
+				.map(cp -> new CarrelloProdottoDTO.Builder()
+						.setId(cp.getId())
+						.setQuantita(cp.getQuantita())
+						.setProdotto(buildProdottoDTO(cp.getProdotto()))
+						.setCarrello(new CarrelloDTO.Builder()
+								.setId(cp.getCarrello().getId())
+								.setUtente(cp.getCarrello().getUtente()).build())
+						.build())
+				.collect(Collectors.toList())
+						
 	}
 	
 	

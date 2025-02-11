@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.pasticceria.dto.OrdineDTO;
 import com.betacom.pasticceria.model.Ordine;
@@ -31,7 +32,8 @@ public class OrdineImpl implements OrdineService{
 	}
 
 	@Override
-	public void create(OrdineReq req) throws Exception {
+	@Transactional(rollbackFor = Exception.class)
+	public Ordine create(OrdineReq req) throws Exception {
 		Optional<Ordine> ord = ordR.findById(req.getId());
 		if(ord.isPresent()) {
 			throw new Exception("Ordine gia presente");
@@ -48,7 +50,7 @@ public class OrdineImpl implements OrdineService{
 		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
 	
-		ordR.save(o);
+		return ordR.save(o);
 	}
 
 	@Override

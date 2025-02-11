@@ -29,20 +29,24 @@ public class CarrelloProdottoDTO {
         	return dto;
         }
 
-		public void setId(Integer id) {
+		public Builder setId(Integer id) {
 			this.id = id;
+			return this;
 		}
 
-		public void setCarrello(CarrelloDTO carrello) {
+		public Builder setCarrello(CarrelloDTO carrello) {
 			this.carrello = carrello;
+			return this;
 		}
 
-		public void setProdotto(ProdottoDTO prodotto) {
+		public Builder setProdotto(ProdottoDTO prodotto) {
 			this.prodotto = prodotto;
+			return this;
 		}
 
-		public void setQuantita(Integer quantita) {
+		public Builder setQuantita(Integer quantita) {
 			this.quantita = quantita;
+			return this;
 		}
     }//Builder
 
