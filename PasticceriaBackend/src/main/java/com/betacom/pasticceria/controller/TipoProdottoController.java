@@ -2,6 +2,7 @@ package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.TipoProdottoService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/rest/tipoprodotto")
 public class TipoProdottoController {

@@ -86,8 +86,7 @@ public class ProdottoImpl implements ProdottoService{
 			p.setDisponibile(req.getDisponibile());
 		
 		prodR.save(p);
-		log.debug("Prodotto Modificato");
-				
+		log.debug("Prodotto Modificato");		
 	}
 
 	@Override
@@ -100,8 +99,7 @@ public class ProdottoImpl implements ProdottoService{
 		Prodotto p = pr.get();		
 		prodR.delete(p);
 		
-		log.debug("Prodotto Eliminato");
-		
+		log.debug("Prodotto Eliminato");	
 	}
 
 	@Override

@@ -21,12 +21,8 @@ import com.betacom.pasticceria.utils.Utilities;
 
 @Service
 public class DettagliOrdineImpl implements DettagliOrdineService {
-
-    @Autowired
     private DettagliOrdineRepository detR;
-    @Autowired
     private OrdineRepository ordineR;
-    @Autowired
     private ProdottoRepository prodottoR;
     private Logger log;
 
@@ -52,8 +48,8 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
             d.setProdotto(prodotto.get());
             d.setPrezzoTotale(req.getPrezzoTotale());
             d.setQuantitaFinale(req.getQuantitaFinale());
-
             detR.save(d);
+            
             log.debug("Nuovo dettagli ordine inserito");
         } else {
             throw new Exception("Ordine o Prodotto non trovato");
@@ -75,6 +71,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
                     throw new Exception("Ordine non trovato");
                 }
             }
+            
             if (req.getProdotto() != null) {
                 Optional<Prodotto> prodotto = prodottoR.findById(req.getProdotto());
                 if (prodotto.isPresent()) {
@@ -83,11 +80,14 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
                     throw new Exception("Prodotto non trovato");
                 }
             }
+            
             if (req.getPrezzoTotale() != null)
                 d.setPrezzoTotale(req.getPrezzoTotale());
+            
             if (req.getQuantitaFinale() != null)
                 d.setQuantitaFinale(req.getQuantitaFinale());
             detR.save(d);
+            
             log.debug("Dettagli ordine aggiornato");
         } else {
             throw new Exception("Dettagli ordine non trovato");
@@ -97,6 +97,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
     @Override
     public void delete(DettagliOrdineReq req) throws Exception {
         log.debug("Delete dettagli ordine: " + req);
+        
         Optional<DettagliOrdine> dr = detR.findById(req.getId());
         if (dr.isEmpty())
             throw new Exception("Dettagli ordine non esistente");
@@ -126,8 +127,10 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
         Optional<DettagliOrdine> dr = detR.findById(id);
         if (dr.isEmpty())
             throw new Exception("Dettagli ordine non esistente");
+        
         Optional<Ordine> ordine = ordineR.findById(dr.get().getOrdine().getId());
         Optional<Prodotto> prodotto = prodottoR.findById(dr.get().getProdotto().getId());
+        
         return new DettagliOrdineDTO.Builder()
                 .setId(dr.get().getId())
                 .setOrdine(Utilities.buildOrdineDTO(ordine.get()))
