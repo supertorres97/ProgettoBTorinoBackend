@@ -24,6 +24,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	@Override
 	public void create(CarrelloProdottoReq req) throws Exception {
 		//fai un find by prodotto e se gia esiste si aumenta la sua quantita
+		log.debug("Create carrelloProdotto..");
 		
 	}
 	
