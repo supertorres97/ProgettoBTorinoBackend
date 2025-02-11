@@ -60,10 +60,7 @@ public class UtenteImpl implements UtenteService{
 		
 		credS.create(cReq);
 		
-		CarrelloReq cartReq = new CarrelloReq();
-		cartReq.setUtente(u.getId());
-		
-		cartS.create(cartReq);
+		cartS.create(u);
 	}
 
 	@Override

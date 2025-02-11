@@ -31,20 +31,20 @@ public class CarrelloImpl implements CarrelloService{
 		this.log = log;
 	}
 	
-	@Override
-	public void create(CarrelloReq req) throws Exception {
-		Optional<Utente> utn = utnR.findById(req.getUtente());
-		if(utn.isEmpty())
-			throw new Exception("Utente inesistente");
-		Optional<Carrello> cart = cartR.findByUtente(utn.get());
-		if(cart.isPresent())
-			throw new Exception("Utente gia associato a un carrello");
-		
-		Carrello c = new Carrello();
-		c.setUtente(utn.get());
-		
-		cartR.save(c);
-	}
+//	@Override
+//	public void create(CarrelloReq req) throws Exception {
+//		Optional<Utente> utn = utnR.findById(req.getUtente());
+//		if(utn.isEmpty())
+//			throw new Exception("Utente inesistente");
+//		Optional<Carrello> cart = cartR.findByUtente(utn.get());
+//		if(cart.isPresent())
+//			throw new Exception("Utente gia associato a un carrello");
+//		
+//		Carrello c = new Carrello();
+//		c.setUtente(utn.get());
+//		
+//		cartR.save(c);
+//	}
 
 	@Override
 	public List<CarrelloDTO> listAll() throws Exception {
@@ -59,18 +59,18 @@ public class CarrelloImpl implements CarrelloService{
 						
 	}
 
-//	@Override
-//	public void create(Utente utente) throws Exception {
-//		Optional<Utente> utn = utnR.findById(utnete);
-//		if(utn.isEmpty())
-//			throw new Exception("Utente inesistente");
-//		Optional<Carrello> cart = cartR.findByUtente(utn.get());
-//		if(cart.isPresent())
-//			throw new Exception("Utente gia associato a un carrello");
-//		
-//		Carrello c = new Carrello();
-//		c.setUtente(utente);
-//		
-//		cartR.save(c);
-//	}
+	@Override
+	public void create(Utente utente) throws Exception {
+		Optional<Utente> utn = utnR.findById(utente.getId());
+		if(utn.isEmpty())
+			throw new Exception("Utente inesistente");
+		Optional<Carrello> cart = cartR.findByUtente(utn.get());
+		if(cart.isPresent())
+			throw new Exception("Utente gia associato a un carrello");
+		
+		Carrello c = new Carrello();
+		c.setUtente(utente);
+		
+		cartR.save(c);
+	}
 }
