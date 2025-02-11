@@ -23,6 +23,7 @@ public class OrdineImpl implements OrdineService{
 	private UtenteRepository utnR;
 	private Logger log;
 	
+	
 	public OrdineImpl(OrdineRepository ordR, UtenteRepository utnR, Logger log) {
 		this.log = log;
 		this.ordR= ordR;
@@ -46,7 +47,7 @@ public class OrdineImpl implements OrdineService{
 		o.setTotale(req.getTotale());
 		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
-		
+	
 		ordR.save(o);
 	}
 

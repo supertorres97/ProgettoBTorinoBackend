@@ -27,6 +27,9 @@ public class CarrelloProdotto {
 
     @Column(nullable = false)
     private Integer quantita;
+    
+    @Column(name = "prezzo_totale", nullable = false)
+    private Double prezzoTotale;
 
     public Integer getId() {
         return id;
@@ -59,6 +62,14 @@ public class CarrelloProdotto {
     public void setQuantita(Integer quantita) {
         this.quantita = quantita;
     }
+
+	public Double getPrezzoTotale() {
+		return prezzoTotale;
+	}
+
+	public void setPrezzoTotale(Double prezzoTotale) {
+		this.prezzoTotale = prezzoTotale;
+	}
 	
 	
 }
