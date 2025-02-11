@@ -12,6 +12,7 @@ public class OrdineReq {
 	}
 	
 	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	public Integer getUtente() {

@@ -1,5 +1,7 @@
 package com.betacom.pasticceria.services.implementations;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,10 +33,6 @@ public class OrdineImpl implements OrdineService{
 
 	@Override
 	public void create(OrdineReq req) throws Exception {
-		Optional<Ordine> ord = ordR.findById(req.getId());
-		if(ord.isPresent()) {
-			throw new Exception("Ordine gia presente");
-		}
 		
 		Optional<Utente> utn = utnR.findById(req.getUtente());
 		if(utn.isEmpty()) {
@@ -46,7 +44,7 @@ public class OrdineImpl implements OrdineService{
 		o.setTotale(req.getTotale());
 		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
-		
+		o.setDataOrdine(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
 		ordR.save(o);
 	}
 
