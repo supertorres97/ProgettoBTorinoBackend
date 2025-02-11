@@ -31,11 +31,7 @@ public class TipoProdottoImpl implements TipoProdottoService{
 		log.debug("Create tipo prodotto: " + req);
 		Optional<TipoProdotto> tP = tPR.findByDescrizione(req.getDescrizione());
 		if(tP.isPresent())
-<<<<<<< HEAD
-			throw new Exception("Tipo di Prodotto non trovato");
-=======
 			throw new Exception("Tipo di Prodotto già esistente");
->>>>>>> refs/remotes/origin/Production
 
 		TipoProdotto p = new TipoProdotto();
 		p.setDescrizione(req.getDescrizione());
@@ -53,7 +49,7 @@ public class TipoProdottoImpl implements TipoProdottoService{
 			throw new Exception("Tipo di Prodotto già esistente");
 		
 		Optional<TipoProdotto> tPID = tPR.findById(req.getId());
-		if(tPID.isEmpty())
+		if(tP.isEmpty())
 			throw new Exception("Tipo di Prodotto non trovato");
 
 		tPID.get().setDescrizione(req.getDescrizione());
