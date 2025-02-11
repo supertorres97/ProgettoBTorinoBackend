@@ -76,7 +76,9 @@ public class FeedbackImpl implements FeedbackService{
 		feedR.save(f);
 	}
 	
-	public boolean checkOrderedProduct
+	public boolean checkOrderedProduct(FeedbackReq req) {
+		return true;
+	}
 
 
 	@Override
