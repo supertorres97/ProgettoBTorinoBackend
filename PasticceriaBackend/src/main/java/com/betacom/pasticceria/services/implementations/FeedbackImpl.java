@@ -50,6 +50,10 @@ public class FeedbackImpl implements FeedbackService{
 	@Override
 	public void create(FeedbackReq req) throws Exception {
 		log.debug("creazione feedback: "+ req);
+		boolean ordinato = checkOrderedProduct(req);
+		if(!ordinato)
+			throw new Exception("Il prodotto che vuo irecensire non è stato acquistato.");
+		
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
 		if (prod.isEmpty()) 
 			throw new Exception("Prodotto da recensire non esistente.");
@@ -62,22 +66,27 @@ public class FeedbackImpl implements FeedbackService{
 		if(ut.isEmpty())
 			throw new Exception("Utente non trovato.");
 		
-		
-		
 		Feedback f = new Feedback();
 		f.setDescrizione(req.getDescrizione());
 		f.setProdotto(prod.get());
 		f.setOrdine(ord.get());
 		f.setUtente(ut.get());
+		
 		Voto voto =  Voto.valueOf(req.getVoto().toUpperCase());
 		f.setVoto(voto);
-		//prima di salvare, effettuare il controllo del prodotto su id_ordine e id_prodotto di dettagli ordine
 		f.setDataFeedback(req.getDataFeedback());
 		feedR.save(f);
 	}
 	
 	public boolean checkOrderedProduct(FeedbackReq req) {
-		return true;
+	    List<Ordine> ordiniUtente = ordR.findByUtente_Id(req.getUtente());
+
+	    // Se l'utente non ha ordini, restituisce false
+	    if (ordiniUtente.isEmpty()) {
+	        return false;
+	    }
+	    //effettua il controllo se il prodotto si trova in almeno un ordine dell'utente
+	    return detR.existsByOrdineInAndProdotto_Id(ordiniUtente, req.getProdotto());
 	}
 
 
