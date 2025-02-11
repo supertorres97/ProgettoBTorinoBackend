@@ -150,30 +150,37 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 			doS.create(doReq);
 		}
 		
-		o.setTotale(totale);
-		
+		oReq.setTotale(totale);
+		oReq.setId(o.getId());
+		orderS.update(oReq);
 	}
 
 	@Override
 	public List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception {
-		Optional<Carrello> cart = cartR.findById(idC);
-		if(cart.isEmpty())
-			throw new Exception("Carrello insesistente");
-		
-		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
-		
-		return lCP.stream()
-				.map(cp -> new CarrelloProdottoDTO.Builder()
-						.setId(cp.getId())
-						.setQuantita(cp.getQuantita())
-						.setProdotto(buildProdottoDTO(cp.getProdotto()))
-						.setCarrello(new CarrelloDTO.Builder()
-								.setId(cp.getCarrello().getId())
-								.setUtente(cp.getCarrello().getUtente()).build())
-						.build())
-				.collect(Collectors.toList())
-						
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+//	@Override
+//	public List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception {
+//		Optional<Carrello> cart = cartR.findById(idC);
+//		if(cart.isEmpty())
+//			throw new Exception("Carrello insesistente");
+//		
+//		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
+//		
+//		return lCP.stream()
+//				.map(cp -> new CarrelloProdottoDTO.Builder()
+//						.setId(cp.getId())
+//						.setQuantita(cp.getQuantita())
+//						.setProdotto(buildProdottoDTO(cp.getProdotto()))
+//						.setCarrello(new CarrelloDTO.Builder()
+//								.setId(cp.getCarrello().getId())
+//								.setUtente(cp.getCarrello().getUtente()).build())
+//						.build())
+//				.collect(Collectors.toList())
+//						
+//	}
 	
 	
 	
