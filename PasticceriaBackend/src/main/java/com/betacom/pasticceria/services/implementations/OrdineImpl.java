@@ -1,12 +1,13 @@
 package com.betacom.pasticceria.services.implementations;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.pasticceria.dto.OrdineDTO;
 import com.betacom.pasticceria.model.Ordine;
@@ -24,7 +25,6 @@ public class OrdineImpl implements OrdineService{
 	private UtenteRepository utnR;
 	private Logger log;
 	
-	
 	public OrdineImpl(OrdineRepository ordR, UtenteRepository utnR, Logger log) {
 		this.log = log;
 		this.ordR= ordR;
@@ -32,12 +32,7 @@ public class OrdineImpl implements OrdineService{
 	}
 
 	@Override
-	@Transactional(rollbackFor = Exception.class)
 	public Ordine create(OrdineReq req) throws Exception {
-		Optional<Ordine> ord = ordR.findById(req.getId());
-		if(ord.isPresent()) {
-			throw new Exception("Ordine gia presente");
-		}
 		
 		Optional<Utente> utn = utnR.findById(req.getUtente());
 		if(utn.isEmpty()) {
@@ -49,7 +44,8 @@ public class OrdineImpl implements OrdineService{
 		o.setTotale(req.getTotale());
 		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
-	
+		o.setDataOrdine(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
+		
 		return ordR.save(o);
 	}
 
@@ -122,7 +118,7 @@ public class OrdineImpl implements OrdineService{
 
 	@Override
 	public List<OrdineDTO> listByUtente(Integer idUtente) throws Exception {
-		List<Ordine> lO = ordR.findByUtente(idUtente);
+		List<Ordine> lO = ordR.findByUtente_Id(idUtente);
 		if(lO.isEmpty())
 			throw new Exception("Utente non trovato");
 		return lO.stream()
@@ -135,6 +131,4 @@ public class OrdineImpl implements OrdineService{
 						.setDataOrdine(o.getDataOrdine()).build())
 				.collect(Collectors.toList());
 	}
-	
-
 }

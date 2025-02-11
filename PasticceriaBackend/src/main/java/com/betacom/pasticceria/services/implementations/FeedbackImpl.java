@@ -17,6 +17,7 @@ import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.model.Voto;
+import com.betacom.pasticceria.repositories.DettagliOrdineRepository;
 import com.betacom.pasticceria.repositories.FeedbackRepository;
 import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
@@ -31,22 +32,28 @@ public class FeedbackImpl implements FeedbackService{
 	OrdineRepository ordR;
 	UtenteRepository utR;
 	ProdottoRepository prodR;
+	DettagliOrdineRepository detR;
 	Logger log;
 	
 	@Autowired
-	public FeedbackImpl(FeedbackRepository feedR, OrdineRepository ordR, UtenteRepository utR, ProdottoRepository prodR, Logger log) {
+	public FeedbackImpl(FeedbackRepository feedR, OrdineRepository ordR, UtenteRepository utR, 
+			ProdottoRepository prodR, DettagliOrdineRepository detR, Logger log) {
 		super();
 		this.feedR = feedR;
 		this.ordR = ordR;
 		this.utR = utR;
 		this.log = log;
 		this.prodR = prodR;
+		this.detR = detR;
 	}
-
 
 	@Override
 	public void create(FeedbackReq req) throws Exception {
 		log.debug("creazione feedback: "+ req);
+		boolean ordinato = checkOrderedProduct(req);
+		if(!ordinato)
+			throw new Exception("Il prodotto che vuo irecensire non è stato acquistato.");
+		
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
 		if (prod.isEmpty()) 
 			throw new Exception("Prodotto da recensire non esistente.");
@@ -64,13 +71,23 @@ public class FeedbackImpl implements FeedbackService{
 		f.setProdotto(prod.get());
 		f.setOrdine(ord.get());
 		f.setUtente(ut.get());
+		
 		Voto voto =  Voto.valueOf(req.getVoto().toUpperCase());
 		f.setVoto(voto);
-		//prima di salvare, effettuare il controllo del prodotto su id_ordine e id_prodotto di dettagli ordine
 		f.setDataFeedback(req.getDataFeedback());
 		feedR.save(f);
 	}
+	
+	public boolean checkOrderedProduct(FeedbackReq req) {
+	    List<Ordine> ordiniUtente = ordR.findByUtente_Id(req.getUtente());
 
+	    // Se l'utente non ha ordini, restituisce false
+	    if (ordiniUtente.isEmpty()) {
+	        return false;
+	    }
+	    //effettua il controllo se il prodotto si trova in almeno un ordine dell'utente
+	    return detR.existsByOrdineInAndProdotto_Id(ordiniUtente, req.getProdotto());
+	}
 
 
 	@Override
@@ -90,6 +107,7 @@ public class FeedbackImpl implements FeedbackService{
 		Optional<Ordine> ord = ordR.findById(req.getOrdine());
 		if(ut.isEmpty())
 			throw new Exception("Utente non trovato.");
+		
 		Boolean mod = false;
 		
 		Feedback f = feed.get();

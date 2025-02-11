@@ -1,13 +1,6 @@
 package com.betacom.pasticceria.request;
 
-import com.betacom.pasticceria.model.Credenziali;
-
 public class UtenteReq {
-
-	/*
-	 * STESSA COSA DI UTENTEDTO
-	 */
-	
 	private Integer id;
 	private String nome;
 	private String cognome;
@@ -16,58 +9,72 @@ public class UtenteReq {
 	private String via;
 	private String CAP;
 	private String citta; 
-//    private Integer carrello;
-//    private Integer credenziali;
     
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getCognome() {
 		return cognome;
 	}
+	
 	public void setCognome(String cognome) {
 		this.cognome = cognome;
 	}
+	
 	public String getcFiscale() {
 		return cFiscale;
 	}
+	
 	public void setcFiscale(String cFiscale) {
 		this.cFiscale = cFiscale;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public String getVia() {
 		return via;
 	}
+	
 	public void setVia(String via) {
 		this.via = via;
 	}
+	
 	public String getCAP() {
 		return CAP;
 	}
+	
 	public void setCAP(String cAP) {
 		CAP = cAP;
 	}
+	
 	public String getCitta() {
 		return citta;
 	}
+	
 	public void setCitta(String citta) {
 		this.citta = citta;
 	}
-@Override
+	
+	@Override
 	public String toString() {
 		return "UtenteReq [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", cFiscale=" + cFiscale + ", email="
 				+ email + ", via=" + via + ", CAP=" + CAP + ", citta=" + citta + "]";

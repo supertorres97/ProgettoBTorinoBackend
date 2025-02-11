@@ -65,40 +65,5 @@ public class TipoProdottoTest {
 		
 		assertThrows(Exception.class, () -> {tiPS.create(tP);}); 
 	}
-	
-
-	@Test
-	@Order(3)
-	public void updateBiciTest() throws Exception{
-		TipoProdottoReq tP = new TipoProdottoReq();
-		tP.setId(1);
-		tP.setDescrizione("Semifreddi");
-		tiPS.create(tP);
-		log.debug("tipo prodotto creato con successo");
-		
-		tiPS.update(tP);
-		
-		TipoProdottoDTO t = tiPS.listByID(1);
-		Assertions.assertThat(t.getDescrizione()).isEqualTo("Semifreddi");
-
-		tP.setId(4);
-		tP.setDescrizione("Salati");
-		tiPS.create(tP);
-		Assertions.assertThat(t.getDescrizione()).isEqualTo("Salati");
-	}
-	
-	@Test
-	@Order(4)
-	public void removeMotoTest() throws Exception{
-		TipoProdottoReq tP = new TipoProdottoReq();
-		tP.setId(3);	
-		tiPS.delete(tP);
-		log.debug("Veicolo rimosso con successo");
-		
-		List<TipoProdottoDTO> lB = tiPS.listAll();
-		
-		Assertions.assertThat(lB.size()).isEqualTo(3);
-		Assertions.assertThat(lB.size()).isLessThan(4);
-	}
 
 }

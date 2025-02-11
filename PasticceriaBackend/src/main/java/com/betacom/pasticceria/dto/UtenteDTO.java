@@ -6,12 +6,6 @@ import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Credenziali;
 
 public class UtenteDTO {
-
-	/*
-	 * SO TROPPO FUSO PER CAPIRE SE CARRELLO E CREDENZIALI VANADANO QUA DENTRO
-	 */
-	
-	
 	private Integer id;
 	private String nome;
 	private String cognome;
@@ -27,7 +21,6 @@ public class UtenteDTO {
     private UtenteDTO() {}
     
     public static class Builder{
-    	
     	private Integer id;
     	private String nome;
     	private String cognome;
@@ -44,7 +37,6 @@ public class UtenteDTO {
         
         public UtenteDTO build() {
         	UtenteDTO dto = new UtenteDTO();
-        	
         	dto.id = this.id;
         	dto.nome = this.nome;
         	dto.cognome = this.cognome;
@@ -58,7 +50,7 @@ public class UtenteDTO {
         	dto.feedbackUtente = this.feedbackUtente;
         	
         	return dto;
-        }//build
+        }
 
 		public Builder setId(Integer id) {
 			this.id = id;
@@ -155,7 +147,6 @@ public class UtenteDTO {
 	public List<FeedbackDTO> getFeedbackUtente() {
 		return feedbackUtente;
 	}
-	
 
 	@Override
 	public String toString() {

@@ -52,7 +52,7 @@ public class OrdineController {
 	
 	@PostMapping("/update")
 	public ResponseBase update(@RequestBody(required = true) OrdineReq req) {
-		log.debug("Update Feedback: " + req);
+		log.debug("Update Ordine: " + req);
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);
 		try {
@@ -66,7 +66,7 @@ public class OrdineController {
 	}
 	
 	@PostMapping("/delete")
-	public ResponseBase delete(@RequestBody(required = true) Integer id) {
+	public ResponseBase delete(Integer id) {
 		log.debug("Delete Ordine: " + id);
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);

@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.betacom.pasticceria.model.Ordine;
 
 public interface OrdineRepository extends JpaRepository<Ordine, Integer>{
-	List<Ordine> findByUtente(Integer idUtente);
-	Integer findTopByOrderByIdDesc();
-}
+	List<Ordine> findByUtente(Integer idUtente);}

@@ -2,8 +2,7 @@ package com.betacom.pasticceria.dto;
 
 import java.util.Date;
 
-public class OrdineDTO {
-	
+public class OrdineDTO {	
 	private Integer id;
 	private UtenteDTO utente;
 	private Double totale;
@@ -11,12 +10,9 @@ public class OrdineDTO {
 	private String status;
 	private Date dataOrdine;
 	
-	private OrdineDTO() {
-		
-	}
+	private OrdineDTO() {}
 	
-	public static class Builder {
-		
+	public static class Builder {	
 		private Integer id;
 		private UtenteDTO utente;
 		private Double totale;
@@ -37,9 +33,7 @@ public class OrdineDTO {
 			dto.status= this.status;
 			dto.dataOrdine= this.dataOrdine;
 			
-			return dto;
-			
-			
+			return dto;			
 		}
 
 		public Builder setId(Integer id) {
@@ -70,8 +64,7 @@ public class OrdineDTO {
 		public Builder setDataOrdine(Date dataOrdine) {
 			this.dataOrdine = dataOrdine;
 			return this;
-		}
-		
+		}		
 	}
 
 	public Integer getId() {

@@ -35,6 +35,14 @@ public class Messaggio {
 	public void setMessaggio(String messaggio) {
 		this.messaggio = messaggio;
 	}
+
+	public String getCodice() {
+		return codice;
+	}
+
+	public void setCodice(String codice) {
+		this.codice = codice;
+	}
 	
 		
 	

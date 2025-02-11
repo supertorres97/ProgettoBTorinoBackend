@@ -11,14 +11,12 @@ import com.betacom.pasticceria.services.interfaces.MessaggioService;
 
 @Service
 public class MessaggioImpl implements MessaggioService {
-
 	private MessaggioRepository messR;
 	private Logger log;
 
 	public MessaggioImpl(MessaggioRepository messR, Logger log) {
 		this.messR = messR;
 		this.log = log;
-
 	}
 
 	@Override
