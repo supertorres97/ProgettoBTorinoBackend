@@ -30,8 +30,8 @@ public class TipoProdottoImpl implements TipoProdottoService{
 	public void create(TipoProdottoReq req) throws Exception {
 		log.debug("Create tipo prodotto: " + req);
 		Optional<TipoProdotto> tP = tPR.findByDescrizione(req.getDescrizione());
-		if(tP.isEmpty())
-			throw new Exception("Tipo di Prodotto non trovato");
+		if(tP.isPresent())
+			throw new Exception("Tipo di Prodotto già esistente");
 
 		TipoProdotto p = new TipoProdotto();
 		p.setDescrizione(req.getDescrizione());
