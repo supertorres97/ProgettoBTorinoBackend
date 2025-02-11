@@ -67,6 +67,7 @@ public class OrdineImpl implements OrdineService{
 	    } catch (Exception e) {
 	        throw new Exception("Stato non valido: " + req.getStatus());
 	    }
+	    o.setTotale(req.getTotale());
 	    
 	    ordR.save(o);
 	}
