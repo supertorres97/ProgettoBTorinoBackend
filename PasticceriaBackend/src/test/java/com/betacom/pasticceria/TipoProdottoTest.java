@@ -57,6 +57,7 @@ public class TipoProdottoTest {
 		
 		List<TipoProdottoDTO> lT = tiPS.listAll();
 		Assertions.assertThat(lT.size()).isGreaterThan(0);
+		Assertions.assertThat(lT.size()).isEqualTo(4);
 		
 	}
 	
@@ -83,7 +84,7 @@ public class TipoProdottoTest {
 		
 		tP.setId(2);
 		tP.setDescrizione("Mono");
-		tiPS.create(tP);
+		tiPS.update(tP);
 		log.debug("tipo prodotto creato con successo");
 		Optional<TipoProdotto> tipoProd = tpR.findById(1);
 		Assertions.assertThat(tipoProd.get().getDescrizione().equalsIgnoreCase("Dolcetti"));
@@ -94,7 +95,7 @@ public class TipoProdottoTest {
 	@Order(4)
 	public void updateTipoProdottoErrorTest() throws Exception{
 		TipoProdottoReq tP = new TipoProdottoReq();
-		tP.setId(3);
+		tP.setId(9);
 		tP.setDescrizione("Panuozzo");
 		assertThrows(Exception.class, () -> {tiPS.update(tP);}); 
 	}
@@ -111,8 +112,24 @@ public class TipoProdottoTest {
 		List<TipoProdottoDTO> lT = tiPS.listAll();
 		Assertions.assertThat(lT.size()).isGreaterThan(0);
 		Assertions.assertThat(lT.size()).isGreaterThan(2);
-		Assertions.assertThat(lT.size()).isEqualTo(3);
-		Assertions.assertThat(lT.size()).isLessThan(4);
+		Assertions.assertThat(lT.size()).isEqualTo(4);
+		Assertions.assertThat(lT.size()).isLessThan(5);
 	}
+	
+	@Test
+	@Order(5)
+	public void listAll() throws Exception{
+		List<TipoProdottoDTO> lT = tiPS.listAll();
+		Assertions.assertThat(lT.size()).isGreaterThan(0);
+	}
+	
+	@Test
+	@Order(7)
+	public void listByIDTest() throws Exception{
+		TipoProdottoDTO lT = tiPS.listByID(3);
+		Assertions.assertThat(lT.getId() == 3);
+		Assertions.assertThat(lT != null);
+	}
+	
 	
 }
