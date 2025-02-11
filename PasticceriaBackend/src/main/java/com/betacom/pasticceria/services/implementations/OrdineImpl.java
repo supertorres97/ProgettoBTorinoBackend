@@ -118,7 +118,7 @@ public class OrdineImpl implements OrdineService{
 
 	@Override
 	public List<OrdineDTO> listByUtente(Integer idUtente) throws Exception {
-		List<Ordine> lO = ordR.findByUtente(idUtente);
+		List<Ordine> lO = ordR.findByUtente_Id(idUtente);
 		if(lO.isEmpty())
 			throw new Exception("Utente non trovato");
 		return lO.stream()
