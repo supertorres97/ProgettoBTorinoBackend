@@ -19,7 +19,6 @@ import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.repositories.CarrelloProdottoRepository;
 import com.betacom.pasticceria.repositories.CarrelloRepository;
-import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.request.CarrelloProdottoReq;
 import com.betacom.pasticceria.request.DettagliOrdineReq;
@@ -52,9 +51,14 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	public void create(CarrelloProdottoReq req) throws Exception {
 		//fai un find by prodotto e se gia esiste si aumenta la sua quantita
 		log.debug("Create carrelloProdotto..");
+		
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
 		if(prod.isEmpty())
 			throw new Exception("Prodotto inesistente");
+		if(!prod.get().disponibile) {
+			log.error("disponibilita prodotto: " + prod.get().getDisponibile());
+			throw new Exception("Prodotto non disponibile");
+		}
 		
 		Optional<Carrello> cart = cartR.findById(req.getCarrello());
 		if(cart.isEmpty())
@@ -64,13 +68,13 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		Optional<CarrelloProdotto> cprod = cpR.findByProdottoAndCarrello(prod.get(), cart.get());
 		if(cprod.isPresent()) {
 			cp = cprod.get();
-			cp.setQuantita(cp.getQuantita() + 1);
+			cp = addProduct(prod.get(), cp, 1);
 			cp.setPrezzoTotale(cp.getPrezzoTotale() + prod.get().getPrezzo());
 		}else {
 			cp.setCarrello(cart.get());
 			cp.setProdotto(prod.get());
-			cp.setQuantita(1);
 			cp.setPrezzoTotale(prod.get().getPrezzo());
+			cp = addProduct(prod.get(), cp, 1);
 		}
 		cpR.save(cp);
 	}
@@ -110,7 +114,10 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 			throw new Exception("CarrelloProdotto inesistente");
 		
 		CarrelloProdotto cp = cartP.get();
-		cp.setQuantita(req.getQuantita());
+//		cp.setQuantita(req.getQuantita());
+		
+		cp = addProduct(prod.get(), cp, req.getQuantita());
+		
 		if(cp.getQuantita() <= 0)
 			cpR.delete(cp);
 		else {
@@ -151,7 +158,9 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		oReq.setId(o.getId());
 		orderS.update(oReq);
 	}
-
+	
+	
+	
 	@Override
 	public List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception {
 		
@@ -188,4 +197,53 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 						.build())
 				.collect(Collectors.toList());
 	}
+	
+	private CarrelloProdotto addProduct(Prodotto prodotto, CarrelloProdotto cartProd, Integer quantita) throws Exception {
+		Optional<Prodotto> prod = prodR.findById(prodotto.getId());
+		
+		CarrelloProdotto cp = cartProd;
+		
+		if(prod.get().getStock() == 0) {
+			prod.get().setDisponibile(false);
+			log.error("Stock vuoto" + prod.get().getStock());
+			throw new Exception("Stock esaurito");
+		}
+		
+		if((prod.get().getStock() - quantita) < 0) {
+			log.error("quantita inserita supera limiti stock quantita: " + quantita + " stock: " + prod.get().getStock());
+			throw new Exception("quantita supera lo stock");
+		}
+		
+		cp.setQuantita(cp.getQuantita() + quantita);
+		prod.get().setStock(prod.get().getStock() - quantita);
+		
+		if(prod.get().getStock() == 0)
+			prod.get().setDisponibile(false);
+		
+		return cp;
+	}
+
+	@Override
+	public void svuotaCarrello(Carrello cart) throws Exception {
+		Optional<Carrello> c = cartR.findById(cart.getId());
+		if(c.isEmpty())
+			throw new Exception("Carrello insesistente");
+		
+		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart);
+		
+		for(CarrelloProdotto cp : lCP) {
+			cpR.delete(cp);
+		}
+	}
+	
+	
+	
+	
+//	STAVA NELL'IF DI CREATE	(CPROD IS PRESENT)
+//	if(cp.getQuantita() >= cp.getProdotto().getStock()) {
+//		log.error("Superti lo stock (esaurito): " + cp.getProdotto().getStock());
+//		throw new Exception("Stock esaurito");
+//	}
+//	
+//	cp.setQuantita(cp.getQuantita() + 1);
 }

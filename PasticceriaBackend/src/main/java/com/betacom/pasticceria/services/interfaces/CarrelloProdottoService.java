@@ -12,6 +12,7 @@ public interface CarrelloProdottoService {
 	void remove(CarrelloProdottoReq req) throws Exception;
 	void update(CarrelloProdottoReq req) throws Exception;
 	void acuqista(Carrello cart) throws Exception;
+	void svuotaCarrello(Carrello cart) throws Exception;
 	List<CarrelloProdottoDTO> listByCarrello(Integer idC) throws Exception;
 	List<CarrelloProdottoDTO> listByProdotto(Integer idProdotto) throws Exception;
 }
