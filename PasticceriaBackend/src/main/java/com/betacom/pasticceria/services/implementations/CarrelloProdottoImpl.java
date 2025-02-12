@@ -68,12 +68,19 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		Optional<CarrelloProdotto> cprod = cpR.findByProdottoAndCarrello(prod.get(), cart.get());
 		if(cprod.isPresent()) {
 			cp = cprod.get();
-			cp = addProduct(prod.get(), cp, 1);
+			if(req.getQuantita() != null)
+				cp = addProduct(prod.get(), cp, req.getQuantita());
+			else
+				cp = addProduct(prod.get(), cp, 1);
 			cp.setPrezzoTotale(cp.getPrezzoTotale() + prod.get().getPrezzo());
 		}else {
+			log.debug("QUANTITA " + req.getQuantita());
 			cp.setCarrello(cart.get());
 			cp.setProdotto(prod.get());
 			cp.setPrezzoTotale(prod.get().getPrezzo());
+			if(req.getQuantita() != null)
+				cp = addProduct(prod.get(), cp, req.getQuantita());
+			else
 			cp = addProduct(prod.get(), cp, 1);
 		}
 		cpR.save(cp);
@@ -215,8 +222,13 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 			log.error("quantita inserita supera limiti stock quantita: " + quantita + " stock: " + prod.get().getStock());
 			throw new Exception("quantita supera lo stock");
 		}
+		log.debug("cp quantita: " + cp.getQuantita());
+		if(cp.getQuantita() != null)
+			cp.setQuantita(cp.getQuantita() + quantita);
+		else
+			cp.setQuantita(quantita);
 		
-		cp.setQuantita(cp.getQuantita() + quantita);
+		log.debug("QUANTITA FINALE " + cp.getQuantita());
 		prod.get().setStock(prod.get().getStock() - quantita);
 		
 		if(prod.get().getStock() == 0)
