@@ -135,17 +135,17 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void acuqista(Carrello cart) throws Exception {
-		Optional<Carrello> carr = cartR.findById(cart.getId());
-		if(carr.isEmpty())
+	public void acuqista(CarrelloProdottoReq req) throws Exception {
+		Optional<Carrello> cart = cartR.findById(req.getCarrello());
+		if(cart.isEmpty())
 			throw new Exception("Carrello insesistente");
 		
-		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart);
+		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
 		if(lCP.isEmpty())
 			throw new Exception("Carrello vuoto");
 		
 		OrdineReq oReq = new OrdineReq();
-		oReq.setUtente(cart.getUtente().getId());
+		oReq.setUtente(cart.get().getUtente().getId());
 		Ordine o = orderS.create(oReq);
 		
 		DettagliOrdineReq doReq = new DettagliOrdineReq();
@@ -165,7 +165,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		oReq.setId(o.getId());
 		orderS.update(oReq);
 		
-		svuotaCarrello(cart);
+		svuotaCarrello(cart.get().getId());
 	}
 	
 	
@@ -207,6 +207,8 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 				.collect(Collectors.toList());
 	}
 	
+	
+	//METODO AUSILIARIO PRIVATO
 	private CarrelloProdotto addProduct(Prodotto prodotto, CarrelloProdotto cartProd, Integer quantita) throws Exception {
 		Optional<Prodotto> prod = prodR.findById(prodotto.getId());
 		
@@ -238,12 +240,12 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	}
 
 	@Override
-	public void svuotaCarrello(Carrello cart) throws Exception {
-		Optional<Carrello> c = cartR.findById(cart.getId());
+	public void svuotaCarrello(Integer cartId) throws Exception {
+		Optional<Carrello> c = cartR.findById(cartId);
 		if(c.isEmpty())
 			throw new Exception("Carrello insesistente");
 		
-		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart);
+		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(c.get());
 		
 		for(CarrelloProdotto cp : lCP) {
 			cpR.delete(cp);
