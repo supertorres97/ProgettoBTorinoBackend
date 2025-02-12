@@ -48,10 +48,12 @@ public class CredenzialiTest {
 	public void updateCredenzialiTest() throws Exception{
 		CredenzialiReq cred = new CredenzialiReq();
 		cred.setId(3);
+		cred.setIdUtente(3);
 		cred.setPassword("update1");
 		credS.update(cred);
 		
 		cred.setId(2);
+		cred.setIdUtente(2);
 		cred.setPassword("update2");
 		credS.update(cred);
 		
