@@ -9,6 +9,7 @@
         id integer not null auto_increment,
         id_carrello integer not null,
         id_prodotto integer not null,
+        prezzo_totale float(53) not null,
         quantita integer not null,
         primary key (id)
     ) engine=InnoDB;

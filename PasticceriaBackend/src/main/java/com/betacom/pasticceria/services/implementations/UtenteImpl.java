@@ -53,7 +53,7 @@ public class UtenteImpl implements UtenteService{
 		u.setCitta(req.getCitta());
 		
 		u = utenteR.save(u);
-		cReq.setIdUtente(u);
+		cReq.setIdUtente(u.getId());
 		
 		credS.create(cReq);
 		cartS.create(u);

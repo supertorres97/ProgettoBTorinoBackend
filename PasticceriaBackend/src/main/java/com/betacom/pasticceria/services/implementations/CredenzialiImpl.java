@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.SignInDTO;
 import com.betacom.pasticceria.model.Credenziali;
+import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
+import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.SignInReq;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
@@ -21,23 +23,30 @@ import com.betacom.pasticceria.services.interfaces.CredenzialiService;
 @Service
 public class CredenzialiImpl implements CredenzialiService{
     private CredenzialiRepository credR;
+    private UtenteRepository utnR;
     private Logger log;
     
     @Autowired
-	public CredenzialiImpl(CredenzialiRepository credR, Logger log) {
+	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log) {
 		super();
 		this.credR = credR;
+		this.utnR = utnR;
 		this.log = log;
 	}
     
     @Override
     public void create(CredenzialiReq req) throws Exception {
 		log.debug("Create credenziali: " + req);
+		Optional<Utente> utn = utnR.findById(req.getIdUtente());
+		
+		if(utn.isEmpty())
+			throw new Exception("Utente inesistente!");
 		
 		Credenziali c = new Credenziali();
-        c.setUtente(req.getIdUtente());
+        c.setUtente(utn.get());
 		c.setUsername(req.getUsername());
         c.setPassword(req.getPassword());
+        c.setAttivo(true);
 		
 		credR.save(c);
 		log.debug("Nuovo credenziali inserito");
@@ -47,12 +56,17 @@ public class CredenzialiImpl implements CredenzialiService{
     @Override
     public void update(CredenzialiReq req) throws Exception {
         log.debug("Update credenziali: " + req);
+        
+        Optional<Utente> utn = utnR.findById(req.getIdUtente());
+		
+		if(utn.isEmpty())
+			throw new Exception("Utente inesistente!");
 
         Optional<Credenziali> cr = credR.findById(req.getId());
         if (cr.isPresent()) {
         	Credenziali c = cr.get();
         	if(req.getIdUtente() != null) 
-        		c.setUtente(req.getIdUtente());
+        		c.setUtente(utn.get());
         	if(req.getUsername() != null)
         		c.setUsername(req.getUsername());
         	if(req.getPassword() != null)
@@ -74,7 +88,8 @@ public class CredenzialiImpl implements CredenzialiService{
 			throw new Exception("Credenziali non esistente");
 		
 		Credenziali c = cr.get();		
-		credR.delete(c);
+		c.setAttivo(false); //cancellazione logica, NON fisica!!
+		credR.save(c);
 		
 		log.debug("Credenziali Eliminate");
 	}
@@ -88,6 +103,7 @@ public class CredenzialiImpl implements CredenzialiService{
 				.setIdUtente(buildUtenteDTO(c.getUtente()))
                 .setUsername(c.getUsername())
                 .setPassword(c.getPassword())
+                .setAttivo(c.getAttivo())
 				.build())
 				.collect(Collectors.toList());
 	}
@@ -103,6 +119,7 @@ public class CredenzialiImpl implements CredenzialiService{
 				.setIdUtente(buildUtenteDTO(cr.get().getUtente()))
                 .setUsername(cr.get().getUsername())
                 .setPassword(cr.get().getPassword())
+                .setAttivo(cr.get().getAttivo())
 				.build();
 	}
     @Override
@@ -111,6 +128,8 @@ public class CredenzialiImpl implements CredenzialiService{
 		SignInDTO resp = new SignInDTO();
 		Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUsername(), req.getPwd());
 		if(usr.isEmpty())
+			resp.setLogged(false);
+		if(!usr.get().getAttivo())
 			resp.setLogged(false);
 		else {
 			resp.setLogged(true);

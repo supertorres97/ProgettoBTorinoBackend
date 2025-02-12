@@ -82,4 +82,12 @@ public class Credenziali {
     public void setRuoli(List<Ruoli> ruoli) {
         this.ruoli = ruoli;
     }
+
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
+	}
 }

@@ -4,15 +4,16 @@ import com.betacom.pasticceria.model.Utente;
 
 public class CredenzialiReq {
     private Integer id;
-    private Utente idUtente;
+    private Integer idUtente;
     private String username;
     private String password;
+    private Boolean attivo;
     
     public void setId(Integer id) {
         this.id = id;
     }
     
-    public void setIdUtente(Utente idUtente) {
+    public void setIdUtente(Integer idUtente) {
         this.idUtente = idUtente;
     }
    
@@ -28,7 +29,7 @@ public class CredenzialiReq {
         return id;
     }
     
-    public Utente getIdUtente() {
+    public Integer getIdUtente() {
         return idUtente;
     }
     
@@ -39,5 +40,14 @@ public class CredenzialiReq {
     public String getPassword() {
         return password;
     }
+
+	public Boolean getAttivo() {
+		return attivo;
+	}
+
+	public void setAttivo(Boolean attivo) {
+		this.attivo = attivo;
+	}
        
+    
 }

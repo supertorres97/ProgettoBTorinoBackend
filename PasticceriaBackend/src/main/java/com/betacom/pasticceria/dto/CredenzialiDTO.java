@@ -5,12 +5,14 @@ public class CredenzialiDTO {
     private UtenteDTO idUtente;
     private String username;
     private String password;
+    private Boolean attivo;
 
     public static class Builder {
         private Integer id;
         private UtenteDTO idUtente;
         private String username;
         private String password;
+        private Boolean attivo;
         
         public CredenzialiDTO build() {
             CredenzialiDTO dto = new CredenzialiDTO();
@@ -18,6 +20,7 @@ public class CredenzialiDTO {
             dto.idUtente = this.idUtente;
             dto.username = this.username;
             dto.password = this.password;
+            dto.attivo = this.attivo;
             return dto;
         }
         public Builder setId(Integer id) {
@@ -39,6 +42,13 @@ public class CredenzialiDTO {
             this.password = password;
             return this;
         }
+		
+		public Builder setAttivo(Boolean attivo) {
+			this.attivo = attivo;
+			return this;
+		}
+        
+        
 
     }
     
@@ -54,5 +64,14 @@ public class CredenzialiDTO {
     public String getPassword() {
         return password;
     }
+    public Boolean getAttivo() {
+		return attivo;
+	}
+    
+	@Override
+	public String toString() {
+		return "CredenzialiDTO [id=" + id + ", idUtente=" + idUtente + ", username=" + username + ", password="
+				+ password + ", attivo=" + attivo + "]";
+	}
     
 }
