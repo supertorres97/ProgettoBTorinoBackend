@@ -11,7 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 	ProdottoTest.class,
 	UtenteTest.class,
 	CredenzialiTest.class,
-	CarrelloTest.class
+	CarrelloTest.class,
+	OrdineTest.class,
+	DettagliOrdineTest.class,
+	FeedbackTest.class,
+	RuoliTest.class
 })
 
 @SpringBootTest
