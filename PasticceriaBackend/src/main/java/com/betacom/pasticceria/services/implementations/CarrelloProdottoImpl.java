@@ -157,6 +157,8 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		oReq.setTotale(totale);
 		oReq.setId(o.getId());
 		orderS.update(oReq);
+		
+		svuotaCarrello(cart);
 	}
 	
 	
