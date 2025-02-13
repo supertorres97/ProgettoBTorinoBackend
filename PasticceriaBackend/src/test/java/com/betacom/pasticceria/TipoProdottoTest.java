@@ -2,6 +2,7 @@ package com.betacom.pasticceria;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.pasticceria.dto.TipoProdottoDTO;
+import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.TipoProdotto;
 import com.betacom.pasticceria.repositories.TipoProdottoRepository;
 import com.betacom.pasticceria.request.TipoProdottoReq;
@@ -131,5 +133,24 @@ public class TipoProdottoTest {
 		Assertions.assertThat(lT != null);
 	}
 	
+	//--------------------------------------------------------TEST MODEL TIPOPRODOTTO-------------------------------------------------------------------
+	@Test
+	@Order(8)
+	public void testGetterSetterTipoProdotto() {
+	    log.debug("Running testGetterSetterTipoProdotto...");
+
+	    TipoProdotto tipoProdotto = new TipoProdotto();
+	    tipoProdotto.setId(1);
+	    tipoProdotto.setDescrizione("Test Tipo Prodotto");
+
+	    Assertions.assertThat(tipoProdotto.getId()).isEqualTo(1);
+	    Assertions.assertThat(tipoProdotto.getDescrizione()).isEqualTo("Test Tipo Prodotto");
+
+	    List<Prodotto> prodottiList = new ArrayList<>();
+	    tipoProdotto.setProdotti(prodottiList);
+	    Assertions.assertThat(tipoProdotto.getProdotti()).isEqualTo(prodottiList);
+
+	    log.debug("Getter and Setter tests for TipoProdotto passed successfully.");
+	}
 	
 }

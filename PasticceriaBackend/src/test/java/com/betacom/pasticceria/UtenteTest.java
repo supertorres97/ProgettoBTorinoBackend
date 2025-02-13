@@ -1,7 +1,9 @@
 package com.betacom.pasticceria;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
+import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Credenziali;
+import com.betacom.pasticceria.model.Feedback;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
@@ -196,4 +200,47 @@ public class UtenteTest {
 		Assertions.assertThat(lP.getId() == 2);
 		Assertions.assertThat(lP != null);
 	}
+	
+	//---------------------------------------------TEST MODEL UTENTE---------------------------------------------------------------------------
+	@Test
+    @Order(7)
+    public void testGetterSetterUtente() {
+        Utente utente = new Utente();
+        
+        utente.setId(1);
+        utente.setNome("Mario");
+        utente.setCognome("Rossi");
+        utente.setcFiscale("MRORSS85M01H501L");
+        utente.setEmail("mario.rossi@example.com");
+        utente.setVia("Via Roma 12");
+        utente.setCAP("10144");
+        utente.setCitta("Torino");
+
+        Credenziali credenziali = new Credenziali();
+        credenziali.setId(10);
+        utente.setCredenziali(credenziali);
+
+        Carrello carrello = new Carrello();
+        carrello.setId(20);
+        utente.setCarrello(carrello);
+
+        List<Feedback> feedbackList = new ArrayList<>();
+        Feedback feedback = new Feedback();
+        feedback.setId(100);
+        feedbackList.add(feedback);
+        utente.setFeedback(feedbackList);
+
+        // Assertions per verificare ogni getter
+        assertThat(utente.getId()).isEqualTo(1);
+        assertThat(utente.getNome()).isEqualTo("Mario");
+        assertThat(utente.getCognome()).isEqualTo("Rossi");
+        assertThat(utente.getcFiscale()).isEqualTo("MRORSS85M01H501L");
+        assertThat(utente.getEmail()).isEqualTo("mario.rossi@example.com");
+        assertThat(utente.getVia()).isEqualTo("Via Roma 12");
+        assertThat(utente.getCAP()).isEqualTo("10144");
+        assertThat(utente.getCitta()).isEqualTo("Torino");
+        assertThat(utente.getCredenziali()).isEqualTo(credenziali);
+        assertThat(utente.getCarrello()).isEqualTo(carrello);
+        assertThat(utente.getFeedback()).isEqualTo(feedbackList);
+    }
 }
