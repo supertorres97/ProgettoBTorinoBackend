@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.betacom.pasticceria.controller.UtenteController;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
@@ -28,7 +29,11 @@ import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.ProdottoReq;
+import com.betacom.pasticceria.request.UtenteCredenzialiReq;
 import com.betacom.pasticceria.request.UtenteReq;
+import com.betacom.pasticceria.response.ResponseBase;
+import com.betacom.pasticceria.response.ResponseList;
+import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
 import com.betacom.pasticceria.services.interfaces.UtenteService;
 
@@ -47,13 +52,16 @@ public class UtenteTest {
 	
 	@Autowired
 	UtenteService utSer;
+	
+	@Autowired
+	UtenteController utC;
 		
 	@Autowired
 	Logger log;
 	
 	@Test
 	@Order(1)
-	public void createProdottoTest() throws Exception{
+	public void createUtenteTest() throws Exception{
 		UtenteReq ut = new UtenteReq();
 		ut.setCognome("Gino");
 		ut.setNome("Lucioni");
@@ -243,4 +251,51 @@ public class UtenteTest {
         assertThat(utente.getCarrello()).isEqualTo(carrello);
         assertThat(utente.getFeedback()).isEqualTo(feedbackList);
     }
+	
+	//-------------------------------------------TEST CONTROLLER UTENTE---------------------------------------------------------------	
+	@Test
+	@Order(8)
+	public void listTestController() {
+	    ResponseList<UtenteDTO> response = utC.listAll();
+
+	    Assertions.assertThat(response.getRc()).isEqualTo(true);
+	    Assertions.assertThat(response.getDati()).isNotEmpty();
+	}
+
+	@Test
+	@Order(9)
+	public void listByIdTestController() {
+	    ResponseObject<UtenteDTO> response = utC.listById(1);
+
+	    Assertions.assertThat(response.getRc()).isEqualTo(true);
+	    Assertions.assertThat(response.getDati()).isNotNull();
+	}
+
+	@Test
+	@Order(10)
+	public void listByIdErrorTestController() {
+	    ResponseObject<UtenteDTO> response = utC.listById(99);
+
+	    Assertions.assertThat(response.getRc()).isEqualTo(false);
+	    Assertions.assertThat(response.getMsg()).isNotNull();
+	    Assertions.assertThat(response.getDati()).isNull();
+	}
+
+	@Test
+	@Order(11)
+	public void updateUtenteTestController() {
+	    UtenteReq req = new UtenteReq();
+	    req.setId(1);
+	    req.setNome("Giovanni");
+
+	    ResponseBase response = utC.update(req);
+	    log.debug("Risposta update: " + response.getRc());
+	    Assertions.assertThat(response.getRc()).isEqualTo(true);
+
+	    ResponseObject<UtenteDTO> updatedResponse = utC.listById(1);
+	    Assertions.assertThat(updatedResponse.getRc()).isEqualTo(true);
+	    Assertions.assertThat(updatedResponse.getDati().getNome()).isEqualTo("Giovanni");
+
+	}
+	
 }
