@@ -110,6 +110,10 @@ public class ProdottoImpl implements ProdottoService{
 	@Override
 	public List<ProdottoDTO> listAll() {
 		List<Prodotto> lP = prodR.findAll();
+		
+		for(Prodotto p : lP)
+			log.debug("immagine: " + p.getImg() + " prodotto: " + p.getNome());
+		
 		return lP.stream()
 				.map(p -> new ProdottoDTO.Builder()
 				.setId(p.getId())
