@@ -38,7 +38,7 @@ public class CredenzialiController {
     }
 	
 	@PostMapping("/signin")
-	public SignInDTO signin(@RequestBody(required = true) SignInReq req) {
+	public SignInDTO signin(@RequestBody(required = true) SignInReq req) throws Exception {
 		log.debug("Signin: ");		
 		return credS.signIn(req);
 	}

@@ -14,7 +14,7 @@ public interface CredenzialiService {
 	void delete(CredenzialiReq req) throws Exception;
 	List<CredenzialiDTO> listAll();
 	CredenzialiDTO listByID (Integer id) throws Exception;
-	SignInDTO signIn(SignInReq req);
+	SignInDTO signIn(SignInReq req) throws Exception;
     
 }
 

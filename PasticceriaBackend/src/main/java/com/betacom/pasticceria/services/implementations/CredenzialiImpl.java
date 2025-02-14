@@ -27,7 +27,6 @@ public class CredenzialiImpl implements CredenzialiService{
     private CredenzialiRepository credR;
     private UtenteRepository utnR;
     private Logger log;
-    UtenteRepository utRe;
     
     @Autowired
 	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log) {
@@ -126,20 +125,33 @@ public class CredenzialiImpl implements CredenzialiService{
 				.build();
 	}
     @Override
-	public SignInDTO signIn(SignInReq req) {
-		log.debug("signin" + req);
-		SignInDTO resp = new SignInDTO();
-		Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUsername(), req.getPwd());
-		if(usr.isEmpty())
-			resp.setLogged(false);
-		if(!usr.get().getAttivo())
-			resp.setLogged(false);
-		else {
-			resp.setLogged(true);
-			resp.setRole(usr.get().getRuoli().toString());
-		}
-		return resp;
-	}
+    public SignInDTO signIn(SignInReq req) throws Exception{
+        log.debug("signin " + req);
+        SignInDTO resp = new SignInDTO();
+        Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUsername(), req.getPwd());
+        
+        if (usr.isEmpty() || !usr.get().getAttivo()) {
+            resp.setLogged(false);
+            resp.setIdUtente(null); // 👈 Evitiamo un errore se non esiste
+        } else {
+            resp.setLogged(true);
+            resp.setRole(usr.get().getRuoli().toString());
+
+            // 👇 Controlliamo se l'utente esiste prima di prendere l'ID
+            if (usr.get().getUtente() != null) {
+                resp.setIdUtente(usr.get().getUtente().getId());
+            } else {
+            	Optional<Utente> utente = utnR.findById(usr.get().getUtente().getId());
+            	if(utente.isEmpty())
+            		throw new Exception("errore, l'utente non e associato alle credenziali");
+                resp.setIdUtente(utente.get().getId());
+                log.warn("Attenzione: utente non associato a credenziali!");
+            }
+        }
+        
+        return resp;
+    }
+
     
     public UtenteDTO getUtenteByCredenziali(CredenzialiReq req) {
     	Optional<Credenziali> cred = credR.findByUsernameAndPassword(req.getUsername(), req.getPassword());
