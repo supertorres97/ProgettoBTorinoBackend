@@ -265,7 +265,7 @@ public class UtenteTest {
 	@Test
 	@Order(9)
 	public void listByIdTestController() {
-	    ResponseObject<UtenteDTO> response = utC.listById(1);
+	    ResponseObject<UtenteDTO> response = utC.listByID(1);
 
 	    Assertions.assertThat(response.getRc()).isEqualTo(true);
 	    Assertions.assertThat(response.getDati()).isNotNull();
@@ -274,7 +274,7 @@ public class UtenteTest {
 	@Test
 	@Order(10)
 	public void listByIdErrorTestController() {
-	    ResponseObject<UtenteDTO> response = utC.listById(99);
+	    ResponseObject<UtenteDTO> response = utC.listByID(99);
 
 	    Assertions.assertThat(response.getRc()).isEqualTo(false);
 	    Assertions.assertThat(response.getMsg()).isNotNull();
@@ -292,7 +292,7 @@ public class UtenteTest {
 	    log.debug("Risposta update: " + response.getRc());
 	    Assertions.assertThat(response.getRc()).isEqualTo(true);
 
-	    ResponseObject<UtenteDTO> updatedResponse = utC.listById(1);
+	    ResponseObject<UtenteDTO> updatedResponse = utC.listByID(1);
 	    Assertions.assertThat(updatedResponse.getRc()).isEqualTo(true);
 	    Assertions.assertThat(updatedResponse.getDati().getNome()).isEqualTo("Giovanni");
 
