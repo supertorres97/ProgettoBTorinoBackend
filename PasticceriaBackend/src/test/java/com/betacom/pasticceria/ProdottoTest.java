@@ -59,6 +59,7 @@ public class ProdottoTest {
 		pr.setTipo(2);
 		pr.setPrezzo(2.50);
 		pr.setDisponibile(true);
+		pr.setImg("ciao");
 		prodS.create(pr);
 		log.debug("prodotto creato con successo");
 
@@ -69,6 +70,7 @@ public class ProdottoTest {
 		pr.setTipo(1);
 		pr.setPrezzo(3.50);
 		pr.setDisponibile(true);
+		pr.setImg("ciao");
 		prodS.create(pr);
 		log.debug("prodotto creato con successo");
 
@@ -79,6 +81,7 @@ public class ProdottoTest {
 		pr.setTipo(3);
 		pr.setPrezzo(2.50);
 		pr.setDisponibile(true);
+		pr.setImg("ciao");
 		prodS.create(pr);
 		log.debug("prodotto creato con successo");
 
@@ -96,7 +99,7 @@ public class ProdottoTest {
 		pr.setStock(5);
 		pr.setPrezzo(2.50);
 		pr.setDisponibile(true);
-
+		
 		assertThrows(Exception.class, () -> {
 			prodS.create(pr);
 		});

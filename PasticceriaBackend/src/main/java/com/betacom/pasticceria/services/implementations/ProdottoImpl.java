@@ -52,6 +52,7 @@ public class ProdottoImpl implements ProdottoService{
 		p.setPrezzo(req.getPrezzo());
 		p.setStock(req.getStock());
 		p.setDisponibile(req.getDisponibile());
+		p.setImg(req.getImg());
 		
 		prodR.save(p);
 		log.debug("Nuovo prodotto inserito");
@@ -86,6 +87,8 @@ public class ProdottoImpl implements ProdottoService{
 			p.setStock(req.getStock());
 		if(req.getDisponibile() != null)
 			p.setDisponibile(req.getDisponibile());
+		if(req.getImg() != null)
+			p.setImg(req.getImg());
 		
 		prodR.save(p);
 		log.debug("Prodotto Modificato");		
@@ -117,6 +120,7 @@ public class ProdottoImpl implements ProdottoService{
 				.setPrezzo(p.getPrezzo())
 				.setStock(p.getStock())
 				.setDisponibile(p.getDisponibile())
+				.setImg(p.getImg())
 				.build())
 				.collect(Collectors.toList());
 	}
@@ -136,6 +140,7 @@ public class ProdottoImpl implements ProdottoService{
 				.setPrezzo(pr.get().getPrezzo())
 				.setStock(pr.get().getStock())
 				.setDisponibile(pr.get().getDisponibile())
+				.setImg(pr.get().getImg())
 				.build();
 	}
 

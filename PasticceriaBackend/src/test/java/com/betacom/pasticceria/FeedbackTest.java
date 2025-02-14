@@ -104,6 +104,7 @@ public class FeedbackTest {
         p.setPeso(1.0);
         p.setPrezzo(20.0);
         p.setStock(50);
+        p.setImg("ciao");
         p = prodR.save(p);
         
         // Creazione di un DettagliOrdine per far superare il checkOrderedProduct
@@ -168,6 +169,7 @@ public class FeedbackTest {
         p.setPeso(1.5);
         p.setPrezzo(25.0);
         p.setStock(30);
+        p.setImg("ciao");
         p = prodR.save(p);
         
         // Non creiamo un DettagliOrdine: quindi checkOrderedProduct restituirà false
@@ -219,6 +221,7 @@ public class FeedbackTest {
         p.setPeso(2.0);
         p.setPrezzo(30.0);
         p.setStock(40);
+        p.setImg("ciao");
         p = prodR.save(p);
         
         // Creazione di un DettagliOrdine
@@ -311,6 +314,7 @@ public class FeedbackTest {
         p.setPeso(1.5);
         p.setPrezzo(15.0);
         p.setStock(60);
+        p.setImg("ciao");
         p = prodR.save(p);
         
         // Creazione di un DettagliOrdine
@@ -387,6 +391,7 @@ public class FeedbackTest {
         p.setPeso(2.5);
         p.setPrezzo(35.0);
         p.setStock(70);
+        p.setImg("ciao");
         p = prodR.save(p);
         
         // Creazione di un DettagliOrdine

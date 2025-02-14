@@ -97,6 +97,7 @@ public class CarrelloProdottoTest {
 		prod.setPrezzo(1000.0);
 		prod.setStock(10);
 		prod.setTipo(tp);
+		prod.setImg("ciao");
 		prodR.save(prod);
 		
 		//PRODOTTO NON DISPONIBILE
@@ -114,6 +115,7 @@ public class CarrelloProdottoTest {
 		prod1.setPrezzo(1000.0);
 		prod1.setStock(10);
 		prod1.setTipo(tp);
+		prod1.setImg("ciao");
 		prodR.save(prod1);
 		
 		req.setCarrello(1);
@@ -136,6 +138,7 @@ public class CarrelloProdottoTest {
 		prod2.setPrezzo(1000.0);
 		prod2.setStock(0);
 		prod2.setTipo(tp);
+		prod2.setImg("ciao");
 		prodR.save(prod2);
 		
 		req.setCarrello(1);

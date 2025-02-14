@@ -8,7 +8,9 @@ public class ProdottoReq {
     private Double peso;
     private Double prezzo;
     private Integer stock;
-    public Boolean disponibile;
+    private Boolean disponibile;
+    private String img;
+    
     
 	public Integer getId() {
 		return id;
@@ -74,10 +76,19 @@ public class ProdottoReq {
 		this.disponibile = disponibile;
 	}
 
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	@Override
 	public String toString() {
 		return "ProdottoReq [id=" + id + ", tipo=" + tipo + ", nome=" + nome + ", descrizione=" + descrizione
-				+ ", peso=" + peso + ", prezzo=" + prezzo + ", stock=" + stock + ", disponibile=" + disponibile + "]";
+				+ ", peso=" + peso + ", prezzo=" + prezzo + ", stock=" + stock + ", disponibile=" + disponibile
+				+ ", img=" + img + "]";
 	}
 
 }

@@ -8,7 +8,8 @@ public class ProdottoDTO {
     private Double peso;
     private Double prezzo;
     private Integer stock;
-    public Boolean disponibile;
+    private Boolean disponibile;
+    private String img;
     
     public ProdottoDTO() {super();}
     
@@ -20,7 +21,8 @@ public class ProdottoDTO {
 	    private Double peso;
 	    private Double prezzo;
 	    private Integer stock;
-	    public Boolean disponibile;
+	    private Boolean disponibile;
+	    private String img;
 	
 	    public Builder() {}
 
@@ -34,6 +36,7 @@ public class ProdottoDTO {
 	    	dto.prezzo = this.prezzo;
 	    	dto.stock = this.stock;
 	    	dto.disponibile = this.disponibile;
+	    	dto.img = this.img;
 	    	
 	    	return dto;
 	    }
@@ -77,6 +80,11 @@ public class ProdottoDTO {
 			this.disponibile = disponibile;
 			return this;
 		}
+
+		public Builder setImg(String img) {
+			this.img = img;
+			return this;
+		}
 	    
     }
 
@@ -112,10 +120,15 @@ public class ProdottoDTO {
 		return disponibile;
 	}
 
+	public String getImg() {
+		return img;
+	}
+
 	@Override
 	public String toString() {
 		return "ProdottoDTO [id=" + id + ", tipo=" + tipo + ", nome=" + nome + ", descrizione=" + descrizione
-				+ ", peso=" + peso + ", prezzo=" + prezzo + ", stock=" + stock + ", disponibile=" + disponibile + "]";
+				+ ", peso=" + peso + ", prezzo=" + prezzo + ", stock=" + stock + ", disponibile=" + disponibile
+				+ ", img=" + img + "]";
 	}
 
 }

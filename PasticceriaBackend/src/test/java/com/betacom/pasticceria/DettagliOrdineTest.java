@@ -88,6 +88,7 @@ public class DettagliOrdineTest {
 		p.setStock(100);
 		p.setDescrizione("Prodotto Test");
 		p.setNome("ProdottoTest");
+		p.setImg("ciao");
 		p = prodottoRepo.save(p);
 
 		DettagliOrdineReq req = new DettagliOrdineReq();
@@ -148,6 +149,7 @@ public class DettagliOrdineTest {
 		p.setStock(50);
 		p.setDescrizione("Prodotto Test 2");
 		p.setNome("ProdottoTest2");
+		p.setImg("caiaco aico");
 		p = prodottoRepo.save(p);
 
 		DettagliOrdineReq req = new DettagliOrdineReq();
@@ -217,6 +219,7 @@ public class DettagliOrdineTest {
 		p.setStock(40);
 		p.setDescrizione("Prodotto Test 3");
 		p.setNome("ProdottoTest3");
+		p.setImg("mimmo");
 		p = prodottoRepo.save(p);
 
 		DettagliOrdineReq req = new DettagliOrdineReq();
@@ -278,6 +281,7 @@ public class DettagliOrdineTest {
 		p.setStock(30);
 		p.setDescrizione("Prodotto Test 4");
 		p.setNome("ProdottoTest4");
+		p.setImg("Si");
 		p = prodottoRepo.save(p);
 
 		DettagliOrdineReq req = new DettagliOrdineReq();
