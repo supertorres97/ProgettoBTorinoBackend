@@ -33,7 +33,7 @@ public class Utilities {
 	
 	public static UtenteDTO buildUtenteDTO(Utente u){	
 		return new UtenteDTO.Builder()
-				.setCAP(u.getCAP())
+				.setCap(u.getCAP())
 				.setcFiscale(u.getcFiscale())
 				.setCitta(u.getCitta())
 				.setCognome(u.getCognome())

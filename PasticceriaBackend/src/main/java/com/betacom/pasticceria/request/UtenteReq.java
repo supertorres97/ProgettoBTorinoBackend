@@ -77,6 +77,6 @@ public class UtenteReq {
 	@Override
 	public String toString() {
 		return "UtenteReq [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", cFiscale=" + cFiscale + ", email="
-				+ email + ", via=" + via + ", CAP=" + CAP + ", citta=" + citta + "]";
+				+ email + ", via=" + via + ", Cap=" + cap + ", citta=" + citta + "]";
 	}
 }

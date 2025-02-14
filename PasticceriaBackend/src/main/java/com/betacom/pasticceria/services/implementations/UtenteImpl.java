@@ -48,7 +48,7 @@ public class UtenteImpl implements UtenteService{
 		u.setEmail(req.getEmail());
 		if(req.getcFiscale() != null)
 			u.setcFiscale(req.getcFiscale());
-		u.setCAP(req.getCAP());
+		u.setCAP(req.getCap());
 		u.setVia(req.getVia());
 		u.setCitta(req.getCitta());
 		
@@ -68,8 +68,8 @@ public class UtenteImpl implements UtenteService{
 		
 		Utente u = utn.get();
 		
-		if(req.getCAP() != null)
-			u.setCAP(req.getCAP());
+		if(req.getCap() != null)
+			u.setCAP(req.getCap());
 		if(req.getCitta() != null)
 			u.setCitta(req.getCitta());
 		if(req.getCognome() != null)
@@ -94,7 +94,7 @@ public class UtenteImpl implements UtenteService{
 		
 		return lU.stream()
 				.map(u -> new UtenteDTO.Builder()
-					.setCAP(u.getCAP())
+					.setCap(u.getCAP())
 					.setcFiscale(u.getcFiscale())
 					.setCitta(u.getCitta())
 					.setCognome(u.getCognome())
@@ -114,7 +114,7 @@ public class UtenteImpl implements UtenteService{
 			throw new Exception("utente inesistente");
 		
 		return new UtenteDTO.Builder()
-				.setCAP(u.get().getCAP())
+				.setCap(u.get().getCAP())
 				.setcFiscale(u.get().getcFiscale())
 				.setCitta(u.get().getCitta())
 				.setCognome(u.get().getCognome())

@@ -69,7 +69,7 @@ public class UtenteTest {
 		ut.setEmail("gino.frick@gmail.com");
 		ut.setVia("Via Roma 3");
 		ut.setCitta("Torino");
-		ut.setCAP("10144");
+		ut.setCap("10144");
 		
 		CredenzialiReq cr = new CredenzialiReq();
 		cr.setUsername("gino90");
@@ -84,7 +84,7 @@ public class UtenteTest {
 		ut.setEmail("laura.ban@gmail.com");
 		ut.setVia("Via Napoli 124");
 		ut.setCitta("Torino");
-		ut.setCAP("10121");
+		ut.setCap("10121");
 		
 		cr.setUsername("laura00");
 		cr.setPassword("ponyta2001");
@@ -98,7 +98,7 @@ public class UtenteTest {
 		ut.setEmail("fistoni.mark@gmail.com");
 		ut.setVia("Corso Giulio Cesare 22");
 		ut.setCitta("Torino");
-		ut.setCAP("10140");
+		ut.setCap("10140");
 		
 		cr.setUsername("mark45");
 		cr.setPassword("intermerda45");
@@ -121,7 +121,7 @@ public class UtenteTest {
 		ut.setEmail("gino.frick@gmail.com");
 		ut.setVia("Via Parma 3");
 		ut.setCitta("Torino");
-		ut.setCAP("10111");
+		ut.setCap("10111");
 		
 		CredenzialiReq cr = new CredenzialiReq();
 		cr.setUsername("gino90");
@@ -130,7 +130,7 @@ public class UtenteTest {
 		assertThrows(Exception.class, () -> {utSer.create(ut, cr);}); 
 		
 		ut.setCognome("Gino");
-		ut.setCAP("10144");
+		ut.setCap("10144");
 		ut.setcFiscale(null);
 		ut.setEmail(null);
 		ut.setVia(null);
