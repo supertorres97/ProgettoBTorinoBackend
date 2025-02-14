@@ -17,7 +17,7 @@ import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.UtenteService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/rest/utente")
 public class UtenteController {
@@ -82,8 +82,8 @@ public class UtenteController {
 		return rl;
 	}
 	
-	@GetMapping("/listById")
-	public ResponseObject<UtenteDTO> listById(Integer id){
+	@GetMapping("/listByID")
+	public ResponseObject<UtenteDTO> listByID(Integer id){
 		log.debug("list by id: " + id);
 		
 		ResponseObject<UtenteDTO> ro = new ResponseObject<UtenteDTO>();

@@ -34,8 +34,19 @@ public class Prodotto {
 
     @OneToMany(mappedBy = "prodotto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CarrelloProdotto> carrelliProdotti;
+    
+    @Column(nullable = false)
+    public String img;
+    
+    public String getImg() {
+		return img;
+	}
 
-    // Getters e Setters
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	// Getters e Setters
     public Integer getId() {
         return id;
     }

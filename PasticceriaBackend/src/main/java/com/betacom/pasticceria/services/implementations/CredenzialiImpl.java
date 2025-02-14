@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.SignInDTO;
+import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Credenziali;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
@@ -19,12 +20,14 @@ import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.SignInReq;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
+import com.betacom.pasticceria.utils.Utilities;
 
 @Service
 public class CredenzialiImpl implements CredenzialiService{
     private CredenzialiRepository credR;
     private UtenteRepository utnR;
     private Logger log;
+    UtenteRepository utRe;
     
     @Autowired
 	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log) {
@@ -137,5 +140,11 @@ public class CredenzialiImpl implements CredenzialiService{
 		}
 		return resp;
 	}
+    
+    public UtenteDTO getUtenteByCredenziali(CredenzialiReq req) {
+    	Optional<Credenziali> cred = credR.findByUsernameAndPassword(req.getUsername(), req.getPassword());
+    	Optional<Utente> ut = utnR.findById(cred.get().getUtente().getId());
+    	return Utilities.buildUtenteDTO(ut.get());
+    }
 
 }

@@ -73,6 +73,7 @@
         prezzo float(53) not null,
         stock integer not null,
         descrizione varchar(255) not null,
+        img varchar(255) not null,
         nome varchar(255) not null,
         primary key (id)
     ) engine=InnoDB;

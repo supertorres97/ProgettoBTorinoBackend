@@ -3,10 +3,19 @@ package com.betacom.pasticceria.request;
 public class SignInReq {
 	private String username;
 	private String pwd;
+	private Integer idUtente;
 	
 	@Override
 	public String toString() {
 		return "SignInReq [username=" + username + ", pwd=" + pwd + "]";
+	}
+	
+	public Integer getIdUtente() {
+		return idUtente;
+	}
+
+	public void setIdUtente(Integer idUtente) {
+		this.idUtente = idUtente;
 	}
 
 	public String getUsername() {
