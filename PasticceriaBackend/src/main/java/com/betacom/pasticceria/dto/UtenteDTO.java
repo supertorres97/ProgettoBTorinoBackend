@@ -12,7 +12,7 @@ public class UtenteDTO {
 	private String cFiscale;
 	private String email;
 	private String via;
-	private String CAP;
+	private String cap;
 	private String citta; 
     private CarrelloDTO carrello;
     private CredenzialiDTO credenziali;
@@ -27,7 +27,7 @@ public class UtenteDTO {
     	private String cFiscale;
     	private String email;
     	private String via;
-    	private String CAP;
+    	private String cap;
     	private String citta; 
         private CarrelloDTO carrello;
         private CredenzialiDTO credenziali;
@@ -43,7 +43,7 @@ public class UtenteDTO {
         	dto.cFiscale = this.cFiscale;
         	dto.email = this.email;
         	dto.via = this.via;
-        	dto.CAP = this.CAP;
+        	dto.cap = this.cap;
         	dto.citta = this.citta;
         	dto.carrello = this.carrello;
         	dto.credenziali = this.credenziali;
@@ -82,8 +82,8 @@ public class UtenteDTO {
 			return this;
 		}
 
-		public Builder setCAP(String cAP) {
-			CAP = cAP;
+		public Builder setCap(String cap) {
+			this.cap = cap;
 			return this;
 		}
 
@@ -91,16 +91,19 @@ public class UtenteDTO {
 			this.citta = citta;
 			return this;
 		}
-		public void setCarrello(CarrelloDTO carrello) {
+		public Builder setCarrello(CarrelloDTO carrello) {
 			this.carrello = carrello;
+			return this;
 		}
 
-		public void setCredenziali(CredenzialiDTO credenziali) {
+		public Builder setCredenziali(CredenzialiDTO credenziali) {
 			this.credenziali = credenziali;
+			return this;
 		}
 
-		public void setFeedbackUtente(List<FeedbackDTO> feedbackUtente) {
+		public Builder setFeedbackUtente(List<FeedbackDTO> feedbackUtente) {
 			this.feedbackUtente = feedbackUtente;
+			return this;
 		}
     }//Builder
 
@@ -128,8 +131,8 @@ public class UtenteDTO {
 		return via;
 	}
 
-	public String getCAP() {
-		return CAP;
+	public String getCap() {
+		return cap;
 	}
 
 	public String getCitta() {

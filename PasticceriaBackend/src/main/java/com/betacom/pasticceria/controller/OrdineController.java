@@ -13,7 +13,7 @@ import com.betacom.pasticceria.dto.FeedbackDTO;
 import com.betacom.pasticceria.dto.OrdineDTO;
 import com.betacom.pasticceria.request.FeedbackReq;
 import com.betacom.pasticceria.request.OrdineReq;
-import com.betacom.pasticceria.request.UtenteCredenzialiReq;
+import com.betacom.pasticceria.request.SignUpReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;

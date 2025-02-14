@@ -29,7 +29,7 @@ import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.ProdottoReq;
-import com.betacom.pasticceria.request.UtenteCredenzialiReq;
+import com.betacom.pasticceria.request.SignUpReq;
 import com.betacom.pasticceria.request.UtenteReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;

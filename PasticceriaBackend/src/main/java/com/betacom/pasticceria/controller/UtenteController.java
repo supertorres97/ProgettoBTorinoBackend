@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.pasticceria.dto.UtenteDTO;
-import com.betacom.pasticceria.request.UtenteCredenzialiReq;
+import com.betacom.pasticceria.request.SignUpReq;
 import com.betacom.pasticceria.request.UtenteReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
@@ -32,7 +32,7 @@ public class UtenteController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseBase create(@RequestBody(required = true) UtenteCredenzialiReq req) {
+	public ResponseBase create(@RequestBody(required = true) SignUpReq req) {
 		log.debug("create utente" + req.getUtenteReq());
 		
 		ResponseBase r = new ResponseBase();

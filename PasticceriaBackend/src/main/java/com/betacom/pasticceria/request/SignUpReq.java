@@ -1,6 +1,6 @@
 package com.betacom.pasticceria.request;
 
-public class UtenteCredenzialiReq {
+public class SignUpReq {
 	private UtenteReq utenteReq;
 	private CredenzialiReq credenzialiReq;
 	

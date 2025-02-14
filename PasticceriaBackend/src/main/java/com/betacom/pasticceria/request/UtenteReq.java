@@ -7,7 +7,7 @@ public class UtenteReq {
 	private String cFiscale;
 	private String email;
 	private String via;
-	private String CAP;
+	private String cap;
 	private String citta; 
     
 	public Integer getId() {
@@ -58,14 +58,14 @@ public class UtenteReq {
 		this.via = via;
 	}
 	
-	public String getCAP() {
-		return CAP;
+	public String getCap() {
+		return cap;
 	}
-	
-	public void setCAP(String cAP) {
-		CAP = cAP;
+
+	public void setCap(String cap) {
+		this.cap = cap;
 	}
-	
+
 	public String getCitta() {
 		return citta;
 	}
