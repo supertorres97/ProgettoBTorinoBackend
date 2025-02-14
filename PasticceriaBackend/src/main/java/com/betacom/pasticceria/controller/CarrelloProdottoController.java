@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.pasticceria.dto.CarrelloProdottoDTO;
 import com.betacom.pasticceria.request.CarrelloProdottoReq;
+import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.services.interfaces.CarrelloProdottoService;
@@ -77,8 +78,8 @@ public class CarrelloProdottoController {
 	}
 	
 	@PostMapping("/acquista")
-	public ResponseBase acquista(@RequestBody(required = true) CarrelloProdottoReq req) {
-		log.debug("acquista..... carrello: " + req.getCarrello());
+	public ResponseBase acquista(@RequestBody(required = true) CarrelloReq req) {
+		log.debug("acquista..... carrello: " + req.getId());
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);
 		

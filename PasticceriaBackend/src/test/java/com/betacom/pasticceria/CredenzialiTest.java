@@ -1,7 +1,9 @@
 package com.betacom.pasticceria;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Credenziali;
+import com.betacom.pasticceria.model.Ruoli;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
@@ -104,4 +107,39 @@ public class CredenzialiTest {
 		Assertions.assertThat(lP.getId() == 2);
 		Assertions.assertThat(lP != null);
 	}
+	
+	//-------------------------------------TEST MODEL CREDENZIALI----------------------------------------------------------------------------
+	@Test
+    @Order(6)
+    public void testGetterSetterCredenziali() {
+        log.debug("Running testGetterSetterCredenziali...");
+
+        Credenziali credenziali = new Credenziali();
+        credenziali.setId(1);
+        credenziali.setUsername("test_user");
+        credenziali.setPassword("password123");
+        
+        Utente utente = new Utente();
+        utente.setId(10);
+        credenziali.setUtente(utente);
+
+        List<Ruoli> ruoliList = new ArrayList<>();
+        Ruoli ruolo = new Ruoli();
+        ruolo.setId(100);
+        ruolo.setDescrizione("ADMIN");
+        ruoliList.add(ruolo);
+        credenziali.setRuoli(ruoliList);
+
+        credenziali.setAttivo(true);
+
+        // Assertions
+        assertThat(credenziali.getId()).isEqualTo(1);
+        assertThat(credenziali.getUsername()).isEqualTo("test_user");
+        assertThat(credenziali.getPassword()).isEqualTo("password123");
+        assertThat(credenziali.getUtente()).isEqualTo(utente);
+        assertThat(credenziali.getRuoli()).isEqualTo(ruoliList);
+        assertThat(credenziali.getAttivo()).isTrue();
+
+        log.debug("Getter and Setter tests for Credenziali passed successfully.");
+    }
 }

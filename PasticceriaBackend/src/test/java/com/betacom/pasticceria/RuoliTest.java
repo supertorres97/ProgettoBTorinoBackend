@@ -2,6 +2,7 @@ package com.betacom.pasticceria;
 
 import com.betacom.pasticceria.controller.RuoliController;
 import com.betacom.pasticceria.dto.RuoliDTO;
+import com.betacom.pasticceria.model.Credenziali;
 import com.betacom.pasticceria.model.Ruoli;
 import com.betacom.pasticceria.repositories.RuoliRepository;
 import com.betacom.pasticceria.request.RuoliReq;
@@ -199,6 +200,22 @@ public class RuoliTest {
 
         Optional<Ruoli> ruoloCancellato = ruoliR.findById(ultimoRuolo.getId());
         Assertions.assertThat(ruoloCancellato).isEmpty();
+    }
+    
+    @Test
+    @Order(11)
+    public void testGetterSetterRuoli() {
+        Ruoli ruolo = new Ruoli();
+
+        ruolo.setId(1);
+        ruolo.setDescrizione("Test Getter Setter");
+
+        Assertions.assertThat(ruolo.getId()).isEqualTo(1);
+        Assertions.assertThat(ruolo.getDescrizione()).isEqualTo("Test Getter Setter");
+
+        List<Credenziali> credList = new ArrayList<>();
+        ruolo.setCredenziali(credList);
+        Assertions.assertThat(ruolo.getCredenziali()).isEqualTo(credList);
     }
     
 }

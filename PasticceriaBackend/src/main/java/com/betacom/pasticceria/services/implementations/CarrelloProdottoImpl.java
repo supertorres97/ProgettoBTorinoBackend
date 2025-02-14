@@ -17,10 +17,13 @@ import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.CarrelloProdotto;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
+import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CarrelloProdottoRepository;
 import com.betacom.pasticceria.repositories.CarrelloRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
+import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CarrelloProdottoReq;
+import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.request.DettagliOrdineReq;
 import com.betacom.pasticceria.request.OrdineReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloProdottoService;
@@ -35,15 +38,17 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	private OrdineService orderS;
 	private CarrelloRepository cartR;
 	private DettagliOrdineService doS;
+	private UtenteRepository utnR;
 	private Logger log;
 	
 	@Autowired
-	public CarrelloProdottoImpl(CarrelloProdottoRepository cpR, ProdottoRepository prodR, OrdineService orderS, CarrelloRepository cartR, DettagliOrdineService doS, Logger log) {
+	public CarrelloProdottoImpl(CarrelloProdottoRepository cpR, ProdottoRepository prodR, OrdineService orderS, CarrelloRepository cartR, DettagliOrdineService doS, UtenteRepository utnR, Logger log) {
 		this.cpR = cpR;
 		this.prodR = prodR;
 		this.orderS = orderS;
 		this.cartR = cartR;
 		this.doS = doS;
+		this.utnR = utnR;
 		this.log = log;
 	}
 	
@@ -55,7 +60,8 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
 		if(prod.isEmpty())
 			throw new Exception("Prodotto inesistente");
-		if(!prod.get().disponibile) {
+		log.debug("prodotto: " + prod.get().getId() + " disponibile: " + prod.get().getDisponibile());
+		if(!prod.get().getDisponibile()) {
 			log.error("disponibilita prodotto: " + prod.get().getDisponibile());
 			throw new Exception("Prodotto non disponibile");
 		}
@@ -135,17 +141,23 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void acuqista(CarrelloProdottoReq req) throws Exception {
-		Optional<Carrello> cart = cartR.findById(req.getCarrello());
+	public void acuqista(CarrelloReq req) throws Exception {
+		Optional<Carrello> cart = cartR.findById(req.getId());
 		if(cart.isEmpty())
 			throw new Exception("Carrello insesistente");
+		
+		Optional<Utente> utn = utnR.findById(cart.get().getUtente().getId());
+		if(utn.isEmpty())
+			throw new Exception("Utente insesistente");
 		
 		List<CarrelloProdotto> lCP = cpR.findAllByCarrello(cart.get());
 		if(lCP.isEmpty())
 			throw new Exception("Carrello vuoto");
 		
 		OrdineReq oReq = new OrdineReq();
-		oReq.setUtente(cart.get().getUtente().getId());
+		oReq.setUtente(utn.get().getId());
+		oReq.setTotale(0.0);
+		log.debug("utente: " + utn.get());
 		Ordine o = orderS.create(oReq);
 		
 		DettagliOrdineReq doReq = new DettagliOrdineReq();
@@ -229,6 +241,9 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 			cp.setQuantita(cp.getQuantita() + quantita);
 		else
 			cp.setQuantita(quantita);
+		
+		if(cp.getQuantita() < 0)
+			cp.setQuantita(0);
 		
 		log.debug("QUANTITA FINALE " + cp.getQuantita());
 		prod.get().setStock(prod.get().getStock() - quantita);
