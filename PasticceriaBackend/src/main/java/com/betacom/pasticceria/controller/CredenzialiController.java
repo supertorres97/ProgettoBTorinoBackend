@@ -56,11 +56,7 @@ public class CredenzialiController {
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.OPTIONS)
 	public ResponseEntity<?> handleOptions2() {
-	    return ResponseEntity.ok()
-	            .header("Access-Control-Allow-Origin", "*")
-	            .header("Access-Control-Allow-Methods", "POST, OPTIONS")
-	            .header("Access-Control-Allow-Headers", "Content-Type")
-	            .build();
+		return ResponseEntity.ok().build();
 	}
     
 	@PostMapping("/signup")
