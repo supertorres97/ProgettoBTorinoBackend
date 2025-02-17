@@ -22,6 +22,8 @@ public class SignUpReq {
 	
 	@Override
 	public String toString() {
-		return "UtenteCredenzialiReq [utenteReq=" + utenteReq + "]";
+		return "SignUpReq [utenteReq=" + utenteReq + ", credenzialiReq=" + credenzialiReq + "]";
 	}
+	
+	
 }

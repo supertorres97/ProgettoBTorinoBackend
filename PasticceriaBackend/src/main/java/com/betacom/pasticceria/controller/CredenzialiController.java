@@ -1,7 +1,12 @@
 package com.betacom.pasticceria.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +31,7 @@ import com.betacom.pasticceria.services.interfaces.UtenteService;
 @RestController
 @RequestMapping("/rest/credenziali")
 public class CredenzialiController {    
+	
     private CredenzialiService credS;
 	private Logger log;
     private UtenteService userService;
@@ -49,28 +55,40 @@ public class CredenzialiController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.OPTIONS)
-    public ResponseEntity<?> handleOptions2() {
-        return ResponseEntity.ok().build();
-    }
+	public ResponseEntity<?> handleOptions2() {
+	    return ResponseEntity.ok()
+	            .header("Access-Control-Allow-Origin", "*")
+	            .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+	            .header("Access-Control-Allow-Headers", "Content-Type")
+	            .build();
+	}
     
 	@PostMapping("/signup")
-	public ResponseEntity<String> signup(@RequestBody SignUpReq req) {
-		ResponseBase r = new ResponseBase();
+	public ResponseEntity<Map<String, Object>> signup(@RequestBody SignUpReq req) {
+	    log.debug(req.getUtenteReq().toString());
+	    log.debug(req.getCredenzialiReq().toString());
+	    ResponseBase r = new ResponseBase();
 	    r.setRc(true);
-	 	try {
-	 		userService.create(req.getUtenteReq(), req.getCredenzialiReq());
-	 	} catch (Exception e) {
-	 		log.error(e.getMessage());
-	 		r.setMsg(e.getMessage());
-	 		r.setRc(false);
-	 	}
-	 	
+
+	    try {
+	        userService.create(req.getUtenteReq(), req.getCredenzialiReq());
+	    } catch (Exception e) {
+	        log.error(e.getMessage());
+	        r.setMsg(e.getMessage());
+	        r.setRc(false);
+	    }
+	    
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("success", r.getRc());
+	    response.put("message", r.getRc() ? "Registrazione avvenuta con successo" : r.getMsg());
+
 	    if (r.getRc()) {
-	    	return ResponseEntity.ok("Registrazione avvenuta con successo");
+	        return ResponseEntity.ok(response);
 	    } else {
-	        return ResponseEntity.status(HttpStatusCode.valueOf(404)).body("Errore nella registrazione");
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 	    }
 	}
+
 	 
     @PostMapping("/create")
 	public ResponseBase create(@RequestBody(required = true) CredenzialiReq req) {

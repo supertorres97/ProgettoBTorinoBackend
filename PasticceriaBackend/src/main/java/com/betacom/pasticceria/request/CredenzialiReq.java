@@ -48,6 +48,12 @@ public class CredenzialiReq {
 	public void setAttivo(Boolean attivo) {
 		this.attivo = attivo;
 	}
+
+	@Override
+	public String toString() {
+		return "CredenzialiReq [id=" + id + ", idUtente=" + idUtente + ", username=" + username + ", password="
+				+ password + ", attivo=" + attivo + "]";
+	}
        
     
 }
