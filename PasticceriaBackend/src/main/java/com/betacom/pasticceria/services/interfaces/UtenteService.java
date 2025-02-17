@@ -11,4 +11,5 @@ public interface UtenteService{
 	void update (UtenteReq req) throws Exception;
 	List<UtenteDTO> listAll ();
 	UtenteDTO listById (Integer id) throws Exception;
+	void createAdmin(UtenteReq req, CredenzialiReq cReq) throws Exception;
 }

@@ -87,6 +87,34 @@ public class UtenteImpl implements UtenteService{
 		
 		utenteR.save(u);
 	}
+	
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void createAdmin(UtenteReq req, CredenzialiReq cReq) throws Exception {
+		Optional<Utente> utn = utenteR.findByEmail(req.getEmail());
+		
+		if(utn.isPresent())
+			throw new Exception("email gia esistente");
+		
+		Utente u = new Utente();
+		u.setNome(req.getNome());
+		u.setCognome(req.getCognome());
+		u.setEmail(req.getEmail());
+		
+		if(req.getcFiscale() != null)
+			u.setcFiscale(req.getcFiscale());
+		
+		u.setCAP(req.getCap());
+		u.setVia(req.getVia());
+		u.setCitta(req.getCitta());
+		
+		u = utenteR.save(u);
+		cReq.setIdUtente(u.getId());
+
+		credS.createAdmin(cReq);
+		cartS.create(u);
+	}
+
 
 	@Override
 	public List<UtenteDTO> listAll() {

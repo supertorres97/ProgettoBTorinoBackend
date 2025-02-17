@@ -1,7 +1,5 @@
 package com.betacom.pasticceria.request;
 
-import com.betacom.pasticceria.model.Utente;
-
 public class CredenzialiReq {
     private Integer id;
     private Integer idUtente;

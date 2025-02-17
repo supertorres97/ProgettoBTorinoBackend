@@ -24,7 +24,6 @@ public class Ruoli {
     @ManyToMany(mappedBy = "ruoli", fetch = FetchType.LAZY)
     private List<Credenziali> credenziali;
 
-
     public Integer getId() {
         return id;
     }

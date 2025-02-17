@@ -3,8 +3,17 @@ package com.betacom.pasticceria.request;
 public class RuoliReq {
     private Integer id;
     private String descrizione;
+    private Integer idCredenziali;
+    
+    public Integer getIdCredenziali() {
+		return idCredenziali;
+	}
 
-    public void setId(Integer id) {
+	public void setIdCredenziali(Integer idCredenziali) {
+		this.idCredenziali = idCredenziali;
+	}
+
+	public void setId(Integer id) {
         this.id = id;
     }
 

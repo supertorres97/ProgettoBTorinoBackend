@@ -1,5 +1,6 @@
 package com.betacom.pasticceria.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class Credenziali {
         joinColumns = @JoinColumn(name = "id_credenziali"),
         inverseJoinColumns = @JoinColumn(name = "id_ruolo")
     )
-    private List<Ruoli> ruoli;
+    private List<Ruoli> ruoli = new ArrayList<Ruoli>();
     
     @Column(nullable = false)
     private Boolean attivo;

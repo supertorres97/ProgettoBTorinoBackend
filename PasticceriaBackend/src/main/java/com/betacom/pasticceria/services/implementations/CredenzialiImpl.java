@@ -2,6 +2,7 @@ package com.betacom.pasticceria.services.implementations;
 
 import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,8 +15,10 @@ import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.SignInDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Credenziali;
+import com.betacom.pasticceria.model.Ruoli;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
+import com.betacom.pasticceria.repositories.RuoliRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.SignInReq;
@@ -26,13 +29,15 @@ import com.betacom.pasticceria.utils.Utilities;
 public class CredenzialiImpl implements CredenzialiService{
     private CredenzialiRepository credR;
     private UtenteRepository utnR;
+    private RuoliRepository ruolR;
     private Logger log;
     
     @Autowired
-	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log) {
+	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log, RuoliRepository ruolR) {
 		super();
 		this.credR = credR;
 		this.utnR = utnR;
+		this.ruolR = ruolR;
 		this.log = log;
 	}
     
@@ -49,7 +54,9 @@ public class CredenzialiImpl implements CredenzialiService{
 		c.setUsername(req.getUsername());
         c.setPassword(req.getPassword());
         c.setAttivo(true);
-		
+        Ruoli r = ruolR.findById(2)
+        		.orElseThrow(() -> new RuntimeException("Ruolo USER non trovato"));
+        c.getRuoli().add(r);
 		credR.save(c);
 		log.debug("Nuovo credenziali inserito");
 	 
@@ -73,12 +80,13 @@ public class CredenzialiImpl implements CredenzialiService{
         		c.setUsername(req.getUsername());
         	if(req.getPassword() != null)
         		c.setPassword(req.getPassword());
-        	credR.save(c);
-        log.debug("Credenziali aggiornate");
+    
+        	credR.save(c);	
+        
+        	log.debug("Credenziali aggiornate");
         } else {
         	throw new Exception("Credenziali non trovate");
-    }
-
+        }
 	}
 
     @Override
@@ -158,5 +166,69 @@ public class CredenzialiImpl implements CredenzialiService{
     	Optional<Utente> ut = utnR.findById(cred.get().getUtente().getId());
     	return Utilities.buildUtenteDTO(ut.get());
     }
+    
+    @Override
+    public void createAdmin(CredenzialiReq req) throws Exception {
+    	log.debug("Create credenziali: " + req);
+		Optional<Utente> utn = utnR.findById(req.getIdUtente());
+		
+		if(utn.isEmpty())
+			throw new Exception("Utente inesistente!");
+		
+		Credenziali c = new Credenziali();
+        c.setUtente(utn.get());
+		c.setUsername(req.getUsername());
+        c.setPassword(req.getPassword());
+        c.setAttivo(true);
+        Ruoli r = ruolR.findById(1)
+        		.orElseThrow(() -> new RuntimeException("Ruolo ADMIN non trovato"));
+        c.getRuoli().add(r);
+		credR.save(c);
+		log.debug("Nuovo credenziali inserito");
+    }
+    
+    public void changeRole(Integer idCredenziali, List<String> newRuoli) throws Exception{
+        Credenziali credenziali = credR.findById(idCredenziali)
+                .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
+        List<Ruoli> ruoliAttuali = credenziali.getRuoli();
+        List<Ruoli> ruoliNuovi = new ArrayList<Ruoli>();
+        
+        for (String descrizione : newRuoli) {
+            Ruoli r = ruolR.findByDescrizione(descrizione)
+                    .orElseThrow(() -> new RuntimeException("Ruolo " + descrizione + " non trovato"));
+
+            if (!ruoliAttuali.contains(r)) {
+            	ruoliNuovi.add(r);
+            }
+        }
+
+        if (ruoliNuovi.isEmpty()) {
+            throw new Exception("L'utente ha già tutti i ruoli che vuoi aggiungere");
+        }
+
+        ruoliAttuali.addAll(ruoliNuovi);
+        credenziali.setRuoli(ruoliAttuali);
+        credR.save(credenziali);
+
+    }
+    
+    public void removeRole(Integer idCredenziali, String ruoloDaRimuovere) throws Exception {
+        Credenziali cred = credR.findById(idCredenziali)
+                .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
+
+        List<Ruoli> listR = cred.getRuoli();
+
+        Ruoli ruolo = ruolR.findByDescrizione(ruoloDaRimuovere)
+                .orElseThrow(() -> new RuntimeException("Ruolo " + ruoloDaRimuovere + " non trovato"));
+
+        if (!listR.contains(ruolo)) {
+            throw new Exception("L'utente non ha il ruolo specificato.");
+        }
+
+        listR.remove(ruolo);
+        cred.setRuoli(listR);
+        credR.save(cred);
+    }
+
 
 }

@@ -42,13 +42,29 @@ public class RuoliTest {
     @Order(1)
     public void createRuoloTest() throws Exception {
         RuoliReq req = new RuoliReq();
-        req.setDescrizione("Amministratore");
+        req.setDescrizione("ADMIN");
 
         ruoliService.create(req);
 
         List<Ruoli> ruoli = ruoliR.findAll();
         Assertions.assertThat(ruoli).isNotEmpty();
-        Assertions.assertThat(ruoli.get(ruoli.size() - 1).getDescrizione()).isEqualTo("Amministratore");
+        Assertions.assertThat(ruoli.get(ruoli.size() - 1).getDescrizione()).isEqualTo("ADMIN");
+        
+        req.setDescrizione("USER");
+
+        ruoliService.create(req);
+
+       ruoli = ruoliR.findAll();
+       Assertions.assertThat(ruoli).isNotEmpty();
+       Assertions.assertThat(ruoli.get(ruoli.size() - 1).getDescrizione()).isEqualTo("USER");
+       
+       req.setDescrizione("MODERATOR");
+
+       ruoliService.create(req);
+
+      ruoli = ruoliR.findAll();
+      Assertions.assertThat(ruoli).isNotEmpty();
+      Assertions.assertThat(ruoli.get(ruoli.size() - 1).getDescrizione()).isEqualTo("MODERATOR");
     }
 
     @Test

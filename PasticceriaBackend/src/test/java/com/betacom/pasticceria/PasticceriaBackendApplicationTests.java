@@ -9,13 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SelectClasses({
 	TipoProdottoTest.class,
 	ProdottoTest.class,
+	RuoliTest.class,
 	UtenteTest.class,
 	CredenzialiTest.class,
 	CarrelloTest.class,
 	OrdineTest.class,
 	DettagliOrdineTest.class,
 	FeedbackTest.class,
-	RuoliTest.class,
 	CarrelloProdottoTest.class,
 	MessaggioTest.class
 })
