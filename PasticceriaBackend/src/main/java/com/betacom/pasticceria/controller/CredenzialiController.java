@@ -149,6 +149,21 @@ public class CredenzialiController {
 		return r;
 	}
 	
+	@GetMapping("/listByIdUtente")
+	public ResponseObject<CredenzialiDTO> listByIdUtente(Integer id){	
+		log.debug("credenziali by id utente");
+		ResponseObject<CredenzialiDTO> r = new ResponseObject<CredenzialiDTO>();
+		r.setRc(true);
+		try {
+			r.setDati(credS.getCredenzialiByUtente(id));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			r.setMsg(e.getMessage());
+			r.setRc(false);
+		}
+		return r;
+	}
+	
 	@GetMapping("/listAll")
 	public ResponseList<CredenzialiDTO> listAll() {
 		log.debug("Lista credenziali: ");

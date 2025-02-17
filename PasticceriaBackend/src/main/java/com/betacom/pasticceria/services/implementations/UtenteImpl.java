@@ -70,18 +70,28 @@ public class UtenteImpl implements UtenteService{
 		
 		if(req.getCap() != null)
 			u.setCAP(req.getCap());
+
 		if(req.getCitta() != null)
 			u.setCitta(req.getCitta());
+		
 		if(req.getCognome() != null)
 			u.setCognome(req.getCognome());
+		
 		if(req.getNome() != null)
 			u.setNome(req.getNome());
+		
 		if(req.getEmail() != null) {
 			utn = utenteR.findByEmail(req.getEmail());
 			if(utn.isPresent())
 				throw new Exception("email gia presente");
 			u.setEmail(req.getEmail());
 		}
+		
+		if(req.getcFiscale() != null) {
+			if(u.getcFiscale().isBlank() || u.getcFiscale().isEmpty())
+				u.setcFiscale(req.getcFiscale());		
+		}
+	
 		if(req.getVia() != null)
 			u.setVia(req.getVia());
 		
