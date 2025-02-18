@@ -170,7 +170,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
     	    	dettagliOrdineDTO.add(detOrdDTO);
     	    } else {
     	            // Se ordine o prodotto non sono presenti, lancia un'eccezione (opzionale)
-    	            throw new Exception("Ordine o prodotto non trovato per l'ID " + dr.getOrdine().getId());
+    	            throw new Exception(msgS.getMessaggio("ORDINE/PRODOTTO_NOT_FOUND_CON_ID") + dr.getOrdine().getId());
     	    }
     	}
     	    
