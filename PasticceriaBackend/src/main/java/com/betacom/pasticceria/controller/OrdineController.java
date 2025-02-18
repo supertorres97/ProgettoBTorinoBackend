@@ -66,7 +66,7 @@ public class OrdineController {
 	}
 	
 	@PostMapping("/delete")
-	public ResponseBase delete(Integer id) {
+	public ResponseBase delete(@RequestBody Integer id) {
 		log.debug("Delete Ordine: " + id);
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);

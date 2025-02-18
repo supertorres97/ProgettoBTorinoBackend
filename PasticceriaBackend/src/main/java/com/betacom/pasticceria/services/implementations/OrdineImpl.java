@@ -86,6 +86,10 @@ public class OrdineImpl implements OrdineService{
 	        throw new Exception(msgS.getMessaggio("ORDINE_GIA_ANNULLATO"));
 	    }
 	    
+	    if (o.getStatus() == Status.Consegnato || o.getStatus() == Status.Spedito) {
+	        throw new Exception(msgS.getMessaggio("ORDINE_GIA_ANNULLATO"));
+	    }
+	    
 	    o.setStatus(Status.Annullato);
 	    ordR.save(o);
 	}
