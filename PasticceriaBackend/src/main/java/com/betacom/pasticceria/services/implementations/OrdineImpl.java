@@ -39,7 +39,7 @@ public class OrdineImpl implements OrdineService{
 		
 		Optional<Utente> utn = utnR.findById(req.getUtente());
 		if(utn.isEmpty()) {
-			throw new Exception("Nessun utente ha fatto ordine");
+			throw new Exception(msgS.getMessaggio("NO_UTENTE_NO_ORDINE"));
 		}
 		
 		Ordine o = new Ordine();

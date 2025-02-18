@@ -56,7 +56,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
             
             msgS.getMessaggio("NUOVO_DETTAGLI_ORDINE");
         } else {
-            throw new Exception("Ordine o Prodotto non trovato");
+            throw new Exception(msgS.getMessaggio("ORDINE/PRODOTTO_NOT_FOUND"));
         }
     }
 
@@ -150,7 +150,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
     	List<DettagliOrdine> dettagliOrdini = detR.findByOrdine_Id(id);
     	    
     	if (dettagliOrdini.isEmpty()) {
-    		throw new Exception("Dettagli ordine non esistenti");
+    		throw new Exception(msgS.getMessaggio("DETTAGLI_ORDINE_NOT_FOUND"));
     	}
     	    
     	List<DettagliOrdineDTO> dettagliOrdineDTO = new ArrayList<>();

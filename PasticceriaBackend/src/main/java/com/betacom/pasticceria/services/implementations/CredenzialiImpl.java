@@ -70,21 +70,21 @@ public class CredenzialiImpl implements CredenzialiService{
 
         Optional<Credenziali> cr = credR.findById(req.getId());
         if (cr.isEmpty()) 
-            throw new Exception("Credenziali non trovate");
+            throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
 
         Optional<Utente> utn = utnR.findById(req.getIdUtente());
         if(utn.isEmpty())
-            throw new Exception("Utente inesistente!");
+            throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 
         Credenziali c = cr.get();
         if(req.getPassword() != null)
             if(req.getPassword() != cr.get().getPassword())
                 c.setPassword(req.getPassword());
             else
-                throw new Exception("La password non può essere uguale a quella precedente");
+                throw new Exception(msgS.getMessaggio("PASSWORD_UGUALE_PRECEDENTE"));
         credR.save(c);
 
-        log.debug("Credenziali aggiornate");
+        msgS.getMessaggio("CREDENZIALI_AGGIORNATE");
     }
 
     @Override
