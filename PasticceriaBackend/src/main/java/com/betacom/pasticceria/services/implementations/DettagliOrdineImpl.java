@@ -1,5 +1,6 @@
 package com.betacom.pasticceria.services.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -138,5 +139,38 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
                 .setPrezzoTotale(dr.get().getPrezzoTotale())
                 .setQuantitaFinale(dr.get().getQuantitaFinale())
                 .build();
+    }
+    
+    @Override
+    public List<DettagliOrdineDTO> listByOrderID(Integer id) throws Exception {
+    	 
+    	List<DettagliOrdine> dettagliOrdini = detR.findByOrdine_Id(id);
+    	    
+    	if (dettagliOrdini.isEmpty()) {
+    		throw new Exception("Dettagli ordine non esistenti");
+    	}
+    	    
+    	List<DettagliOrdineDTO> dettagliOrdineDTO = new ArrayList<>();
+    	    
+    	for (DettagliOrdine dr : dettagliOrdini) {
+    		Optional<Ordine> ordine = ordineR.findById(dr.getOrdine().getId());
+    	    Optional<Prodotto> prodotto = prodottoR.findById(dr.getProdotto().getId());
+    	    
+    	    if (ordine.isPresent() && prodotto.isPresent()) {
+    	    	DettagliOrdineDTO detOrdDTO = new DettagliOrdineDTO.Builder()
+    	                    .setId(dr.getId())
+    	                    .setOrdine(Utilities.buildOrdineDTO(ordine.get())) 
+    	                    .setProdotto(Utilities.buildProdottoDTO(prodotto.get()))
+    	                    .setPrezzoTotale(dr.getPrezzoTotale())
+    	                    .setQuantitaFinale(dr.getQuantitaFinale())
+    	                    .build();
+    	    	dettagliOrdineDTO.add(detOrdDTO);
+    	    } else {
+    	            // Se ordine o prodotto non sono presenti, lancia un'eccezione (opzionale)
+    	            throw new Exception("Ordine o prodotto non trovato per l'ID " + dr.getOrdine().getId());
+    	    }
+    	}
+    	    
+    	return dettagliOrdineDTO;
     }
 }

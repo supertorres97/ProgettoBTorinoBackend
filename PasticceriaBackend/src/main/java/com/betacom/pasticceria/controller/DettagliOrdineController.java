@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/rest/dettagliordine")
+@RequestMapping("/rest/dettagli-ordine")
 public class DettagliOrdineController {
 
     private DettagliOrdineService detS;
@@ -102,6 +102,20 @@ public class DettagliOrdineController {
             r.setRc(false);
         }
 
+        return r;
+    }
+    
+    @GetMapping("/listByOrdineID")
+    public ResponseList<DettagliOrdineDTO> listByOrdineID(Integer id) {
+    	ResponseList<DettagliOrdineDTO> r = new ResponseList<DettagliOrdineDTO>();
+        r.setRc(true);
+        try {
+            r.setDati(detS.listByOrderID(id));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            r.setMsg(e.getMessage());
+            r.setRc(false);
+        }
         return r;
     }
 }

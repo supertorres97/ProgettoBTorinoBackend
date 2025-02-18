@@ -9,7 +9,7 @@ import com.betacom.pasticceria.model.DettagliOrdine;
 import com.betacom.pasticceria.model.Ordine;
 
 public interface DettagliOrdineRepository extends JpaRepository<DettagliOrdine, Integer>{
-	Optional<DettagliOrdine> findByOrdine_Id(Integer idOrdine);
+	List<DettagliOrdine> findByOrdine_Id(Integer idOrdine);
     boolean existsByOrdine_IdAndProdotto_Id(Integer ordineId, Integer prodottoId);
     boolean existsByOrdineInAndProdotto_Id(List<Ordine> ordini, Integer prodottoId);
 }
