@@ -30,10 +30,10 @@ public class Ordine {
 	@Column(nullable = false)
 	private Double totale;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String indirizzo;
 	
-	@Column(nullable = false)	
+	@Column(nullable = true)	
 	private Date dataOrdine;
 	
 	@Column
