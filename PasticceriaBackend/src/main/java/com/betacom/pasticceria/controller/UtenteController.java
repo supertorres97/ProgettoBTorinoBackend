@@ -98,4 +98,21 @@ public class UtenteController {
 		}
 		return ro;
 	}
+	
+	@PostMapping("/createAdmin")
+	public ResponseBase createAdmin(@RequestBody(required = true) SignUpReq req) {
+		log.debug("create utente" + req.getUtenteReq());
+		
+		ResponseBase r = new ResponseBase();
+		r.setRc(true);
+		
+		try {
+			utnS.create(req.getUtenteReq(), req.getCredenzialiReq());
+		} catch (Exception e) {
+			r.setRc(false);
+			r.setMsg(e.getMessage());
+			log.error(e.getMessage());
+		}
+		return r;
+	}
 }
