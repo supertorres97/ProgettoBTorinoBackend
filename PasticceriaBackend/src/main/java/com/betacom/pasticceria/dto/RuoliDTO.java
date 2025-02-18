@@ -33,5 +33,10 @@ public class RuoliDTO {
     public String getDescrizione() {
         return descrizione;
     }
+
+	@Override
+	public String toString() {
+		return "RuoliDTO [id=" + id + ", descrizione=" + descrizione + "]";
+	}
     
 }
