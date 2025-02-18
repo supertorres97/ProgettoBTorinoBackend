@@ -16,6 +16,7 @@ import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.OrdineReq;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.services.interfaces.OrdineService;
 import com.betacom.pasticceria.utils.Utilities;
 
@@ -23,12 +24,14 @@ import com.betacom.pasticceria.utils.Utilities;
 public class OrdineImpl implements OrdineService{	
 	private OrdineRepository ordR;
 	private UtenteRepository utnR;
+	private MessaggioService msgS;
 	private Logger log;
 	
-	public OrdineImpl(OrdineRepository ordR, UtenteRepository utnR, Logger log) {
+	public OrdineImpl(OrdineRepository ordR, UtenteRepository utnR, MessaggioService msgS, Logger log) {
 		this.log = log;
 		this.ordR= ordR;
 		this.utnR = utnR;
+		this.msgS = msgS;
 	}
 
 	@Override
@@ -53,7 +56,7 @@ public class OrdineImpl implements OrdineService{
 	public void update(OrdineReq req) throws Exception {
 	    Optional<Ordine> ord = ordR.findById(req.getId());
 	    if (ord.isEmpty()) {
-	        throw new Exception("Ordine non trovato");
+	        throw new Exception(msgS.getMessaggio("ORDINE_NOT_FOUND"));
 	    }
 	    
 	    Ordine o = ord.get();
@@ -75,12 +78,12 @@ public class OrdineImpl implements OrdineService{
 	public void logicalDelete(Integer id) throws Exception {
 	    Optional<Ordine> ord = ordR.findById(id);
 	    if (ord.isEmpty()) {
-	        throw new Exception("Ordine non trovato");
+	        throw new Exception(msgS.getMessaggio("ORDINE_NOT_FOUND"));
 	    }
 
 	    Ordine o = ord.get();
 	    if (o.getStatus() == Status.Annullato) {
-	        throw new Exception("L'ordine è già annullato");
+	        throw new Exception(msgS.getMessaggio("ORDINE_GIA_ANNULLATO"));
 	    }
 	    
 	    o.setStatus(Status.Annullato);
@@ -107,7 +110,7 @@ public class OrdineImpl implements OrdineService{
 	public OrdineDTO listByID(Integer id) throws Exception {
 		Optional<Ordine> o = ordR.findById(id);
 		if(o.isEmpty())
-			throw new Exception("Id ordine non trovato");
+			throw new Exception(msgS.getMessaggio("ID_ORDINE_NOT_FOUND"));
 		
 		return new OrdineDTO.Builder()
 						.setId(o.get().getId())
@@ -123,7 +126,7 @@ public class OrdineImpl implements OrdineService{
 	public List<OrdineDTO> listByUtente(Integer idUtente) throws Exception {
 		List<Ordine> lO = ordR.findByUtente_Id(idUtente);
 		if(lO.isEmpty())
-			throw new Exception("Utente non trovato");
+			throw new Exception(msgS.getMessaggio("ORDINE_NOT_FOUND"));
 		return lO.stream()
 				.map(o -> new OrdineDTO.Builder()
 						.setId(o.getId())

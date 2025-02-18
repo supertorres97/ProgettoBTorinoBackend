@@ -24,6 +24,7 @@ import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.FeedbackReq;
 import com.betacom.pasticceria.services.interfaces.FeedbackService;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 
 @Service
 public class FeedbackImpl implements FeedbackService{
@@ -33,11 +34,12 @@ public class FeedbackImpl implements FeedbackService{
 	UtenteRepository utR;
 	ProdottoRepository prodR;
 	DettagliOrdineRepository detR;
+	private MessaggioService msgS;
 	Logger log;
 	
 	@Autowired
 	public FeedbackImpl(FeedbackRepository feedR, OrdineRepository ordR, UtenteRepository utR, 
-			ProdottoRepository prodR, DettagliOrdineRepository detR, Logger log) {
+			ProdottoRepository prodR, DettagliOrdineRepository detR, MessaggioService msgS, Logger log) {
 		super();
 		this.feedR = feedR;
 		this.ordR = ordR;
@@ -45,6 +47,7 @@ public class FeedbackImpl implements FeedbackService{
 		this.log = log;
 		this.prodR = prodR;
 		this.detR = detR;
+		this.msgS = msgS;
 	}
 
 	@Override
@@ -52,19 +55,19 @@ public class FeedbackImpl implements FeedbackService{
 		log.debug("creazione feedback: "+ req);
 		boolean ordinato = checkOrderedProduct(req);
 		if(!ordinato)
-			throw new Exception("Il prodotto che vuo irecensire non è stato acquistato.");
+			throw new Exception(msgS.getMessaggio("PRODOTTO_NON_ACQUISTATO_NO_RECENSIONE"));
 		
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
 		if (prod.isEmpty()) 
-			throw new Exception("Prodotto da recensire non esistente.");
+			throw new Exception(msgS.getMessaggio("NO_RECENSIONE_PRODOTTO_INESISTENTE"));
 		
 		Optional<Utente> ut = utR.findById(req.getUtente());
 		if(ut.isEmpty())
-			throw new Exception("Utente non trovato.");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		Optional<Ordine> ord = ordR.findById(req.getOrdine());
 		if(ut.isEmpty())
-			throw new Exception("Utente non trovato.");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		Feedback f = new Feedback();
 		f.setDescrizione(req.getDescrizione());
@@ -94,19 +97,19 @@ public class FeedbackImpl implements FeedbackService{
 	public void update(FeedbackReq req) throws Exception {
 		Optional<Feedback> feed = feedR.findById(req.getId());
 		if (feed.isEmpty()) 
-			throw new Exception("Feedback non trovato.");
+			throw new Exception(msgS.getMessaggio("FEEDBACK_NOT_FOUND"));
 		
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
 		if (prod.isEmpty()) 
-			throw new Exception("Prodotto da recensire non esistente.");
+			throw new Exception(msgS.getMessaggio("NO_RECENSIONE_PRODOTTO_INESISTENTE"));
 		
 		Optional<Utente> ut = utR.findById(req.getUtente());
 		if(ut.isEmpty())
-			throw new Exception("Utente non trovato.");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		Optional<Ordine> ord = ordR.findById(req.getOrdine());
 		if(ut.isEmpty())
-			throw new Exception("Utente non trovato.");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		Boolean mod = false;
 		
@@ -133,7 +136,7 @@ public class FeedbackImpl implements FeedbackService{
 	public void delete(FeedbackReq req) throws Exception {
 		Optional<Feedback> feed = feedR.findById(req.getId());
 		if(feed.isEmpty())
-			throw new Exception("Feedeback non trovato");
+			throw new Exception(msgS.getMessaggio("FEEDBACK_NOT_FOUND"));
 		
 		Feedback f = feed.get();
 		feedR.delete(f);

@@ -12,6 +12,7 @@ import com.betacom.pasticceria.dto.RuoliDTO;
 import com.betacom.pasticceria.model.Ruoli;
 import com.betacom.pasticceria.repositories.RuoliRepository;
 import com.betacom.pasticceria.request.RuoliReq;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.services.interfaces.RuoliService;
 
 @Service
@@ -19,11 +20,13 @@ public class RuoliImpl implements RuoliService {
 
     @Autowired
     private RuoliRepository ruoliR;
+    private MessaggioService msgS;
     private Logger log;
 
-    public RuoliImpl(RuoliRepository ruoliR, Logger log) {
+    public RuoliImpl(RuoliRepository ruoliR, Logger log, MessaggioService msgS) {
         super();
         this.ruoliR = ruoliR;
+        this.msgS = msgS;
         this.log = log;
     }
 
@@ -35,7 +38,7 @@ public class RuoliImpl implements RuoliService {
         r.setDescrizione(req.getDescrizione());
 
         ruoliR.save(r);
-        log.debug("Nuovo ruolo inserito");
+        msgS.getMessaggio("NEW_RUOLO");
     }
 
     @Override
@@ -48,9 +51,9 @@ public class RuoliImpl implements RuoliService {
             if (req.getDescrizione() != null)
                 r.setDescrizione(req.getDescrizione());
                 ruoliR.save(r);
-            log.debug("Ruolo aggiornato");
+            msgS.getMessaggio("RUOLO_AGGIORNATO");
         } else {
-            throw new Exception("Ruolo non trovato");
+            throw new Exception(msgS.getMessaggio("RUOLO_NOT_FOUND"));
         }
     }
 
@@ -59,12 +62,12 @@ public class RuoliImpl implements RuoliService {
         log.debug("Delete ruoli: " + req);
         Optional<Ruoli> rr = ruoliR.findById(req.getId());
         if (rr.isEmpty())
-            throw new Exception("Ruolo non esistente");
+            throw new Exception(msgS.getMessaggio("RUOLO_NOT_FOUND"));
 
         Ruoli r = rr.get();
         ruoliR.delete(r);
         
-        log.debug("Ruolo eliminato");
+        msgS.getMessaggio("RUOLO_ELIMINATO");
     }
 
     @Override
@@ -82,7 +85,7 @@ public class RuoliImpl implements RuoliService {
     public RuoliDTO listByID(Integer id) throws Exception {
         Optional<Ruoli> rr = ruoliR.findById(id);
         if (rr.isEmpty())
-            throw new Exception("Ruolo non esistente");
+            throw new Exception(msgS.getMessaggio("RUOLO_NOT_FOUND"));
 
         return new RuoliDTO.Builder()
                 .setId(rr.get().getId())

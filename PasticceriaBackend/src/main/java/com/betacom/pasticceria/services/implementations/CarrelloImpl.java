@@ -15,6 +15,8 @@ import com.betacom.pasticceria.repositories.CarrelloRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloService;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
+
 import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
 @Service
@@ -22,12 +24,14 @@ public class CarrelloImpl implements CarrelloService{
 
 	private CarrelloRepository cartR;
 	private UtenteRepository utnR;
+	private MessaggioService msgS;
 	private Logger log;
 	
 	@Autowired
-	public CarrelloImpl (CarrelloRepository cartR, UtenteRepository utnR, Logger log) {
+	public CarrelloImpl (CarrelloRepository cartR, UtenteRepository utnR, MessaggioService msgS,  Logger log) {
 		this.cartR = cartR;
 		this.utnR = utnR;
+		this.msgS = msgS;
 		this.log = log;
 	}
 	
@@ -63,10 +67,10 @@ public class CarrelloImpl implements CarrelloService{
 	public void create(Utente utente) throws Exception {
 		Optional<Utente> utn = utnR.findById(utente.getId());
 		if(utn.isEmpty())
-			throw new Exception("Utente inesistente");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		Optional<Carrello> cart = cartR.findByUtente(utn.get());
 		if(cart.isPresent())
-			throw new Exception("Utente gia associato a un carrello");
+			throw new Exception(msgS.getMessaggio("UTENTE_CARRELLO"));
 		
 		Carrello c = new Carrello();
 		c.setUtente(utente);

@@ -23,6 +23,7 @@ import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.SignInReq;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.utils.Utilities;
 
 @Service
@@ -30,24 +31,25 @@ public class CredenzialiImpl implements CredenzialiService{
     private CredenzialiRepository credR;
     private UtenteRepository utnR;
     private RuoliRepository ruolR;
+    private MessaggioService msgS;
     private Logger log;
     
     @Autowired
-	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log, RuoliRepository ruolR) {
+	public CredenzialiImpl(CredenzialiRepository credR,UtenteRepository utnR, Logger log, RuoliRepository ruolR, MessaggioService msgS) {
 		super();
 		this.credR = credR;
 		this.utnR = utnR;
 		this.ruolR = ruolR;
+		this.msgS = msgS;
 		this.log = log;
 	}
     
     @Override
     public void create(CredenzialiReq req) throws Exception {
-		log.debug("Create credenziali: " + req);
 		Optional<Utente> utn = utnR.findById(req.getIdUtente());
 		
 		if(utn.isEmpty())
-			throw new Exception("Utente inesistente!");
+			throw new Exception();
 		
 		Credenziali c = new Credenziali();
         c.setUtente(utn.get());
@@ -55,21 +57,20 @@ public class CredenzialiImpl implements CredenzialiService{
         c.setPassword(req.getPassword());
         c.setAttivo(true);
         Ruoli r = ruolR.findById(2)
-        		.orElseThrow(() -> new RuntimeException("Ruolo USER non trovato"));
+        		.orElseThrow(() -> new RuntimeException(msgS.getMessaggio("USER_NOT_FOUND")));
         c.getRuoli().add(r);
 		credR.save(c);
-		log.debug("Nuovo credenziali inserito");
+		log.debug(msgS.getMessaggio("CREDENZIALI_INSERITE"));
 	 
     }
 
     @Override
     public void update(CredenzialiReq req) throws Exception {
-        log.debug("Update credenziali: " + req);
         
         Optional<Utente> utn = utnR.findById(req.getIdUtente());
 		
 		if(utn.isEmpty())
-			throw new Exception("Utente inesistente!");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 
         Optional<Credenziali> cr = credR.findById(req.getId());
         if (cr.isPresent()) {
@@ -83,9 +84,9 @@ public class CredenzialiImpl implements CredenzialiService{
     
         	credR.save(c);	
         
-        	log.debug("Credenziali aggiornate");
+        	msgS.getMessaggio("CREDENZIALI_AGGIORNATE");
         } else {
-        	throw new Exception("Credenziali non trovate");
+        	throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
         }
 	}
 
@@ -95,13 +96,13 @@ public class CredenzialiImpl implements CredenzialiService{
 		
 		Optional<Credenziali> cr = credR.findById(req.getId());
 		if(cr.isEmpty())
-			throw new Exception("Credenziali non esistente");
+			throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
 		
 		Credenziali c = cr.get();		
 		c.setAttivo(false); //cancellazione logica, NON fisica!!
 		credR.save(c);
 		
-		log.debug("Credenziali Eliminate");
+		msgS.getMessaggio("CREDENZIALI_ELIMINATE");
 	}
 
     @Override
@@ -122,7 +123,7 @@ public class CredenzialiImpl implements CredenzialiService{
     public CredenzialiDTO listByID(Integer id) throws Exception{
 		Optional<Credenziali> cr = credR.findById(id);
 		if(cr.isEmpty())
-			throw new Exception("Credenziali non esistente");
+			throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
 		
 		return new CredenzialiDTO.Builder()
 				.setId(cr.get().getId())
@@ -151,9 +152,9 @@ public class CredenzialiImpl implements CredenzialiService{
             } else {
             	Optional<Utente> utente = utnR.findById(usr.get().getUtente().getId());
             	if(utente.isEmpty())
-            		throw new Exception("errore, l'utente non e associato alle credenziali");
+            		throw new Exception(msgS.getMessaggio("UTENTE_NON_ASSOCIATO_CREDENZIALI"));
                 resp.setIdUtente(utente.get().getId());
-                log.warn("Attenzione: utente non associato a credenziali!");
+                msgS.getMessaggio("UTENTE_NON_ASSOCIATO_CREDENZIALI");
             }
         }
         
@@ -173,7 +174,7 @@ public class CredenzialiImpl implements CredenzialiService{
 		Optional<Utente> utn = utnR.findById(req.getIdUtente());
 		
 		if(utn.isEmpty())
-			throw new Exception("Utente inesistente!");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		Credenziali c = new Credenziali();
         c.setUtente(utn.get());
@@ -181,15 +182,15 @@ public class CredenzialiImpl implements CredenzialiService{
         c.setPassword(req.getPassword());
         c.setAttivo(true);
         Ruoli r = ruolR.findById(1)
-        		.orElseThrow(() -> new RuntimeException("Ruolo ADMIN non trovato"));
+        		.orElseThrow(() -> new RuntimeException(msgS.getMessaggio("ADMIN_NOT_FOUND")));
         c.getRuoli().add(r);
 		credR.save(c);
-		log.debug("Nuovo credenziali inserito");
+		log.debug(msgS.getMessaggio("CREDENZIALI_INSERITE"));
     }
     
     public void changeRole(Integer idCredenziali, List<String> newRuoli) throws Exception{
         Credenziali credenziali = credR.findById(idCredenziali)
-                .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
+                .orElseThrow(() -> new RuntimeException(msgS.getMessaggio("CREDENZIALI_NOT_FOUND")));
         List<Ruoli> ruoliAttuali = credenziali.getRuoli();
         List<Ruoli> ruoliNuovi = new ArrayList<Ruoli>();
         
@@ -203,7 +204,7 @@ public class CredenzialiImpl implements CredenzialiService{
         }
 
         if (ruoliNuovi.isEmpty()) {
-            throw new Exception("L'utente ha già tutti i ruoli che vuoi aggiungere");
+            throw new Exception(msgS.getMessaggio("UTENTE_ALL_RUOLI"));
         }
 
         ruoliAttuali.addAll(ruoliNuovi);
@@ -214,7 +215,7 @@ public class CredenzialiImpl implements CredenzialiService{
     
     public void removeRole(Integer idCredenziali, String ruoloDaRimuovere) throws Exception {
         Credenziali cred = credR.findById(idCredenziali)
-                .orElseThrow(() -> new RuntimeException("Credenziali non trovate"));
+                .orElseThrow(() -> new RuntimeException(msgS.getMessaggio("CREDENZIALI_NOT_FOUND")));
 
         List<Ruoli> listR = cred.getRuoli();
 
@@ -222,7 +223,7 @@ public class CredenzialiImpl implements CredenzialiService{
                 .orElseThrow(() -> new RuntimeException("Ruolo " + ruoloDaRimuovere + " non trovato"));
 
         if (!listR.contains(ruolo)) {
-            throw new Exception("L'utente non ha il ruolo specificato.");
+            throw new Exception(msgS.getMessaggio("RUOLO_NON_ASSEGNATO"));
         }
 
         listR.remove(ruolo);

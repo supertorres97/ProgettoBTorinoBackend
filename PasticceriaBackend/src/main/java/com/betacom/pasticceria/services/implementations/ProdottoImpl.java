@@ -14,6 +14,7 @@ import com.betacom.pasticceria.model.TipoProdotto;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.repositories.TipoProdottoRepository;
 import com.betacom.pasticceria.request.ProdottoReq;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.services.interfaces.ProdottoService;
 import com.betacom.pasticceria.utils.Utilities;
 
@@ -22,14 +23,16 @@ public class ProdottoImpl implements ProdottoService{
 	
 	private ProdottoRepository prodR;
 	private TipoProdottoRepository tPR;
+	private MessaggioService msgS;
 	private Logger log;
 	
 	@Autowired
-	public ProdottoImpl(ProdottoRepository prodR, Logger log, TipoProdottoRepository tPR) {
+	public ProdottoImpl(ProdottoRepository prodR, Logger log, TipoProdottoRepository tPR, MessaggioService msgS) {
 		super();
 		this.prodR = prodR;
 		this.log = log;
 		this.tPR = tPR;
+		this.msgS = msgS;
 	}
 
 	@Override
@@ -38,11 +41,11 @@ public class ProdottoImpl implements ProdottoService{
 
 		Optional<Prodotto> pr = prodR.findByNome(req.getNome());
 		if(pr.isPresent())
-			throw new Exception("Prodotto già esistente");
+			throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
 		
 		Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
 		if(tP.isEmpty())
-			throw new Exception("Tipo di Prodotto non trovato");
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
 		Prodotto p = new Prodotto();
 		p.setTipo(tP.get());
@@ -55,7 +58,7 @@ public class ProdottoImpl implements ProdottoService{
 		p.setImg(req.getImg());
 		
 		prodR.save(p);
-		log.debug("Nuovo prodotto inserito");
+		msgS.getMessaggio("NEW_PRODOTTO");
 		
 	}
 
@@ -64,14 +67,14 @@ public class ProdottoImpl implements ProdottoService{
 		log.debug("Update prodotto: " + req);
 		Optional<Prodotto> pr = prodR.findById(req.getId());
 		if(pr.isEmpty())
-			throw new Exception("Prodotto non esistente");
+			throw new Exception(msgS.getMessaggio("PRODOTTO_INESISTENTE"));
 		
 		Prodotto p = pr.get();
 		
 		if(req.getTipo() != null) {
 			Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
 			if(tP.isEmpty())
-				throw new Exception("Tipo di Prodotto non trovato");	
+				throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));	
 			p.setTipo(tP.get());
 		}
 		
@@ -91,7 +94,7 @@ public class ProdottoImpl implements ProdottoService{
 			p.setImg(req.getImg());
 		
 		prodR.save(p);
-		log.debug("Prodotto Modificato");		
+		msgS.getMessaggio("PRODOTTO_MODIFICATO");		
 	}
 
 	@Override
@@ -99,12 +102,12 @@ public class ProdottoImpl implements ProdottoService{
 		log.debug("Delete prodotto: " + req);
 		Optional<Prodotto> pr = prodR.findById(req.getId());
 		if(pr.isEmpty())
-			throw new Exception("Prodotto non esistente");
+			throw new Exception(msgS.getMessaggio("PRODOTTO_INESISTENTE"));
 		
 		Prodotto p = pr.get();		
 		prodR.delete(p);
 		
-		log.debug("Prodotto Eliminato");	
+		log.debug(msgS.getMessaggio("PRODOTTO_ELIMINATO"));	
 	}
 
 	@Override
@@ -133,7 +136,7 @@ public class ProdottoImpl implements ProdottoService{
 	public ProdottoDTO listByID(Integer id) throws Exception{
 		Optional<Prodotto> pr = prodR.findById(id);
 		if(pr.isEmpty())
-			throw new Exception("Prodotto non esistente");
+			throw new Exception(msgS.getMessaggio("PRODOTTO_INESISTENTE"));
 		
 		return new ProdottoDTO.Builder()
 				.setId(pr.get().getId())

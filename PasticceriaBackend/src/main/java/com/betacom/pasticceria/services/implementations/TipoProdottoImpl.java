@@ -12,17 +12,20 @@ import com.betacom.pasticceria.dto.TipoProdottoDTO;
 import com.betacom.pasticceria.model.TipoProdotto;
 import com.betacom.pasticceria.repositories.TipoProdottoRepository;
 import com.betacom.pasticceria.request.TipoProdottoReq;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.services.interfaces.TipoProdottoService;
 
 @Service
 public class TipoProdottoImpl implements TipoProdottoService{
 	TipoProdottoRepository tPR;
+	private MessaggioService msgS;
 	Logger log;
 	
 	@Autowired
-	public TipoProdottoImpl(TipoProdottoRepository tPR, Logger log) {
+	public TipoProdottoImpl(TipoProdottoRepository tPR, MessaggioService msgS, Logger log) {
 		super();
 		this.tPR = tPR;
+		this.msgS = msgS;
 		this.log = log;
 	}
 	
@@ -31,13 +34,13 @@ public class TipoProdottoImpl implements TipoProdottoService{
 		log.debug("Create tipo prodotto: " + req);
 		Optional<TipoProdotto> tP = tPR.findByDescrizione(req.getDescrizione());
 		if(tP.isPresent())
-			throw new Exception("Tipo di Prodotto già esistente");
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_GIA_ESISTENTE"));
 
 		TipoProdotto p = new TipoProdotto();
 		p.setDescrizione(req.getDescrizione());
 		
 		tPR.save(p);
-		log.debug("Nuovo tipo prodotto inserito");
+		msgS.getMessaggio("TIPO_PRODOTTO_NEW");
 	}
 
 	@Override
@@ -46,15 +49,15 @@ public class TipoProdottoImpl implements TipoProdottoService{
 		
 		Optional<TipoProdotto> tP = tPR.findByDescrizione(req.getDescrizione());
 		if(tP.isPresent())
-			throw new Exception("Tipo di Prodotto già esistente");
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_GIA_ESISTENTE"));
 		
 		Optional<TipoProdotto> tPID = tPR.findById(req.getId());
 		if(tPID.isEmpty())
-			throw new Exception("Tipo di Prodotto non trovato");
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
 		tPID.get().setDescrizione(req.getDescrizione());
 		tPR.save(tPID.get());
-		log.debug("Tipo prodotto modificato");		
+		msgS.getMessaggio("TIPO_PRODOTTO_MODIFICATO");		
 	}
 
 	@Override
@@ -62,10 +65,10 @@ public class TipoProdottoImpl implements TipoProdottoService{
 		log.debug("Create tipo prodotto: " + req);
 		Optional<TipoProdotto> tP = tPR.findById(req.getId());
 		if(tP.isEmpty())
-			throw new Exception("Tipo di Prodotto non trovato");
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
 		tPR.delete(tP.get());
-		log.debug("Nuovo tipo prodotto inserito");
+		msgS.getMessaggio("TIPO_PRODOTTO_NEW");
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import com.betacom.pasticceria.request.CredenzialiReq;
 import com.betacom.pasticceria.request.UtenteReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloService;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.services.interfaces.UtenteService;
 
 @Service
@@ -24,13 +25,15 @@ public class UtenteImpl implements UtenteService{
 	private UtenteRepository utenteR;
 	private CredenzialiService credS;
 	private CarrelloService cartS;
+	private MessaggioService msgS;
 	private Logger log;
 	
 	@Autowired
-	public UtenteImpl(UtenteRepository utenteR, CredenzialiService credS, CarrelloService cartS, Logger log) {
+	public UtenteImpl(UtenteRepository utenteR, CredenzialiService credS, CarrelloService cartS,MessaggioService msgS, Logger log) {
 		this.utenteR = utenteR;
 		this.credS = credS;
 		this.cartS = cartS;
+		this.msgS = msgS;
 		this.log = log;
 	}
 	
@@ -40,7 +43,7 @@ public class UtenteImpl implements UtenteService{
 		Optional<Utente> utn = utenteR.findByEmail(req.getEmail());
 		
 		if(utn.isPresent())
-			throw new Exception("email gia esistente");
+			throw new Exception(msgS.getMessaggio("EMAIL_GIA_ESISTENTE"));
 		
 		Utente u = new Utente();
 		u.setNome(req.getNome());
@@ -64,7 +67,7 @@ public class UtenteImpl implements UtenteService{
 		Optional<Utente> utn = utenteR.findById(req.getId());
 		
 		if(utn.isEmpty())
-			throw new Exception("Utente inesistente");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		Utente u = utn.get();
 		
@@ -79,7 +82,7 @@ public class UtenteImpl implements UtenteService{
 		if(req.getEmail() != null) {
 			utn = utenteR.findByEmail(req.getEmail());
 			if(utn.isPresent())
-				throw new Exception("email gia presente");
+				throw new Exception(msgS.getMessaggio("EMAIL_GIA_ESISTENTE"));
 			u.setEmail(req.getEmail());
 		}
 		if(req.getVia() != null)
@@ -94,7 +97,7 @@ public class UtenteImpl implements UtenteService{
 		Optional<Utente> utn = utenteR.findByEmail(req.getEmail());
 		
 		if(utn.isPresent())
-			throw new Exception("email gia esistente");
+			throw new Exception(msgS.getMessaggio("EMAIL_GIA_ESISTENTE"));
 		
 		Utente u = new Utente();
 		u.setNome(req.getNome());
@@ -139,7 +142,7 @@ public class UtenteImpl implements UtenteService{
 		Optional<Utente> u = utenteR.findById(id);
 		
 		if(u.isEmpty())
-			throw new Exception("utente inesistente");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
 		return new UtenteDTO.Builder()
 				.setCap(u.get().getCAP())

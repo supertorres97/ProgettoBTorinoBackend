@@ -17,6 +17,7 @@ import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.request.DettagliOrdineReq;
 import com.betacom.pasticceria.services.interfaces.DettagliOrdineService;
+import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.utils.Utilities;
 
 @Service
@@ -24,14 +25,16 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
     private DettagliOrdineRepository detR;
     private OrdineRepository ordineR;
     private ProdottoRepository prodottoR;
+    private MessaggioService msgS;
     private Logger log;
 
     @Autowired
-    public DettagliOrdineImpl(DettagliOrdineRepository detR, OrdineRepository ordineR, ProdottoRepository prodottoR, Logger log) {
+    public DettagliOrdineImpl(DettagliOrdineRepository detR, OrdineRepository ordineR, ProdottoRepository prodottoR, MessaggioService msgS, Logger log) {
         super();
         this.detR = detR;
         this.ordineR = ordineR;
         this.prodottoR = prodottoR;
+        this.msgS = msgS;
         this.log = log;
     }
 
@@ -50,7 +53,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
             d.setQuantitaFinale(req.getQuantitaFinale());
             detR.save(d);
             
-            log.debug("Nuovo dettagli ordine inserito");
+            msgS.getMessaggio("NUOVO_DETTAGLI_ORDINE");
         } else {
             throw new Exception("Ordine o Prodotto non trovato");
         }
@@ -68,7 +71,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
                 if (ordine.isPresent()) {
                     d.setOrdine(ordine.get());
                 } else {
-                    throw new Exception("Ordine non trovato");
+                    throw new Exception(msgS.getMessaggio("ORDINE_NOT_FOUND"));
                 }
             }
             
@@ -77,7 +80,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
                 if (prodotto.isPresent()) {
                     d.setProdotto(prodotto.get());
                 } else {
-                    throw new Exception("Prodotto non trovato");
+                    throw new Exception(msgS.getMessaggio("PRODOTTO_INESISTENTE"));
                 }
             }
             
@@ -88,9 +91,9 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
                 d.setQuantitaFinale(req.getQuantitaFinale());
             detR.save(d);
             
-            log.debug("Dettagli ordine aggiornato");
+            msgS.getMessaggio("DETTAGLI_ORDINE_AGGIORNATO");
         } else {
-            throw new Exception("Dettagli ordine non trovato");
+            throw new Exception(msgS.getMessaggio("DETTAGLI_ORDINE_NOT_FOUND"));
         }
     }
 
@@ -100,12 +103,12 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
         
         Optional<DettagliOrdine> dr = detR.findById(req.getId());
         if (dr.isEmpty())
-            throw new Exception("Dettagli ordine non esistente");
+            throw new Exception(msgS.getMessaggio("DETTAGLI_ORDINE_NOT_FOUND"));
 
         DettagliOrdine d = dr.get();
         detR.delete(d);
 
-        log.debug("Dettagli ordine eliminato");
+        msgS.getMessaggio("DETTAGLI_ORDINE_ELIMINATO");
     }
 
     @Override
@@ -126,7 +129,7 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
     public DettagliOrdineDTO listByID(Integer id) throws Exception {
         Optional<DettagliOrdine> dr = detR.findById(id);
         if (dr.isEmpty())
-            throw new Exception("Dettagli ordine non esistente");
+            throw new Exception(msgS.getMessaggio("DETTAGLI_ORDINE_NOT_FOUND"));
         
         Optional<Ordine> ordine = ordineR.findById(dr.get().getOrdine().getId());
         Optional<Prodotto> prodotto = prodottoR.findById(dr.get().getProdotto().getId());
