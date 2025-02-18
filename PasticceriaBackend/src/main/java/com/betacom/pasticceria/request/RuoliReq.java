@@ -29,4 +29,11 @@ public class RuoliReq {
         return descrizione;
     }
 
+	@Override
+	public String toString() {
+		return "RuoliReq [id=" + id + ", descrizione=" + descrizione + ", idCredenziali=" + idCredenziali + "]";
+	}
+    
+    
+
 }
