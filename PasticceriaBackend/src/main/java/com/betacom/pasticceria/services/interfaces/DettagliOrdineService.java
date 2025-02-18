@@ -11,5 +11,5 @@ public interface DettagliOrdineService {
     void delete(DettagliOrdineReq req) throws Exception;
     List<DettagliOrdineDTO> listAll();
     DettagliOrdineDTO listByID(Integer id) throws Exception;
-
+    List<DettagliOrdineDTO> listByOrderID(Integer id) throws Exception;
 }

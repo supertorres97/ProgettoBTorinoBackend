@@ -18,6 +18,8 @@ public interface CredenzialiService {
 	void createAdmin(CredenzialiReq req) throws Exception;
 	void removeRole(Integer idCredenziali, String ruoloDaRimuovere) throws Exception;
 	void changeRole(Integer idCredenziali, List<String> newRuoli) throws Exception;
+    CredenzialiDTO getCredenzialiByUtente(Integer idUtente) throws Exception;
+
 }
 
 

@@ -66,29 +66,26 @@ public class CredenzialiImpl implements CredenzialiService{
 
     @Override
     public void update(CredenzialiReq req) throws Exception {
-        
-        Optional<Utente> utn = utnR.findById(req.getIdUtente());
-		
-		if(utn.isEmpty())
-			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
+        log.debug("Update credenziali: " + req);
 
         Optional<Credenziali> cr = credR.findById(req.getId());
-        if (cr.isPresent()) {
-        	Credenziali c = cr.get();
-        	if(req.getIdUtente() != null) 
-        		c.setUtente(utn.get());
-        	if(req.getUsername() != null)
-        		c.setUsername(req.getUsername());
-        	if(req.getPassword() != null)
-        		c.setPassword(req.getPassword());
-    
-        	credR.save(c);	
-        
-        	msgS.getMessaggio("CREDENZIALI_AGGIORNATE");
-        } else {
-        	throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
-        }
-	}
+        if (cr.isEmpty()) 
+            throw new Exception("Credenziali non trovate");
+
+        Optional<Utente> utn = utnR.findById(req.getIdUtente());
+        if(utn.isEmpty())
+            throw new Exception("Utente inesistente!");
+
+        Credenziali c = cr.get();
+        if(req.getPassword() != null)
+            if(req.getPassword() != cr.get().getPassword())
+                c.setPassword(req.getPassword());
+            else
+                throw new Exception("La password non può essere uguale a quella precedente");
+        credR.save(c);
+
+        log.debug("Credenziali aggiornate");
+    }
 
     @Override
     public void delete(CredenzialiReq req) throws Exception {
@@ -166,6 +163,21 @@ public class CredenzialiImpl implements CredenzialiService{
     	Optional<Credenziali> cred = credR.findByUsernameAndPassword(req.getUsername(), req.getPassword());
     	Optional<Utente> ut = utnR.findById(cred.get().getUtente().getId());
     	return Utilities.buildUtenteDTO(ut.get());
+    }
+    
+    @Override
+    public CredenzialiDTO getCredenzialiByUtente(Integer idUtente) throws Exception{
+    	Optional<Credenziali> cr = credR.findByUtente_Id(idUtente);
+    	if(cr.isEmpty())
+    		throw new Exception("Nessuna credenziale trovata per l'utente con id: " + idUtente);
+    	
+    	return new CredenzialiDTO.Builder()
+				.setId(cr.get().getId())
+				.setIdUtente(buildUtenteDTO(cr.get().getUtente()))
+                .setUsername(cr.get().getUsername())
+                .setPassword(cr.get().getPassword())
+                .setAttivo(cr.get().getAttivo())
+				.build();    
     }
     
     @Override

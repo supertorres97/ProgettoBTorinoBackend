@@ -59,8 +59,8 @@
         id integer not null auto_increment,
         id_utente integer not null,
         totale float(53) not null,
-        data_ordine datetime(6) not null,
-        indirizzo varchar(255) not null,
+        data_ordine datetime(6),
+        indirizzo varchar(255),
         status enum ('Annullato','Confermato','Consegnato','InElaborazione','Spedito'),
         primary key (id)
     ) engine=InnoDB;

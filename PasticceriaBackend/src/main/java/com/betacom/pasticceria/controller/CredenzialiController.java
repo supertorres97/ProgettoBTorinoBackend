@@ -56,11 +56,7 @@ public class CredenzialiController {
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.OPTIONS)
 	public ResponseEntity<?> handleOptions2() {
-	    return ResponseEntity.ok()
-	            .header("Access-Control-Allow-Origin", "*")
-	            .header("Access-Control-Allow-Methods", "POST, OPTIONS")
-	            .header("Access-Control-Allow-Headers", "Content-Type")
-	            .build();
+		return ResponseEntity.ok().build();
 	}
     
 	@PostMapping("/signup")
@@ -141,6 +137,21 @@ public class CredenzialiController {
 		r.setRc(true);
 		try {
 			r.setDati(credS.listByID(id));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			r.setMsg(e.getMessage());
+			r.setRc(false);
+		}
+		return r;
+	}
+	
+	@GetMapping("/listByIdUtente")
+	public ResponseObject<CredenzialiDTO> listByIdUtente(Integer id){	
+		log.debug("credenziali by id utente");
+		ResponseObject<CredenzialiDTO> r = new ResponseObject<CredenzialiDTO>();
+		r.setRc(true);
+		try {
+			r.setDati(credS.getCredenzialiByUtente(id));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
