@@ -11,6 +11,8 @@ import com.betacom.pasticceria.model.Prodotto;
 
 public interface ProdottoRepository extends JpaRepository<Prodotto, Integer>{
 	Optional<Prodotto> findByNome(String nome);
+    boolean existsByTipoId(Integer tipoId);
+
 	
 	@Query("SELECT p FROM Prodotto p WHERE LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
 	List<Prodotto> findByNomeContaining(@Param("nome") String nome);
