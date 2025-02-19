@@ -122,9 +122,11 @@ public class UtenteImpl implements UtenteService{
 		u.setCitta(req.getCitta());
 		
 		u = utenteR.save(u);
+		log.debug("Utente: " + u);
 		cReq.setIdUtente(u.getId());
-
+		
 		credS.createAdmin(cReq);
+		log.debug("Credenziali: " + cReq);
 		cartS.create(u);
 	}
 
