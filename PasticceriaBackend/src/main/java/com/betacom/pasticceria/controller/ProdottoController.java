@@ -1,11 +1,14 @@
 package com.betacom.pasticceria.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.pasticceria.dto.ProdottoDTO;
@@ -103,5 +106,23 @@ public class ProdottoController {
 		
 		return r;
 	}
-
+	
+	@GetMapping("/listByNome")
+	public ResponseList<ProdottoDTO> listByNome(@RequestParam(required = false) String nome) {
+		log.debug("Lista Prodotto: ");
+		ResponseList<ProdottoDTO> r = new ResponseList<ProdottoDTO>();
+		r.setRc(true);
+		try {
+			r.setDati(prodS.listByNome(nome));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			r.setMsg(e.getMessage());
+			r.setRc(false);
+		}
+		
+//		if(r.getRc() == false) 
+//			r.setDati(prodS.listAll());)
+		
+		return r;
+	}
 }

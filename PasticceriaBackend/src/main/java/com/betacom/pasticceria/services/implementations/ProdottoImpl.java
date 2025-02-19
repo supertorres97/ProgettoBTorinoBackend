@@ -151,4 +151,29 @@ public class ProdottoImpl implements ProdottoService{
 				.build();
 	}
 
+	@Override
+	public List<ProdottoDTO> listByNome(String nome) throws Exception {
+		log.debug("list by nome: " + nome);
+		List<Prodotto> lP = prodR.findByNomeContaining(nome);
+		if(lP.isEmpty())
+			throw new Exception(msgS.getMessaggio("PRODOTTO_INESISTENTE"));
+		
+		for(Prodotto p : lP)
+			log.debug("immagine: " + p.getImg() + " prodotto: " + p.getNome());
+		
+		return lP.stream()
+				.map(p -> new ProdottoDTO.Builder()
+							.setId(p.getId())
+							.setTipo(Utilities.buildTipoProdottoDTO(p.getTipo()))
+							.setNome(p.getNome())
+							.setDescrizione(p.getDescrizione())
+							.setPeso(p.getPeso())
+							.setPrezzo(p.getPrezzo())
+							.setStock(p.getStock())
+							.setDisponibile(p.getDisponibile())
+							.setImg(p.getImg())
+							.build())
+				.collect(Collectors.toList());
+	}
+
 }

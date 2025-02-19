@@ -11,4 +11,5 @@ public interface ProdottoService {
 	void delete(ProdottoReq req) throws Exception;
 	List<ProdottoDTO> listAll();
 	ProdottoDTO listByID (Integer id) throws Exception;
+	List<ProdottoDTO> listByNome (String nome) throws Exception;
 }

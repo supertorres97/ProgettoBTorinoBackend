@@ -47,4 +47,10 @@ public class Ruoli {
     public void setCredenziali(List<Credenziali> credenziali) {
         this.credenziali = credenziali;
     }
+
+	@Override
+	public String toString() {
+		return "Ruoli [id=" + id + ", descrizione=" + descrizione + ", credenziali=" + credenziali + "]";
+	}
+    
 }

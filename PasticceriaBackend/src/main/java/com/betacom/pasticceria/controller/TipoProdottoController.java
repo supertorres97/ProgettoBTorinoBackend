@@ -18,7 +18,7 @@ import com.betacom.pasticceria.services.interfaces.TipoProdottoService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/rest/tipoprodotto")
+@RequestMapping("/rest/tipoProdotto")
 public class TipoProdottoController {
 	private TipoProdottoService tPS;
 	private Logger log;
