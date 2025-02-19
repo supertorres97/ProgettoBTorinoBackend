@@ -102,16 +102,17 @@ public class UtenteController {
 	@PostMapping("/createAdmin")
 	public ResponseBase createAdmin(@RequestBody(required = true) SignUpReq req) {
 		log.debug("create utente" + req.getUtenteReq());
+		log.debug("create credenziali" + req.getCredenzialiReq());
 		
 		ResponseBase r = new ResponseBase();
 		r.setRc(true);
 		
 		try {
-			utnS.create(req.getUtenteReq(), req.getCredenzialiReq());
+			utnS.createAdmin(req.getUtenteReq(), req.getCredenzialiReq());
 		} catch (Exception e) {
 			r.setRc(false);
 			r.setMsg(e.getMessage());
-			log.error(e.getMessage());
+			log.error(e.getMessage() + "io do errore?");
 		}
 		return r;
 	}
