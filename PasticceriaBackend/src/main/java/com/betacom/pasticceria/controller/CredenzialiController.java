@@ -115,6 +115,21 @@ public class CredenzialiController {
 		}
 		return r;
 	}
+    
+    @PostMapping("/updateCredenziali")
+   	public ResponseBase updateCredenziali(@RequestBody(required = true) CredenzialiReq req) {
+   		log.debug("Update credenziali da admin: " + req);
+   		ResponseBase r = new ResponseBase();
+   		r.setRc(true);
+   		try {
+   			credS.updateDaAdmin(req);
+   		} catch (Exception e) {
+   			log.error(e.getMessage());
+   			r.setMsg(e.getMessage());
+   			r.setRc(false);
+   		}
+   		return r;
+   	}
 	
 	@PostMapping("/delete")
 	public ResponseBase delete(@RequestBody(required = true) CredenzialiReq req) {

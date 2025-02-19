@@ -88,6 +88,34 @@ public class CredenzialiImpl implements CredenzialiService{
     }
 
     @Override
+    public void updateDaAdmin(CredenzialiReq req) throws Exception {
+        log.debug("Update credenziali: " + req);
+
+        Optional<Credenziali> cr = credR.findById(req.getId());
+        if (cr.isEmpty()) 
+            throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
+
+        Optional<Utente> utn = utnR.findById(req.getIdUtente());
+        if(utn.isEmpty())
+            throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
+
+        Credenziali c = cr.get();
+        if(req.getUsername()!= null)
+        	c.setUsername(req.getUsername());
+        if(req.getPassword() != null)
+            if(req.getPassword() != cr.get().getPassword())
+                c.setPassword(req.getPassword());
+            else
+                throw new Exception(msgS.getMessaggio("PASSWORD_UGUALE_PRECEDENTE"));
+        if(req.getAttivo() != null)
+        	c.setAttivo(req.getAttivo());
+        
+        credR.save(c);
+
+        msgS.getMessaggio("CREDENZIALI_AGGIORNATE");
+    }
+    
+    @Override
     public void delete(CredenzialiReq req) throws Exception {
 		log.debug("Delete credenziali: " + req);
 		
