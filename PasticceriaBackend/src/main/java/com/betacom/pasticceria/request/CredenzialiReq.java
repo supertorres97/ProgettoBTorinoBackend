@@ -3,6 +3,7 @@ package com.betacom.pasticceria.request;
 public class CredenzialiReq {
     private Integer id;
     private Integer idUtente;
+    private Integer idRuolo;
     private String username;
     private String password;
     private Boolean attivo;
@@ -47,11 +48,18 @@ public class CredenzialiReq {
 		this.attivo = attivo;
 	}
 
+	public Integer getIdRuolo() {
+		return idRuolo;
+	}
+
+	public void setIdRuolo(Integer idRuolo) {
+		this.idRuolo = idRuolo;
+	}
+
 	@Override
 	public String toString() {
-		return "CredenzialiReq [id=" + id + ", idUtente=" + idUtente + ", username=" + username + ", password="
-				+ password + ", attivo=" + attivo + "]";
+		return "CredenzialiReq [id=" + id + ", idUtente=" + idUtente + ", idRuolo=" + idRuolo + ", username=" + username
+				+ ", password=" + password + ", attivo=" + attivo + "]";
 	}
-       
-    
+
 }

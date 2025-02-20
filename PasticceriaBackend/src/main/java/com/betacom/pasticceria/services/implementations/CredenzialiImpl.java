@@ -2,7 +2,6 @@ package com.betacom.pasticceria.services.implementations;
 
 import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,7 +57,7 @@ public class CredenzialiImpl implements CredenzialiService{
         c.setAttivo(true);
         Ruoli r = ruolR.findById(2)
         		.orElseThrow(() -> new RuntimeException(msgS.getMessaggio("USER_NOT_FOUND")));
-        c.getRuoli().add(r);
+        c.setRuolo(r);
 		credR.save(c);
 		log.debug(msgS.getMessaggio("CREDENZIALI_INSERITE"));
 	 
@@ -169,7 +168,7 @@ public class CredenzialiImpl implements CredenzialiService{
             resp.setIdUtente(null); // 👈 Evitiamo un errore se non esiste
         } else {
             resp.setLogged(true);
-            resp.setRole(usr.get().getRuoli().toString());
+            resp.setRole(usr.get().getRuolo().toString());
 
             // 👇 Controlliamo se l'utente esiste prima di prendere l'ID
             if (usr.get().getUtente() != null) {
@@ -223,52 +222,9 @@ public class CredenzialiImpl implements CredenzialiService{
         c.setAttivo(true);
         Ruoli r = ruolR.findById(1)
         		.orElseThrow(() -> new RuntimeException(msgS.getMessaggio("ADMIN_NOT_FOUND")));
-        c.getRuoli().add(r);
-		credR.save(c);
+        c.setRuolo(r);
+        credR.save(c);
 		log.debug(msgS.getMessaggio("CREDENZIALI_INSERITE"));
-    }
-    
-    public void changeRole(Integer idCredenziali, List<String> newRuoli) throws Exception{
-        Credenziali credenziali = credR.findById(idCredenziali)
-                .orElseThrow(() -> new RuntimeException(msgS.getMessaggio("CREDENZIALI_NOT_FOUND")));
-        List<Ruoli> ruoliAttuali = credenziali.getRuoli();
-        List<Ruoli> ruoliNuovi = new ArrayList<Ruoli>();
-        
-        for (String descrizione : newRuoli) {
-            Ruoli r = ruolR.findByDescrizione(descrizione)
-                    .orElseThrow(() -> new RuntimeException("Ruolo " + descrizione + " non trovato"));
-
-            if (!ruoliAttuali.contains(r)) {
-            	ruoliNuovi.add(r);
-            }
-        }
-
-        if (ruoliNuovi.isEmpty()) {
-            throw new Exception(msgS.getMessaggio("UTENTE_ALL_RUOLI"));
-        }
-
-        ruoliAttuali.addAll(ruoliNuovi);
-        credenziali.setRuoli(ruoliAttuali);
-        credR.save(credenziali);
-
-    }
-    
-    public void removeRole(Integer idCredenziali, String ruoloDaRimuovere) throws Exception {
-        Credenziali cred = credR.findById(idCredenziali)
-                .orElseThrow(() -> new RuntimeException(msgS.getMessaggio("CREDENZIALI_NOT_FOUND")));
-
-        List<Ruoli> listR = cred.getRuoli();
-
-        Ruoli ruolo = ruolR.findByDescrizione(ruoloDaRimuovere)
-                .orElseThrow(() -> new RuntimeException("Ruolo " + ruoloDaRimuovere + " non trovato"));
-
-        if (!listR.contains(ruolo)) {
-            throw new Exception(msgS.getMessaggio("RUOLO_NON_ASSEGNATO"));
-        }
-
-        listR.remove(ruolo);
-        cred.setRuoli(listR);
-        credR.save(cred);
     }
 
 

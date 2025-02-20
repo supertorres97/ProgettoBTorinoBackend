@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -33,13 +34,9 @@ public class Credenziali {
     @JoinColumn(name = "id_utente", referencedColumnName = "id")
     private Utente utente;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "list_ruoli",
-        joinColumns = @JoinColumn(name = "id_credenziali"),
-        inverseJoinColumns = @JoinColumn(name = "id_ruolo")
-    )
-    private List<Ruoli> ruoli = new ArrayList<Ruoli>();
+    @ManyToOne
+    @JoinColumn(name = "id_ruolo", nullable= false)
+    private Ruoli ruolo;
     
     @Column(nullable = false)
     private Boolean attivo;
@@ -76,13 +73,13 @@ public class Credenziali {
         this.utente = utente;
     }
 
-    public List<Ruoli> getRuoli() {
-        return ruoli;
-    }
+	public Ruoli getRuolo() {
+		return ruolo;
+	}
 
-    public void setRuoli(List<Ruoli> ruoli) {
-        this.ruoli = ruoli;
-    }
+	public void setRuolo(Ruoli ruolo) {
+		this.ruolo = ruolo;
+	}
 
 	public Boolean getAttivo() {
 		return attivo;

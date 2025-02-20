@@ -17,6 +17,7 @@
     create table credenziali (
         attivo bit not null,
         id integer not null auto_increment,
+        id_ruolo integer not null,
         id_utente integer,
         password varchar(255) not null,
         username varchar(255) not null,
@@ -41,11 +42,6 @@
         descrizione varchar(255) not null,
         voto enum ('CINQUE','DUE','QUATTRO','TRE','UNO') not null,
         primary key (id)
-    ) engine=InnoDB;
-
-    create table list_ruoli (
-        id_credenziali integer not null,
-        id_ruolo integer not null
     ) engine=InnoDB;
 
     create table messaggi_sistema (
@@ -133,6 +129,11 @@
        references prodotto (id);
 
     alter table credenziali 
+       add constraint FKqpmqxc9w0ovvvnvjbjict4uxh 
+       foreign key (id_ruolo) 
+       references ruoli (id);
+
+    alter table credenziali 
        add constraint FK6808uc4b2j3e7ksasxf8st8q3 
        foreign key (id_utente) 
        references utente (id);
@@ -161,16 +162,6 @@
        add constraint FKop3716ted36un9qdk89bl1n6h 
        foreign key (id_utente) 
        references utente (id);
-
-    alter table list_ruoli 
-       add constraint FK9oqmxuqs9x505dd5j7tcg95j9 
-       foreign key (id_ruolo) 
-       references ruoli (id);
-
-    alter table list_ruoli 
-       add constraint FKlmy0038psugdhgcob3d6qcqij 
-       foreign key (id_credenziali) 
-       references credenziali (id);
 
     alter table ordine 
        add constraint FKgsxxfj3dm1kfppteavqrvkwcr 
