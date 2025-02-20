@@ -11,4 +11,5 @@ public interface RuoliService {
 	void delete(RuoliReq req) throws Exception;
 	List<RuoliDTO> listAll();
 	RuoliDTO listByID (Integer id) throws Exception;
+	RuoliDTO listByDescrizione(String desc) throws Exception;
 }

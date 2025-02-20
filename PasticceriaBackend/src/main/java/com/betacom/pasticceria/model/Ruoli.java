@@ -8,7 +8,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,7 +21,8 @@ public class Ruoli {
     @Column(nullable = false)
     private String descrizione;
 
-    @ManyToMany(mappedBy = "ruoli", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ruolo",
+			fetch = FetchType.LAZY)
     private List<Credenziali> credenziali;
 
     public Integer getId() {

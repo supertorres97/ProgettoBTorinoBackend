@@ -13,6 +13,10 @@
 
     alter table credenziali 
        drop 
+       foreign key FKqpmqxc9w0ovvvnvjbjict4uxh;
+
+    alter table credenziali 
+       drop 
        foreign key FK6808uc4b2j3e7ksasxf8st8q3;
 
     alter table dettagli_ordine 
@@ -31,14 +35,6 @@
        drop 
        foreign key FKop3716ted36un9qdk89bl1n6h;
 
-    alter table list_ruoli 
-       drop 
-       foreign key FK9oqmxuqs9x505dd5j7tcg95j9;
-
-    alter table list_ruoli 
-       drop 
-       foreign key FKlmy0038psugdhgcob3d6qcqij;
-
     alter table ordine 
        drop 
        foreign key FKgsxxfj3dm1kfppteavqrvkwcr;
@@ -56,8 +52,6 @@
     drop table if exists dettagli_ordine;
 
     drop table if exists feedback;
-
-    drop table if exists list_ruoli;
 
     drop table if exists messaggi_sistema;
 

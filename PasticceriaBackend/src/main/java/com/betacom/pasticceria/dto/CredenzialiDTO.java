@@ -1,14 +1,12 @@
 package com.betacom.pasticceria.dto;
 
-import java.util.List;
-
 public class CredenzialiDTO {
     private Integer id;
     private UtenteDTO idUtente;
     private String username;
     private String password;
     private Boolean attivo;
-    private List<RuoliDTO> ruoli;
+    private RuoliDTO ruolo;
 
     public static class Builder {
         private Integer id;
@@ -16,7 +14,7 @@ public class CredenzialiDTO {
         private String username;
         private String password;
         private Boolean attivo;
-        private List<RuoliDTO> ruoli;
+        private RuoliDTO ruolo;
 
         public CredenzialiDTO build() {
             CredenzialiDTO dto = new CredenzialiDTO();
@@ -25,7 +23,7 @@ public class CredenzialiDTO {
             dto.username = this.username;
             dto.password = this.password;
             dto.attivo = this.attivo;
-            dto.ruoli = this.ruoli;
+            dto.ruolo = this.ruolo;
             return dto;
         }
         public Builder setId(Integer id) {
@@ -53,8 +51,8 @@ public class CredenzialiDTO {
 			return this;
 		}
 		
-		public Builder setRuoli(List<RuoliDTO> ruoli) {
-			this.ruoli = ruoli;
+		public Builder setRuolo(RuoliDTO ruolo) {
+			this.ruolo = ruolo;
 			return this;
 		}
     }
@@ -78,11 +76,11 @@ public class CredenzialiDTO {
     public Boolean getAttivo() {
 		return attivo;
 	}
-    
-	public List<RuoliDTO> getRuoli() {
-		return ruoli;
-	}
 	
+	public RuoliDTO getRuolo() {
+		return ruolo;
+	}
+
 	@Override
 	public String toString() {
 		return "CredenzialiDTO [id=" + id + ", idUtente=" + idUtente + ", username=" + username + ", password="

@@ -123,12 +123,10 @@ public class CredenzialiTest {
         utente.setId(10);
         credenziali.setUtente(utente);
 
-        List<Ruoli> ruoliList = new ArrayList<>();
         Ruoli ruolo = new Ruoli();
         ruolo.setId(100);
         ruolo.setDescrizione("ADMIN");
-        ruoliList.add(ruolo);
-        credenziali.setRuoli(ruoliList);
+        credenziali.setRuolo(ruolo);
 
         credenziali.setAttivo(true);
 
@@ -137,7 +135,7 @@ public class CredenzialiTest {
         assertThat(credenziali.getUsername()).isEqualTo("test_user");
         assertThat(credenziali.getPassword()).isEqualTo("password123");
         assertThat(credenziali.getUtente()).isEqualTo(utente);
-        assertThat(credenziali.getRuoli()).isEqualTo(ruoliList);
+        assertThat(credenziali.getRuolo()).isEqualTo(ruolo);
         assertThat(credenziali.getAttivo()).isTrue();
 
         log.debug("Getter and Setter tests for Credenziali passed successfully.");
