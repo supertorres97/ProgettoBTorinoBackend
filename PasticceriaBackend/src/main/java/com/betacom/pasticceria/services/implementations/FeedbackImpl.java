@@ -172,4 +172,24 @@ public class FeedbackImpl implements FeedbackService{
 						.build();
 	}
 
+	@Override
+	public List<FeedbackDTO> listByProdottoID(Integer id) throws Exception {
+		Optional<Prodotto> oP = prodR.findById(id);
+		if(oP.isEmpty())
+			throw new Exception("Prodotto non presente! -feedback");
+		
+		List<Feedback> lF = feedR.findByProdotto_id(oP.get().getId());
+		return lF.stream()
+				.map(f -> new FeedbackDTO.Builder()
+						.setId(f.getId())
+						.setUtente(buildUtenteDTO(f.getUtente()))
+						.setOrdine(buildOrdineDTO(f.getOrdine()))
+						.setProdotto(buildProdottoDTO(f.getProdotto()))
+						.setDataFeedback(f.getDataFeedback())
+						.setVoto(f.getVoto())
+						.setDescrizione(f.getDescrizione())
+						.build())
+				.collect(Collectors.toList());
+	}
+
 }
