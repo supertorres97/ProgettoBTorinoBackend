@@ -34,7 +34,6 @@
 
     create table feedback (
         id integer not null auto_increment,
-        id_ordine integer not null,
         id_prodotto integer not null,
         id_utente integer not null,
         data_feedback datetime(6) not null,
@@ -146,11 +145,6 @@
        add constraint FK3ghbrfbsxogcphw8q34ev7gtp 
        foreign key (id_prodotto) 
        references prodotto (id);
-
-    alter table feedback 
-       add constraint FKqhdsmnpqwhlyeilhn7sokblo3 
-       foreign key (id_ordine) 
-       references ordine (id);
 
     alter table feedback 
        add constraint FK5gke1bbx471nda0k7n0qdifs9 

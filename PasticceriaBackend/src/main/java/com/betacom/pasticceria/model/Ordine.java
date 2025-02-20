@@ -42,10 +42,6 @@ public class Ordine {
 	
 	@OneToMany(mappedBy = "ordine",
 			fetch = FetchType.LAZY)
-	private List<Feedback> feedback;
-	
-	@OneToMany(mappedBy = "ordine",
-			fetch = FetchType.LAZY)
 	private List<DettagliOrdine> dettagliOrdine;
 	
 	
@@ -95,6 +91,12 @@ public class Ordine {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "Ordine [id=" + id + ", utente=" + utente + ", totale=" + totale + ", indirizzo=" + indirizzo
+				+ ", dataOrdine=" + dataOrdine + ", status=" + status + ", dettagliOrdine=" + dettagliOrdine + "]";
 	}
 	
 	

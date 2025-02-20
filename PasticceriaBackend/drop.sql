@@ -25,10 +25,6 @@
 
     alter table feedback 
        drop 
-       foreign key FKqhdsmnpqwhlyeilhn7sokblo3;
-
-    alter table feedback 
-       drop 
        foreign key FK5gke1bbx471nda0k7n0qdifs9;
 
     alter table feedback 

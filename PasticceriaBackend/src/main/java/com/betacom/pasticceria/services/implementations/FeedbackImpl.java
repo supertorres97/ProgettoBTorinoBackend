@@ -1,7 +1,10 @@
 package com.betacom.pasticceria.services.implementations;
 
-import static com.betacom.pasticceria.utils.Utilities.*;
+import static com.betacom.pasticceria.utils.Utilities.buildProdottoDTO;
+import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,8 +13,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.betacom.pasticceria.dto.CredenzialiDTO;
 import com.betacom.pasticceria.dto.FeedbackDTO;
+import com.betacom.pasticceria.model.DettagliOrdine;
 import com.betacom.pasticceria.model.Feedback;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
@@ -25,6 +28,7 @@ import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.FeedbackReq;
 import com.betacom.pasticceria.services.interfaces.FeedbackService;
 import com.betacom.pasticceria.services.interfaces.MessaggioService;
+import com.betacom.pasticceria.utils.Utilities;
 
 @Service
 public class FeedbackImpl implements FeedbackService{
@@ -48,36 +52,38 @@ public class FeedbackImpl implements FeedbackService{
 		this.prodR = prodR;
 		this.detR = detR;
 		this.msgS = msgS;
+		
 	}
 
 	@Override
 	public void create(FeedbackReq req) throws Exception {
 		log.debug("creazione feedback: "+ req);
-		boolean ordinato = checkOrderedProduct(req);
-		if(!ordinato)
+		Boolean ordinato = recensibile(req.getUtente(), req.getProdotto());
+		if(!ordinato) {
+			log.error("Prodotto non acquistato!" + req.getProdotto() + ordinato);
 			throw new Exception(msgS.getMessaggio("PRODOTTO_NON_ACQUISTATO_NO_RECENSIONE"));
+		}
 		
 		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
-		if (prod.isEmpty()) 
+		if (prod.isEmpty()) { 
+			log.error("Prodotto inesistente!");
 			throw new Exception(msgS.getMessaggio("NO_RECENSIONE_PRODOTTO_INESISTENTE"));
+		}
 		
 		Optional<Utente> ut = utR.findById(req.getUtente());
-		if(ut.isEmpty())
+		if(ut.isEmpty()) {
+			log.error("Utente inesistente");
 			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
-		
-		Optional<Ordine> ord = ordR.findById(req.getOrdine());
-		if(ut.isEmpty())
-			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
+		}
 		
 		Feedback f = new Feedback();
 		f.setDescrizione(req.getDescrizione());
 		f.setProdotto(prod.get());
-		f.setOrdine(ord.get());
 		f.setUtente(ut.get());
 		
 		Voto voto =  Voto.valueOf(req.getVoto().toUpperCase());
 		f.setVoto(voto);
-		f.setDataFeedback(req.getDataFeedback());
+		f.setDataFeedback(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
 		feedR.save(f);
 	}
 	
@@ -107,10 +113,6 @@ public class FeedbackImpl implements FeedbackService{
 		if(ut.isEmpty())
 			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		
-		Optional<Ordine> ord = ordR.findById(req.getOrdine());
-		if(ut.isEmpty())
-			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
-		
 		Boolean mod = false;
 		
 		Feedback f = feed.get();
@@ -126,7 +128,7 @@ public class FeedbackImpl implements FeedbackService{
 		}
 		
 		if(mod) {
-			f.setDataFeedback(req.getDataFeedback());
+			f.setDataFeedback(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
 			feedR.save(f);
 		}
 		
@@ -149,7 +151,6 @@ public class FeedbackImpl implements FeedbackService{
 				.map(f -> new FeedbackDTO.Builder()
 						.setId(f.getId())
 						.setUtente(buildUtenteDTO(f.getUtente()))
-						.setOrdine(buildOrdineDTO(f.getOrdine()))
 						.setProdotto(buildProdottoDTO(f.getProdotto()))
 						.setDataFeedback(f.getDataFeedback())
 						.setVoto(f.getVoto())
@@ -164,7 +165,6 @@ public class FeedbackImpl implements FeedbackService{
 		return new FeedbackDTO.Builder()
 						.setId(f.get().getId())
 						.setUtente(buildUtenteDTO(f.get().getUtente()))
-						.setOrdine(buildOrdineDTO(f.get().getOrdine()))
 						.setProdotto(buildProdottoDTO(f.get().getProdotto()))
 						.setDataFeedback(f.get().getDataFeedback())
 						.setVoto(f.get().getVoto())
@@ -183,13 +183,47 @@ public class FeedbackImpl implements FeedbackService{
 				.map(f -> new FeedbackDTO.Builder()
 						.setId(f.getId())
 						.setUtente(buildUtenteDTO(f.getUtente()))
-						.setOrdine(buildOrdineDTO(f.getOrdine()))
 						.setProdotto(buildProdottoDTO(f.getProdotto()))
 						.setDataFeedback(f.getDataFeedback())
 						.setVoto(f.getVoto())
 						.setDescrizione(f.getDescrizione())
 						.build())
 				.collect(Collectors.toList());
+	}
+	
+	private Boolean recensibile(Integer id, Integer idProd) throws Exception {
+		
+		Optional<Utente> utO = utR.findById(id);
+		if(utO.isEmpty())
+			throw new Exception("Utente non trovato");
+		
+		Optional<Prodotto> prO = prodR.findById(idProd);
+		if(prO.isEmpty())
+			throw new Exception("Prodotto non trovato");
+		
+		
+		List<Ordine> orL = ordR.findByUtente_Id(utO.get().getId());
+		if(orL.isEmpty())
+			throw new Exception("Utente senza ordini");
+		
+		log.debug("Num ordini:" + orL.size());
+		
+		for(Ordine o : orL) {
+			log.debug("o: " + o);
+			if(o.getStatus().toString().equalsIgnoreCase("Consegnato")) {
+				List<DettagliOrdine> dlL = detR.findByOrdine_Id(o.getId());
+				log.debug("IF RAGGIUNTO!");
+				for(DettagliOrdine d : dlL) {
+					log.debug("prodotto dettagli: " + d.getProdotto().getId());
+					
+					if(d.getProdotto().getId() == prO.get().getId()) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 
 }

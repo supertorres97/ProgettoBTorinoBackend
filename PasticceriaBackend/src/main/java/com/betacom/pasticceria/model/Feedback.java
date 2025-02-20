@@ -29,10 +29,6 @@ public class Feedback {
 	@JoinColumn(name = "id_prodotto", nullable = false)
 	private Prodotto prodotto;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_ordine", nullable = false)
-	private Ordine ordine;
-	
 	@Column(nullable = false)
 	private String descrizione;
 	
@@ -73,14 +69,6 @@ public class Feedback {
 
 	public void setProdotto(Prodotto prodotto) {
 		this.prodotto = prodotto;
-	}
-
-	public Ordine getOrdine() {
-		return ordine;
-	}
-
-	public void setOrdine(Ordine ordine) {
-		this.ordine = ordine;
 	}
 
 	public String getDescrizione() {

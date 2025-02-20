@@ -11,7 +11,6 @@ public class FeedbackDTO {
 	private Integer id;
 	private UtenteDTO utente;
 	private ProdottoDTO prodotto;
-	private OrdineDTO ordine;
 	private String descrizione;
 	private Voto voto;
     private Date dataFeedback;
@@ -20,7 +19,6 @@ public class FeedbackDTO {
     	private Integer id;
     	private UtenteDTO utente;
     	private ProdottoDTO prodotto;
-    	private OrdineDTO ordine;
     	private String descrizione;
     	private Voto voto;
         private Date dataFeedback;
@@ -30,7 +28,6 @@ public class FeedbackDTO {
             dto.id = this.id;
             dto.utente = this.utente;
             dto.prodotto = this.prodotto;
-            dto.ordine = this.ordine;
             dto.descrizione = this.descrizione;
             dto.voto = this.voto;
             dto.dataFeedback = this.dataFeedback;
@@ -50,11 +47,6 @@ public class FeedbackDTO {
 
 		public Builder setProdotto(ProdottoDTO prodotto) {
 			this.prodotto = prodotto;
-			return this;
-		}
-
-		public Builder setOrdine(OrdineDTO ordine) {
-			this.ordine = ordine;
 			return this;
 		}
 
@@ -88,12 +80,6 @@ public class FeedbackDTO {
 	public ProdottoDTO getProdotto() {
 		return prodotto;
 	}
-
-
-	public OrdineDTO getOrdine() {
-		return ordine;
-	}
-
 
 	public String getDescrizione() {
 		return descrizione;

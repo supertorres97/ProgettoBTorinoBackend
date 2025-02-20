@@ -6,10 +6,9 @@ public class FeedbackReq {
 	private Integer id;
 	private Integer utente;
 	private Integer prodotto;
-	private Integer ordine;
 	private String descrizione;
 	private String voto;
-    private Date dataFeedback;
+//    private String dataFeedback;
     
 	public Integer getId() {
 		return id;
@@ -35,14 +34,6 @@ public class FeedbackReq {
 		this.prodotto = prodotto;
 	}
 	
-	public Integer getOrdine() {
-		return ordine;
-	}
-	
-	public void setOrdine(Integer ordine) {
-		this.ordine = ordine;
-	}
-	
 	public String getDescrizione() {
 		return descrizione;
 	}
@@ -59,12 +50,18 @@ public class FeedbackReq {
 		this.voto = voto;
 	}
 	
-	public Date getDataFeedback() {
-		return dataFeedback;
-	}
-	
-	public void setDataFeedback(Date dataFeedback) {
-		this.dataFeedback = dataFeedback;
+//	public Date getDataFeedback() {
+//		return dataFeedback;
+//	}
+//	
+//	public void setDataFeedback(Date dataFeedback) {
+//		this.dataFeedback = dataFeedback;
+//	}
+
+	@Override
+	public String toString() {
+		return "FeedbackReq [id=" + id + ", utente=" + utente + ", prodotto=" + prodotto + ", descrizione="
+				+ descrizione + ", voto=" + voto + "]";
 	}
     
 
