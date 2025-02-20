@@ -89,6 +89,23 @@ public class FeedbackController {
 		return r;
 	}
 	
+	@GetMapping("/listByProdottoID")
+	public ResponseList<FeedbackDTO> listByProdottoID(Integer id) {
+		log.debug("Lista Feedback: ");
+		ResponseList<FeedbackDTO> r = new ResponseList<FeedbackDTO>();
+		r.setRc(true);
+		try {
+			r.setDati(feedS.listByProdottoID(id));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			r.setMsg(e.getMessage());
+			r.setRc(false);
+		}
+		
+		return r;
+	}
+	
+	
 	@GetMapping("/listAll")
 	public ResponseList<FeedbackDTO> listAll() {
 		log.debug("Lista Feedback: ");

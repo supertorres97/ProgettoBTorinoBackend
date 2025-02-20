@@ -11,4 +11,5 @@ public interface FeedbackService {
 	void delete(FeedbackReq req) throws Exception;
 	List<FeedbackDTO> listAll();
 	FeedbackDTO listByID (Integer id) throws Exception;
+	List<FeedbackDTO> listByProdottoID(Integer id) throws Exception;
 }
