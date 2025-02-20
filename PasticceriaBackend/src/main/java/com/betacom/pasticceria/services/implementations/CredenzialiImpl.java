@@ -104,10 +104,12 @@ public class CredenzialiImpl implements CredenzialiService{
         if(req.getPassword() != null)
             if(req.getPassword() != cr.get().getPassword())
                 c.setPassword(req.getPassword());
-            else
-                throw new Exception(msgS.getMessaggio("PASSWORD_UGUALE_PRECEDENTE"));
         if(req.getAttivo() != null)
         	c.setAttivo(req.getAttivo());
+        if(req.getIdRuolo() != null) {
+        	Optional<Ruoli> r = ruolR.findById(req.getIdRuolo());
+        	c.setRuolo(r.get());
+        }
         
         credR.save(c);
 
@@ -139,6 +141,7 @@ public class CredenzialiImpl implements CredenzialiService{
                 .setUsername(c.getUsername())
                 .setPassword(c.getPassword())
                 .setAttivo(c.getAttivo())
+                .setRuolo(Utilities.buildRuoloDTO(c.getRuolo()))
 				.build())
 				.collect(Collectors.toList());
 	}

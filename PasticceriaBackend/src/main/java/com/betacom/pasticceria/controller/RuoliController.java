@@ -88,6 +88,20 @@ public class RuoliController {
         }
         return r;
     }
+    
+    @GetMapping("/listByDescrizione")
+    public ResponseObject<RuoliDTO> listByDescrizione(String desc) {
+        ResponseObject<RuoliDTO> r = new ResponseObject<RuoliDTO>();
+        r.setRc(true);
+        try {
+            r.setDati(ruoliS.listByDescrizione(desc));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            r.setMsg(e.getMessage());
+            r.setRc(false);
+        }
+        return r;
+    }
 
     @GetMapping("/listAll")
     public ResponseList<RuoliDTO> listAll() {

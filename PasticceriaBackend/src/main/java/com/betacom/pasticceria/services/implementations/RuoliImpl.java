@@ -92,4 +92,16 @@ public class RuoliImpl implements RuoliService {
                 .setDescrizione(rr.get().getDescrizione())
                 .build();
     }
+    
+    @Override
+    public RuoliDTO listByDescrizione(String desc) throws Exception {
+        Optional<Ruoli> rr = ruoliR.findByDescrizione(desc);
+        if (rr.isEmpty())
+            throw new Exception(msgS.getMessaggio("RUOLO_NOT_FOUND"));
+
+        return new RuoliDTO.Builder()
+                .setId(rr.get().getId())
+                .setDescrizione(rr.get().getDescrizione())
+                .build();
+    }
 }

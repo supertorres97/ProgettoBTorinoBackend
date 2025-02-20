@@ -8,11 +8,13 @@ import java.util.Locale;
 import com.betacom.pasticceria.dto.CarrelloDTO;
 import com.betacom.pasticceria.dto.OrdineDTO;
 import com.betacom.pasticceria.dto.ProdottoDTO;
+import com.betacom.pasticceria.dto.RuoliDTO;
 import com.betacom.pasticceria.dto.TipoProdottoDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
+import com.betacom.pasticceria.model.Ruoli;
 import com.betacom.pasticceria.model.Status;
 import com.betacom.pasticceria.model.TipoProdotto;
 import com.betacom.pasticceria.model.Utente;
@@ -29,6 +31,12 @@ public class Utilities {
 		return new TipoProdottoDTO.Builder()
 				.setId(tP.getId())
 				.setDescrizione(tP.getDescrizione()).build();
+	}
+	
+	public static RuoliDTO buildRuoloDTO(Ruoli r){	
+		return new RuoliDTO.Builder()
+				.setId(r.getId())
+				.setDescrizione(r.getDescrizione()).build();
 	}
 	
 	public static UtenteDTO buildUtenteDTO(Utente u){	
