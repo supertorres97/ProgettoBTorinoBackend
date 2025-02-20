@@ -125,4 +125,23 @@ public class ProdottoController {
 		
 		return r;
 	}
+	
+	@GetMapping("/listByTipoProdotto")
+	public ResponseList<ProdottoDTO> listByTipoProdotto(@RequestParam(required = false) Integer tipoProdotto) {
+		log.debug("Lista Prodotto per tipo: ");
+		ResponseList<ProdottoDTO> r = new ResponseList<ProdottoDTO>();
+		r.setRc(true);
+		try {
+			r.setDati(prodS.listByTipoProdotto(tipoProdotto));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			r.setMsg(e.getMessage());
+			r.setRc(false);
+		}
+		
+//		if(r.getRc() == false) 
+//			r.setDati(prodS.listAll());)
+		
+		return r;
+	}
 }

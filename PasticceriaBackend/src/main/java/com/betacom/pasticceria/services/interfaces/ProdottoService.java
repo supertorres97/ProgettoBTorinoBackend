@@ -12,4 +12,5 @@ public interface ProdottoService {
 	List<ProdottoDTO> listAll();
 	ProdottoDTO listByID (Integer id) throws Exception;
 	List<ProdottoDTO> listByNome (String nome) throws Exception;
+	List<ProdottoDTO> listByTipoProdotto (Integer tipoProdotto) throws Exception;
 }

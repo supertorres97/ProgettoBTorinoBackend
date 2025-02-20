@@ -176,4 +176,27 @@ public class ProdottoImpl implements ProdottoService{
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<ProdottoDTO> listByTipoProdotto(Integer tipoProdotto) throws Exception {
+		Optional<TipoProdotto> tp = tPR.findById(tipoProdotto);
+		if(tp.isEmpty())
+			throw new Exception("Tipo Prodotto inesistente");
+		
+		List<Prodotto> lP = prodR.findAllByTipo(tp.get());
+		
+		return lP.stream()
+				.map(p -> new ProdottoDTO.Builder()
+							.setId(p.getId())
+							.setTipo(Utilities.buildTipoProdottoDTO(p.getTipo()))
+							.setNome(p.getNome())
+							.setDescrizione(p.getDescrizione())
+							.setPeso(p.getPeso())
+							.setPrezzo(p.getPrezzo())
+							.setStock(p.getStock())
+							.setDisponibile(p.getDisponibile())
+							.setImg(p.getImg())
+							.build())
+				.collect(Collectors.toList());
+	}
+
 }
