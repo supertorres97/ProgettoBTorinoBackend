@@ -165,6 +165,12 @@ public class CredenzialiImpl implements CredenzialiService{
         log.debug("signin " + req);
         SignInDTO resp = new SignInDTO();
         Optional<Credenziali> usr = credR.findByUsernameAndPassword(req.getUsername(), req.getPwd());
+        if(usr.isEmpty())
+    		throw new Exception(msgS.getMessaggio("CREDENZIALI_NOT_FOUND"));
+        
+        if(usr.get().getAttivo() == false) {
+    		throw new Exception(msgS.getMessaggio("CREDENZIALI_DISATTIVATE"));
+        }
         
         if (usr.isEmpty() || !usr.get().getAttivo()) {
             resp.setLogged(false);
