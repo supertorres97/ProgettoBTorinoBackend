@@ -141,4 +141,8 @@ public class OrdineImpl implements OrdineService{
 						.setDataOrdine(o.getDataOrdine()).build())
 				.collect(Collectors.toList());
 	}
+	
+	public boolean isOrderOwnedByUser(Integer orderId, Integer userId) {
+        return ordR.existsByIdAndUtente_Id(orderId, userId);
+    }
 }

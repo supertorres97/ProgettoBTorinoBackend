@@ -15,7 +15,6 @@ import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.Ruoli;
-import com.betacom.pasticceria.model.Status;
 import com.betacom.pasticceria.model.TipoProdotto;
 import com.betacom.pasticceria.model.Utente;
 

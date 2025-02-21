@@ -14,5 +14,5 @@ public interface OrdineService {
 	List<OrdineDTO> listAll();
 	OrdineDTO listByID(Integer id) throws Exception;
 	List<OrdineDTO> listByUtente(Integer idUtente) throws Exception;
-
+	boolean isOrderOwnedByUser(Integer orderId, Integer userId);
 }
