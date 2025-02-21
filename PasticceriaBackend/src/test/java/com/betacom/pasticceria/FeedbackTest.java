@@ -117,12 +117,11 @@ public class FeedbackTest {
         
         // Creazione di un FeedbackReq
         FeedbackReq req = new FeedbackReq();
-        req.setOrdine(o.getId());
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback positivo");
         req.setVoto("CINQUE"); // Assumendo che l'enum Voto contenga "CINQUE"
-        req.setDataFeedback(new Date());
+       // req.setDataFeedback(new Date());
         
         // Creazione del Feedback
         feedS.create(req);
@@ -175,12 +174,11 @@ public class FeedbackTest {
         // Non creiamo un DettagliOrdine: quindi checkOrderedProduct restituirà false
         
         FeedbackReq req = new FeedbackReq();
-        req.setOrdine(o.getId());
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback negativo");
         req.setVoto("DUE");
-        req.setDataFeedback(new Date());
+        //req.setDataFeedback(new Date());
         
         assertThrows(Exception.class, () -> { feedS.create(req); });
     }
@@ -234,12 +232,11 @@ public class FeedbackTest {
         
         // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
-        req.setOrdine(o.getId());
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback iniziale");
         req.setVoto("TRE");
-        req.setDataFeedback(new Date());
+        //req.setDataFeedback(new Date());
         feedS.create(req);
         
         // Recupero del Feedback creato
@@ -249,12 +246,11 @@ public class FeedbackTest {
         // Aggiornamento: modifica della descrizione e del voto
         FeedbackReq updateReq = new FeedbackReq();
         updateReq.setId(feedbackCreato.getId());
-        updateReq.setOrdine(feedbackCreato.getOrdine().getId());  // Aggiunto
         updateReq.setProdotto(feedbackCreato.getProdotto().getId());  // Aggiunto
         updateReq.setUtente(feedbackCreato.getUtente().getId());  // Aggiunto
         updateReq.setDescrizione("Feedback aggiornato");
         updateReq.setVoto("CINQUE");
-        updateReq.setDataFeedback(new Date());
+       // updateReq.setDataFeedback(new Date());
         
         // Chiamata del metodo update
         feedS.update(updateReq);
@@ -274,7 +270,7 @@ public class FeedbackTest {
         updateReq.setId(9999); // id inesistente
         updateReq.setDescrizione("Feedback error update");
         updateReq.setVoto("TRE");
-        updateReq.setDataFeedback(new Date());
+        //updateReq.setDataFeedback(new Date());
         assertThrows(Exception.class, () -> { feedS.update(updateReq); });
     }
     
@@ -327,12 +323,11 @@ public class FeedbackTest {
         
         // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
-        req.setOrdine(o.getId());
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback da eliminare");
         req.setVoto("QUATTRO");
-        req.setDataFeedback(new Date());
+       // req.setDataFeedback(new Date());
         feedS.create(req);
         
         List<Feedback> list = feedR.findAll();
@@ -404,12 +399,11 @@ public class FeedbackTest {
         
         // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
-        req.setOrdine(o.getId());
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback per listByID");
         req.setVoto("TRE");
-        req.setDataFeedback(new Date());
+        //req.setDataFeedback(new Date());
         feedS.create(req);
         
         List<Feedback> list = feedR.findAll();
