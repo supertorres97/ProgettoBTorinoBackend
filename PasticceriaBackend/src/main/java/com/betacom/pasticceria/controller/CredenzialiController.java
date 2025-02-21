@@ -49,10 +49,19 @@ public class CredenzialiController {
     }
 	
 	@PostMapping("/signin")
-	public SignInDTO signin(@RequestBody(required = true) SignInReq req) throws Exception {
-		log.debug("Signin: ");		
-		return credS.signIn(req);
+	public ResponseEntity<?> signin(@RequestBody SignInReq req) {
+	    try {
+	        SignInDTO response = credS.signIn(req);
+	        return ResponseEntity.ok(response);
+	    } catch (InvalidCredentialsException e) { // Se le credenziali sono errate
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                .body(Map.of("message", "Credenziali non valide"));
+	    } catch (Exception e) { // Per errori generici
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(Map.of("message", "Errore interno, riprova più tardi"));
+	    }
 	}
+
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.OPTIONS)
 	public ResponseEntity<?> handleOptions2() {
