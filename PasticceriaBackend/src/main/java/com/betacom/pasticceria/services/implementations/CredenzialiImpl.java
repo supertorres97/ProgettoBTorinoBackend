@@ -169,11 +169,11 @@ public class CredenzialiImpl implements CredenzialiService{
         if (usr.isEmpty() || !usr.get().getAttivo()) {
             resp.setLogged(false);
             resp.setIdUtente(null); // 👈 Evitiamo un errore se non esiste
+            resp.setRuolo(null);
         } else {
             resp.setLogged(true);
-            resp.setRole(usr.get().getRuolo().toString());
-
-            // 👇 Controlliamo se l'utente esiste prima di prendere l'ID
+            resp.setRuolo(Utilities.buildRuoloDTO(usr.get().getRuolo()));
+            
             if (usr.get().getUtente() != null) {
                 resp.setIdUtente(usr.get().getUtente().getId());
             } else {
@@ -188,7 +188,7 @@ public class CredenzialiImpl implements CredenzialiService{
         return resp;
     }
 
-    
+    @Override
     public UtenteDTO getUtenteByCredenziali(CredenzialiReq req) {
     	Optional<Credenziali> cred = credR.findByUsernameAndPassword(req.getUsername(), req.getPassword());
     	Optional<Utente> ut = utnR.findById(cred.get().getUtente().getId());

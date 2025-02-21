@@ -2,7 +2,7 @@ package com.betacom.pasticceria.dto;
 
 public class SignInDTO {
 	private Boolean logged;
-	private String role;
+	private RuoliDTO ruolo;
 	public Integer idUtente;
 	
 	public Integer getIdUtente() {
@@ -20,13 +20,18 @@ public class SignInDTO {
 	public void setLogged(Boolean logged) {
 		this.logged = logged;
 	}
-	
-	public String getRole() {
-		return role;
+
+	public RuoliDTO getRuolo() {
+		return ruolo;
 	}
-	
-	public void setRole(String role) {
-		this.role = role;
+
+	public void setRuolo(RuoliDTO ruolo) {
+		this.ruolo = ruolo;
+	}
+
+	@Override
+	public String toString() {
+		return "SignInDTO [logged=" + logged + ", ruolo=" + ruolo + ", idUtente=" + idUtente + "]";
 	}
 	
 }

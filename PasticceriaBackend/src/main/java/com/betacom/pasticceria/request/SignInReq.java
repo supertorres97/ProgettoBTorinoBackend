@@ -4,12 +4,13 @@ public class SignInReq {
 	private String username;
 	private String pwd;
 	private Integer idUtente;
+	private String ruolo;
 	
 	@Override
 	public String toString() {
-		return "SignInReq [username=" + username + ", pwd=" + pwd + "]";
+		return "SignInReq [username=" + username + ", pwd=" + pwd + ", idUtente=" + idUtente + ", ruolo=" + ruolo + "]";
 	}
-	
+
 	public Integer getIdUtente() {
 		return idUtente;
 	}
@@ -33,5 +34,14 @@ public class SignInReq {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
+
+	public String getRuolo() {
+		return ruolo;
+	}
+
+	public void setRuolo(String ruolo) {
+		this.ruolo = ruolo;
+	}
+	
 	
 }
