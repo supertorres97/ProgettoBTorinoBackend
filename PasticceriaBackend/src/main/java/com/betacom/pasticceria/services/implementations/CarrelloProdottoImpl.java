@@ -232,6 +232,9 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 			throw new Exception(msgS.getMessaggio("STOCK_ESAURITO"));
 		}
 		
+		if(cp.getQuantita() != null)
+			quantita = quantita - cp.getQuantita();
+		
 		if((prod.get().getStock() - quantita) < 0) {
 			log.error("quantita inserita supera limiti stock quantita: " + quantita + " stock: " + prod.get().getStock());
 			throw new Exception(msgS.getMessaggio("QUANTITA>STOCK"));
