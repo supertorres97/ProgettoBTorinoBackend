@@ -3,7 +3,9 @@ package com.betacom.pasticceria.services.implementations;
 import static com.betacom.pasticceria.utils.Utilities.buildProdottoDTO;
 import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
 
+import java.lang.classfile.constantpool.IntegerEntry;
 import java.text.SimpleDateFormat;
+import java.text.Normalizer.Form;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -76,27 +78,33 @@ public class FeedbackImpl implements FeedbackService{
 			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
 		}
 		
-		Feedback f = new Feedback();
-		f.setDescrizione(req.getDescrizione());
-		f.setProdotto(prod.get());
-		f.setUtente(ut.get());
-		
-		Voto voto =  Voto.valueOf(req.getVoto().toUpperCase());
-		f.setVoto(voto);
-		f.setDataFeedback(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
-		feedR.save(f);
+		Optional<Feedback> fO = feedR.findByUtenteAndProdotto(ut.get(), prod.get());
+		if(fO.isPresent()) {
+			req.setId(fO.get().getId());
+			update(req);
+		}else {
+			Feedback f = new Feedback();
+			f.setDescrizione(req.getDescrizione());
+			f.setProdotto(prod.get());
+			f.setUtente(ut.get());
+			
+			Voto voto =  Voto.valueOf(req.getVoto().toUpperCase());
+			f.setVoto(voto);
+			f.setDataFeedback(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
+			feedR.save(f);
+		}
 	}
 	
-	public boolean checkOrderedProduct(FeedbackReq req) {
-	    List<Ordine> ordiniUtente = ordR.findByUtente_Id(req.getUtente());
-
-	    // Se l'utente non ha ordini, restituisce false
-	    if (ordiniUtente.isEmpty()) {
-	        return false;
-	    }
-	    //effettua il controllo se il prodotto si trova in almeno un ordine dell'utente
-	    return detR.existsByOrdineInAndProdotto_Id(ordiniUtente, req.getProdotto());
-	}
+//	public boolean checkOrderedProduct(FeedbackReq req) {
+//	    List<Ordine> ordiniUtente = ordR.findByUtente_Id(req.getUtente());
+//
+//	    // Se l'utente non ha ordini, restituisce false
+//	    if (ordiniUtente.isEmpty()) {
+//	        return false;
+//	    }
+//	    //effettua il controllo se il prodotto si trova in almeno un ordine dell'utente
+//	    return detR.existsByOrdineInAndProdotto_Id(ordiniUtente, req.getProdotto());
+//	}
 
 
 	@Override
@@ -224,6 +232,37 @@ public class FeedbackImpl implements FeedbackService{
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public FeedbackDTO findByUtenteAndProdotto(Integer utente, Integer prodotto) throws Exception {
+		
+		Optional<Prodotto> prod = prodR.findById(prodotto);
+		if (prod.isEmpty()) { 
+			log.error("Prodotto inesistente!");
+			throw new Exception(msgS.getMessaggio("NO_RECENSIONE_PRODOTTO_INESISTENTE"));
+		}
+		
+		Optional<Utente> ut = utR.findById(utente);
+		if(ut.isEmpty()) {
+			log.error("Utente inesistente");
+			throw new Exception(msgS.getMessaggio("UTENTE_INESISTENTE"));
+		}
+		
+		Optional<Feedback> fO = feedR.findByUtenteAndProdotto(ut.get(), prod.get());
+		if(fO.isEmpty()) {
+			log.error("feedback inesistente");
+			throw new Exception(msgS.getMessaggio("FEEDBACK_NOT_FOUND"));
+		}
+		
+		return new FeedbackDTO.Builder()
+				.setId(fO.get().getId())
+				.setUtente(buildUtenteDTO(fO.get().getUtente()))
+				.setProdotto(buildProdottoDTO(fO.get().getProdotto()))
+				.setDescrizione(fO.get().getDescrizione())
+				.setVoto(fO.get().getVoto())
+				.setDataFeedback(fO.get().getDataFeedback())
+				.build();
 	}
 
 }

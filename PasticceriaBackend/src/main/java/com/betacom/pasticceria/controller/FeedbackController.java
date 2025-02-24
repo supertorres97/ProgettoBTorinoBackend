@@ -124,4 +124,18 @@ public class FeedbackController {
 		return r;
 	}
 	
+	@GetMapping("/getByUtenteProdotto")
+	public ResponseObject<FeedbackDTO> getByUtenteProdotto(Integer utente, Integer prodotto){
+		ResponseObject<FeedbackDTO> r = new ResponseObject<FeedbackDTO>();
+		r.setRc(true);
+		try {
+			r.setDati(feedS.findByUtenteAndProdotto(utente, prodotto));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			r.setMsg(e.getMessage());
+			r.setRc(false);
+		}
+		return r;
+	}
+	
 }

@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.betacom.pasticceria.model.Feedback;
 import com.betacom.pasticceria.model.Prodotto;
+import com.betacom.pasticceria.model.Utente;
+
 
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer>{
 
 	List<Feedback> findByProdotto_id(Integer id);
 
+	Optional<Feedback> findByUtenteAndProdotto(Utente utente, Prodotto prodotto);
 }

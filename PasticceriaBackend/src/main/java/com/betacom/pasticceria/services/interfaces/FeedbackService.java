@@ -12,4 +12,5 @@ public interface FeedbackService {
 	List<FeedbackDTO> listAll();
 	FeedbackDTO listByID (Integer id) throws Exception;
 	List<FeedbackDTO> listByProdottoID(Integer id) throws Exception;
+	FeedbackDTO findByUtenteAndProdotto(Integer utente, Integer prodotto) throws Exception;
 }
