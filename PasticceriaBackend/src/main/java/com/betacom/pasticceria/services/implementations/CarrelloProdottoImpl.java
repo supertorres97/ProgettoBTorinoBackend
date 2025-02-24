@@ -97,22 +97,19 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	//RIMUOVE IL PRODOTTO DAL CARRELLO (CARRELLOPRODOTTO) INDIPENDENTEMENTE DALLA QUANTITA
 	@Override
 	public void remove(Integer idCarrelloProdotto) throws Exception {
-//		Optional<Carrello> cart = cartR.findById(req.getCarrello());
-//		if(cart.isEmpty())
-//			throw new Exception("Carrello inesistente");
-//		
-//		Optional<Prodotto> prod = prodR.findById(req.getProdotto());
-//		if(prod.isEmpty())
-//			throw new Exception("Ordine inesistente");
-//		
-//		Optional<CarrelloProdotto> cartP = crR.findByProdottoAndCarrello(prod.get(), cart.get());
-//		if(cartP.isEmpty())
-//			throw new Exception("Prodotto non presente nel carrello");
-		
 		Optional<CarrelloProdotto> cartP = cpR.findById(idCarrelloProdotto);
 		if(cartP.isEmpty())
 			throw new Exception(msgS.getMessaggio("CARRELLOPRODOTTO_INESISTENTE"));
+//		Optional<Prodotto> prod = prodR.findById(cartP.get().getProdotto().getId());
+//		if(cartP.isEmpty())
+//			throw new Exception(msgS.getMessaggio("CARRELLOPRODOTTO_INESISTENTE"));
+//		Prodotto prodotto = prod.get();
+//		prodotto.setStock(prodotto.getStock() + cartP.get().getQuantita());
+//		log.debug("quantità dopo modifica: " + prodotto.getStock());
+//		prodR.save(prod.get());
 		
+		CarrelloProdotto c = cartP.get();
+		c = addProduct(c.getProdotto(), c, c.getQuantita());
 		cpR.delete(cartP.get());
 	}
 
