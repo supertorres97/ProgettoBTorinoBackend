@@ -93,9 +93,10 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	}
 	
 	
+	
 	//RIMUOVE IL PRODOTTO DAL CARRELLO (CARRELLOPRODOTTO) INDIPENDENTEMENTE DALLA QUANTITA
 	@Override
-	public void remove(CarrelloProdottoReq req) throws Exception {
+	public void remove(Integer idCarrelloProdotto) throws Exception {
 //		Optional<Carrello> cart = cartR.findById(req.getCarrello());
 //		if(cart.isEmpty())
 //			throw new Exception("Carrello inesistente");
@@ -108,7 +109,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 //		if(cartP.isEmpty())
 //			throw new Exception("Prodotto non presente nel carrello");
 		
-		Optional<CarrelloProdotto> cartP = cpR.findById(req.getId());
+		Optional<CarrelloProdotto> cartP = cpR.findById(idCarrelloProdotto);
 		if(cartP.isEmpty())
 			throw new Exception(msgS.getMessaggio("CARRELLOPRODOTTO_INESISTENTE"));
 		
@@ -223,7 +224,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 	//METODO AUSILIARIO PRIVATO
 	private CarrelloProdotto addProduct(Prodotto prodotto, CarrelloProdotto cartProd, Integer quantita) throws Exception {
 		Optional<Prodotto> prod = prodR.findById(prodotto.getId());
-		
+		log.debug(" quantita:" + quantita);
 		CarrelloProdotto cp = cartProd;
 		
 		if(prod.get().getStock() == 0) {
@@ -241,6 +242,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 		}
 		log.debug("cp quantita: " + cp.getQuantita());
 		if(cp.getQuantita() != null)
+			//cp.setQuantita(quantita);
 			cp.setQuantita(cp.getQuantita() + quantita);
 		else
 			cp.setQuantita(quantita);
