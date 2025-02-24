@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.pasticceria.dto.CarrelloDTO;
 import com.betacom.pasticceria.request.CarrelloReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
+import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.CarrelloService;
 
 @CrossOrigin(origins = "*")
@@ -29,21 +31,6 @@ public class CarrelloController {
 		this.log = log;
 	}
 	
-//	@PostMapping("/create")
-//	public ResponseBase create(@RequestBody(required = true) CarrelloReq req) {
-//		log.debug("create carrello: " + req);
-//		ResponseBase r = new ResponseBase();
-//		r.setRc(true);
-//		
-//		try {
-//			cartS.create(req);
-//		} catch (Exception e) {
-//			r.setRc(false);
-//			r.setMsg(e.getMessage());
-//		}
-//		return r;
-//	}
-	
 	@GetMapping("/listAll")
 	public ResponseList<CarrelloDTO> listAll(){
 		log.debug("listAll carrello");
@@ -57,5 +44,19 @@ public class CarrelloController {
 			r.setMsg(e.getMessage());
 		}
 		return r;
+	}
+	
+	@GetMapping("/listByUtente")
+	public ResponseObject<CarrelloDTO> listByUtente(@RequestParam(required = false) Integer idUtente){
+		ResponseObject<CarrelloDTO> cart = new ResponseObject<CarrelloDTO>();
+		cart.setRc(true);
+		
+		try {
+			cart.setDati(cartS.listByUtente(idUtente));
+		} catch (Exception e) {
+			cart.setRc(false);
+			cart.setMsg(e.getMessage());
+		}
+		return cart;
 	}
 }

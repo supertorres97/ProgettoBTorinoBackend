@@ -77,4 +77,17 @@ public class CarrelloImpl implements CarrelloService{
 		
 		cartR.save(c);
 	}
+	
+	@Override
+	public CarrelloDTO listByUtente(Integer idUtente) throws Exception {
+		Optional<Carrello> cart = cartR.findByUtente_Id(idUtente);
+		if(cart.isEmpty())
+			throw new Exception(msgS.getMessaggio("CARRELLO_INESISTENTE"));
+		
+		return new CarrelloDTO.Builder()
+						.setId(cart.get().getId())
+						.setUtente(buildUtenteDTO(cart.get().getUtente()))
+						.build();
+		
+	}
 }

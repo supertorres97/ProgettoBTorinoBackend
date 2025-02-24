@@ -9,4 +9,5 @@ import com.betacom.pasticceria.request.CarrelloReq;
 public interface CarrelloService {
 	void create (Utente utente) throws Exception;
 	List<CarrelloDTO> listAll() throws Exception;
+	CarrelloDTO listByUtente(Integer idUtente) throws Exception;
 }
