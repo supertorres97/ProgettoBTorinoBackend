@@ -238,14 +238,19 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService{
 			throw new Exception(msgS.getMessaggio("QUANTITA>STOCK"));
 		}
 		log.debug("cp quantita: " + cp.getQuantita());
-		if(cp.getQuantita() != null)
-			//cp.setQuantita(quantita);
+		if(cp.getQuantita() != null){
 			cp.setQuantita(cp.getQuantita() + quantita);
-		else
+			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
+		}
+		else {
 			cp.setQuantita(quantita);
+			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
+		}
 		
-		if(cp.getQuantita() < 0)
+		if(cp.getQuantita() < 0) {
 			cp.setQuantita(0);
+			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
+		}
 		
 		log.debug("QUANTITA FINALE " + cp.getQuantita());
 		prod.get().setStock(prod.get().getStock() - quantita);
