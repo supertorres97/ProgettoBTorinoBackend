@@ -11,7 +11,6 @@ public class ProdottoReq {
     private Boolean disponibile;
     private String img;
     
-    
 	public Integer getId() {
 		return id;
 	}
