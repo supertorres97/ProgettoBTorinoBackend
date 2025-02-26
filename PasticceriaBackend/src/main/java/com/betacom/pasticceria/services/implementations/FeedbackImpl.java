@@ -183,7 +183,7 @@ public class FeedbackImpl implements FeedbackService {
 			throw new Exception(msgS.getMessaggio("UTENTE_SENZA_ORDINI"));
 
 		log.debug("Num ordini:" + orL.size());
-
+		
 		for (Ordine o : orL) {
 			log.debug("o: " + o);
 			if (o.getStatus().toString().equalsIgnoreCase("Consegnato")) {

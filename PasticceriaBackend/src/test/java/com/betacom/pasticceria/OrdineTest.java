@@ -240,7 +240,7 @@ public class OrdineTest {
 		ResponseObject<OrdineDTO> r = ordC.listByID(999);
 
 		Assertions.assertThat(r.getRc()).isEqualTo(false);
-		Assertions.assertThat(r.getMsg()).isEqualTo("Id ordine non trovato");
+		Assertions.assertThat(r.getMsg()).isEqualTo("L'id ordine non è stato trovato!");
 	}
 
 	@Test
@@ -303,7 +303,7 @@ public class OrdineTest {
 		ResponseBase r = ordC.update(req);
 
 		Assertions.assertThat(r.getRc()).isEqualTo(false);
-		Assertions.assertThat(r.getMsg()).isEqualTo("Ordine non trovato");
+		Assertions.assertThat(r.getMsg()).isEqualTo("L'ordine non è stato trovato!");
 	}
 
 }

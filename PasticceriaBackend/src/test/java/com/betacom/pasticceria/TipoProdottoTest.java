@@ -119,7 +119,16 @@ public class TipoProdottoTest {
 	}
 	
 	@Test
-	@Order(5)
+	@Order(6)
+	public void deleteTipoProdottoErrorsTest() throws Exception{
+		TipoProdottoReq tP = new TipoProdottoReq();
+		tP.setId(400);
+		
+		assertThrows(Exception.class, () -> {tiPS.delete(tP);});
+	}
+	
+	@Test
+	@Order(9)
 	public void listAll() throws Exception{
 		List<TipoProdottoDTO> lT = tiPS.listAll();
 		Assertions.assertThat(lT.size()).isGreaterThan(0);

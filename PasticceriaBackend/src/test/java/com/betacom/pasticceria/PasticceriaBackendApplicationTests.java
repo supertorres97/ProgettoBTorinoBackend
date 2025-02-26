@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @Suite
 @SelectClasses({
+	MessaggioTest.class,
 	TipoProdottoTest.class,
 	ProdottoTest.class,
 	RuoliTest.class,
@@ -15,9 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 	CarrelloTest.class,
 	OrdineTest.class,
 	DettagliOrdineTest.class,
-	FeedbackTest.class,
 	CarrelloProdottoTest.class,
-	MessaggioTest.class
+	FeedbackTest.class
+	
 })
 
 @SpringBootTest

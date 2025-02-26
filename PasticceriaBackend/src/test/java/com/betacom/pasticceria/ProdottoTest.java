@@ -3,6 +3,7 @@ package com.betacom.pasticceria;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,8 @@ import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.ProdottoService;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -51,6 +54,12 @@ public class ProdottoTest {
 	@Test
 	@Order(1)
 	public void createProdottoTest() throws Exception {
+		
+		byte[] fileContent = "Questo è un file di test".getBytes();
+	        
+		MultipartFile  fileTest = new MockMultipartFile("file", "testfile.txt", "text/plain", fileContent);
+	        
+		
 		ProdottoReq pr = new ProdottoReq();
 		pr.setDescrizione("Ricotta, farina");
 		pr.setNome("Cannolo");
@@ -60,7 +69,7 @@ public class ProdottoTest {
 		pr.setPrezzo(2.50);
 		pr.setDisponibile(true);
 		pr.setImg("ciao");
-		prodS.create(pr);
+		prodS.create(pr, fileTest);
 		log.debug("prodotto creato con successo");
 
 		pr.setDescrizione("Riso, zafferano, ragù");
@@ -71,7 +80,7 @@ public class ProdottoTest {
 		pr.setPrezzo(3.50);
 		pr.setDisponibile(true);
 		pr.setImg("ciao");
-		prodS.create(pr);
+		prodS.create(pr, fileTest);
 		log.debug("prodotto creato con successo");
 
 		pr.setDescrizione("Sfoglia, farino, burro, crema alla vaniglia");
@@ -82,7 +91,7 @@ public class ProdottoTest {
 		pr.setPrezzo(2.50);
 		pr.setDisponibile(true);
 		pr.setImg("ciao");
-		prodS.create(pr);
+		prodS.create(pr, fileTest);
 		log.debug("prodotto creato con successo");
 
 		List<Prodotto> lP = prodRepo.findAll();
@@ -93,6 +102,11 @@ public class ProdottoTest {
 	@Test
 	@Order(2)
 	public void createProdottoErrorTest() throws Exception {
+		
+		byte[] fileContent = "Questo è un file di test".getBytes();
+        
+		MultipartFile  fileTest = new MockMultipartFile("file", "testfile.txt", "text/plain", fileContent);
+		
 		ProdottoReq pr = new ProdottoReq();
 		pr.setDescrizione("Ricotta, farina");
 		pr.setNome("Cannolo");
@@ -101,7 +115,7 @@ public class ProdottoTest {
 		pr.setDisponibile(true);
 		
 		assertThrows(Exception.class, () -> {
-			prodS.create(pr);
+			prodS.create(pr, fileTest);
 		});
 	}
 

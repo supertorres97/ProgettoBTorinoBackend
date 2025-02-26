@@ -87,7 +87,7 @@ public class FeedbackTest {
         o.setTotale(100.0);
         o.setIndirizzo(u.getVia() + " " + u.getCAP() + " " + u.getCitta());
         o.setDataOrdine(new Date());
-        o.setStatus(Status.Confermato);
+        o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
         // Creazione di un TipoProdotto
@@ -96,16 +96,18 @@ public class FeedbackTest {
         t = tipoProdR.save(t);
         
         // Creazione di un Prodotto
-        Prodotto p = new Prodotto();
-        p.setDisponibile(true);
-        p.setTipo(t);
-        p.setNome("ProdottoFeedback");
-        p.setDescrizione("Prodotto per feedback test");
-        p.setPeso(1.0);
-        p.setPrezzo(20.0);
-        p.setStock(50);
-        p.setImg("ciao");
-        p = prodR.save(p);
+        Optional<Prodotto> pr = prodR.findById(1);
+        Prodotto p = pr.get();
+//        Prodotto p = new Prodotto();
+//        p.setDisponibile(true);
+//        p.setTipo(t);
+//        p.setNome("ProdottoFeedback");
+//        p.setDescrizione("Prodotto per feedback test");
+//        p.setPeso(1.0);
+//        p.setPrezzo(20.0);
+//        p.setStock(50);
+//        p.setImg("ciao");
+//        p = prodR.save(p);
         
         // Creazione di un DettagliOrdine per far superare il checkOrderedProduct
         DettagliOrdine d = new DettagliOrdine();

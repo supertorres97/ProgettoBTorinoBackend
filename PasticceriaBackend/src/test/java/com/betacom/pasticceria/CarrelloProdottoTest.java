@@ -157,13 +157,13 @@ public class CarrelloProdottoTest {
 		req.setCarrello(1);
 		req.setProdotto(1);
 		req.setId(1);
-		//cpS.remove(req);
+		cpS.remove(req.getId());
 		
 		req.setCarrello(1);
 		req.setProdotto(1);
 		req.setId(50);
 		assertThrows(Exception.class, () -> {
-			//cpS.remove(req);
+			cpS.remove(req.getId());
 		});
 	}
 	
