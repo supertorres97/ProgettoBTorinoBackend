@@ -85,6 +85,8 @@ public class UtenteImpl implements UtenteService {
 			utn = utenteR.findByEmail(req.getEmail());
 			if (utn.isEmpty())
 				u.setEmail(req.getEmail());
+			else
+				throw new Exception(msgS.getMessaggio("EMAIL_GIA_ESISTENTE"));
 		}
 		
 		if (req.getcFiscale() != null) {

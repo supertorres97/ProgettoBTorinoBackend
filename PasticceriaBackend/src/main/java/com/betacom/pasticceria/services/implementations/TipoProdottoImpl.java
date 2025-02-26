@@ -14,6 +14,7 @@ import com.betacom.pasticceria.repositories.TipoProdottoRepository;
 import com.betacom.pasticceria.request.TipoProdottoReq;
 import com.betacom.pasticceria.services.interfaces.MessaggioService;
 import com.betacom.pasticceria.services.interfaces.TipoProdottoService;
+import static com.betacom.pasticceria.utils.Utilities.buildTipoProdottoDTO;
 
 @Service
 public class TipoProdottoImpl implements TipoProdottoService {
@@ -92,7 +93,8 @@ public class TipoProdottoImpl implements TipoProdottoService {
 	@Override
 	public TipoProdottoDTO listByID(Integer id) throws Exception {
 		Optional<TipoProdotto> tP = tPR.findById(id);
-		return new TipoProdottoDTO.Builder().setId(tP.get().getId()).setDescrizione(tP.get().getDescrizione()).build();
+		return buildTipoProdottoDTO(tP.get());
+//		return new TipoProdottoDTO.Builder().setId(tP.get().getId()).setDescrizione(tP.get().getDescrizione()).build();
 	}
 
 }
