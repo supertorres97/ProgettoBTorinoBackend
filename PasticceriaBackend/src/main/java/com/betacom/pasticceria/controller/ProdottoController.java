@@ -51,7 +51,7 @@ public class ProdottoController {
 	
 	@PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ResponseBase> createProdotto(
-	        @RequestPart("product") ProdottoReq req,
+	        @RequestPart("prodottoReq") ProdottoReq req,
 	        @RequestPart("img") MultipartFile imgFile) {
 	    ResponseBase response = new ResponseBase();
 	    response.setRc(true);
