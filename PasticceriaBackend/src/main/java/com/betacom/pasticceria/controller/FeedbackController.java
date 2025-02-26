@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.FeedbackService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @CrossOrigin(origins = "*")
@@ -25,7 +23,6 @@ public class FeedbackController {
 	private FeedbackService feedS;
 	private Logger log;
 	
-	@Autowired
 	public FeedbackController(FeedbackService feedS, Logger log) {
 		super();
 		this.feedS = feedS;

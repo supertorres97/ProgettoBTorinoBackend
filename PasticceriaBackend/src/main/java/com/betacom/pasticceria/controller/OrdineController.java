@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,16 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.pasticceria.dto.FeedbackDTO;
 import com.betacom.pasticceria.dto.OrdineDTO;
-import com.betacom.pasticceria.request.FeedbackReq;
 import com.betacom.pasticceria.request.OrdineReq;
-import com.betacom.pasticceria.request.SignUpReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.interfaces.OrdineService;
-import com.betacom.pasticceria.services.interfaces.UtenteService;
 
 @CrossOrigin(origins = "*")
 @RestController

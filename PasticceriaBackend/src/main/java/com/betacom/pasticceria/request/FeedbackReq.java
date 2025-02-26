@@ -1,14 +1,11 @@
 package com.betacom.pasticceria.request;
 
-import java.util.Date;
-
 public class FeedbackReq {
 	private Integer id;
 	private Integer utente;
 	private Integer prodotto;
 	private String descrizione;
 	private String voto;
-//    private String dataFeedback;
     
 	public Integer getId() {
 		return id;
@@ -49,14 +46,6 @@ public class FeedbackReq {
 	public void setVoto(String voto) {
 		this.voto = voto;
 	}
-	
-//	public Date getDataFeedback() {
-//		return dataFeedback;
-//	}
-//	
-//	public void setDataFeedback(Date dataFeedback) {
-//		this.dataFeedback = dataFeedback;
-//	}
 
 	@Override
 	public String toString() {

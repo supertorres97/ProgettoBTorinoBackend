@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +24,6 @@ public class CarrelloProdottoController {
 	private CarrelloProdottoService cartS;
 	private Logger log;
 	
-	@Autowired
 	public CarrelloProdottoController (CarrelloProdottoService cartS, Logger log) {
 		this.cartS = cartS;
 		this.log = log;

@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +24,6 @@ public class UtenteController {
 	private UtenteService utnS;
 	private Logger log;
 	
-	@Autowired
 	public UtenteController (UtenteService utnS, Logger log) {
 		this.utnS = utnS;
 		this.log = log;

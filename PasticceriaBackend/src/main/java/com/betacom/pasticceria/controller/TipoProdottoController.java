@@ -1,7 +1,6 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,7 @@ public class TipoProdottoController {
 	private TipoProdottoService tPS;
 	private Logger log;
 	
-	@Autowired
+
 	public TipoProdottoController(TipoProdottoService tPS, Logger log) {
 		super();
 		this.tPS = tPS;

@@ -2,9 +2,6 @@ package com.betacom.pasticceria.dto;
 
 import java.util.List;
 
-import com.betacom.pasticceria.model.Carrello;
-import com.betacom.pasticceria.model.Credenziali;
-
 public class UtenteDTO {
 	private Integer id;
 	private String nome;
