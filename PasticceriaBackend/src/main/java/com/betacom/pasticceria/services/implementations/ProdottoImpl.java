@@ -1,16 +1,14 @@
 package com.betacom.pasticceria.services.implementations;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.model.Prodotto;
@@ -38,56 +36,101 @@ public class ProdottoImpl implements ProdottoService {
 		this.msgS = msgS;
 	}
 
+//	@Override
+//	public void create(ProdottoReq req) throws Exception {
+//		log.debug("Create prodotto: " + req);
+//
+//		Optional<Prodotto> pr = prodR.findByNome(req.getNome());
+//		if (pr.isPresent())
+//			throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
+//
+//		Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
+//		if (tP.isEmpty())
+//			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
+//
+//		Prodotto p = new Prodotto();
+//		p.setTipo(tP.get());
+//		p.setNome(req.getNome());
+//		p.setDescrizione(req.getDescrizione());
+//		p.setPeso(req.getPeso());
+//		p.setPrezzo(req.getPrezzo());
+//		p.setStock(req.getStock());
+//		p.setDisponibile(req.getDisponibile());
+//
+//		String imageName = saveImage(req.getImg());
+//
+//		p.setImg(imageName);
+//
+//		prodR.save(p);
+//		msgS.getMessaggio("NEW_PRODOTTO");
+//	}
+
 	@Override
-	public void create(ProdottoReq req) throws Exception {
-		log.debug("Create prodotto: " + req);
+    public void create(ProdottoReq req, MultipartFile imgFile) throws Exception {
+        log.debug("Create prodotto: " + req);
 
-		Optional<Prodotto> pr = prodR.findByNome(req.getNome());
-		if (pr.isPresent())
-			throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
+        // Verifica se il prodotto esiste già
+        Optional<Prodotto> pr = prodR.findByNome(req.getNome());
+        if(pr.isPresent())
+            throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
 
-		Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
-		if (tP.isEmpty())
-			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
+        // Verifica il tipo di prodotto
+        Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
+        if(tP.isEmpty())
+            throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
-		Prodotto p = new Prodotto();
-		p.setTipo(tP.get());
-		p.setNome(req.getNome());
-		p.setDescrizione(req.getDescrizione());
-		p.setPeso(req.getPeso());
-		p.setPrezzo(req.getPrezzo());
-		p.setStock(req.getStock());
-		p.setDisponibile(req.getDisponibile());
+        // Creazione del prodotto
+        Prodotto p = new Prodotto();
+        p.setTipo(tP.get());
+        p.setNome(req.getNome());
+        p.setDescrizione(req.getDescrizione());
+        p.setPeso(req.getPeso());
+        p.setPrezzo(req.getPrezzo());
+        p.setStock(req.getStock());
+        p.setDisponibile(req.getDisponibile());
 
-		String imageName = saveImage(req.getImg());
+        // Salvataggio dell'immagine, usando il nome originale
+        String imageName = saveImage(imgFile);
+        log.debug("Immagine salvata con nome: " + imageName);
+        p.setImg(imageName);  // Salva solo il nome dell'immagine nel DB
 
-		p.setImg(imageName);
+        // Salvataggio nel database
+        prodR.save(p);
+        msgS.getMessaggio("NEW_PRODOTTO");        
+    }
+    
 
-		prodR.save(p);
-		msgS.getMessaggio("NEW_PRODOTTO");
-	}
+	    private String saveImage(MultipartFile imgFile) throws IOException {
+	        // Ottieni il nome originale
+	        String originalFileName = imgFile.getOriginalFilename();
+	        if (originalFileName == null) {
+	            throw new IllegalArgumentException("Il nome originale del file non è disponibile.");
+	        }
 
-	private String saveImage(String base64Image) throws IOException {
+	        // Definisci la cartella in cui salvare le immagini
+	        String imageDirectory = "C:/Users/Betacom/angular-workspace/ProgettoBTorinoFrontend/public";
+	        File imageFolder = new File(imageDirectory);
+	        if (!imageFolder.exists()) {
+	            imageFolder.mkdirs();
+	        }
 
-		String imageData = base64Image;
+	        // Usa il nome originale, aggiungendo un suffisso se il file esiste già
+	        File imageFile = new File(imageFolder, originalFileName);
+	        int counter = 1;
+	        while (imageFile.exists()) {
+	            int dotIndex = originalFileName.lastIndexOf('.');
+	            String baseName = (dotIndex != -1) ? originalFileName.substring(0, dotIndex) : originalFileName;
+	            String extension = (dotIndex != -1) ? originalFileName.substring(dotIndex) : "";
+	            String newName = baseName + "_" + counter + extension;
+	            imageFile = new File(imageFolder, newName);
+	            counter++;
+	        }
 
-		byte[] imageBytes = Base64.getDecoder().decode(imageData);
+	        // Salva il file
+	        imgFile.transferTo(imageFile);
+	        return imageFile.getName();
+	    }
 
-		String imageDirectory = "C:/Users/Betacom/angular-workspace/ProgettoBTorinoFrontend/public";
-		File imageFolder = new File(imageDirectory);
-		if (!imageFolder.exists()) {
-			imageFolder.mkdirs();
-		}
-
-		String imageName = UUID.randomUUID().toString() + ".png";
-		File imageFile = new File(imageFolder, imageName);
-
-		try (FileOutputStream fos = new FileOutputStream(imageFile)) {
-			fos.write(imageBytes);
-		}
-
-		return imageName;
-	}
 
 	@Override
 	public void update(ProdottoReq req) throws Exception {

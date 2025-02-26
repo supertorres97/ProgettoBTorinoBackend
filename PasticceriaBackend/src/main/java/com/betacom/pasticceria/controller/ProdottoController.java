@@ -1,12 +1,17 @@
 package com.betacom.pasticceria.controller;
 
 import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.request.ProdottoReq;
@@ -29,20 +34,38 @@ public class ProdottoController {
 		this.log = log;
 	}
 	
-	@PostMapping("/create")
-	public ResponseBase create(@RequestBody(required = true) ProdottoReq req) {
-		log.debug("Create prodotto: " + req);
-		ResponseBase r = new ResponseBase();
-		r.setRc(true);
-		try {
-			prodS.create(req);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			r.setMsg(e.getMessage());
-			r.setRc(false);
-		}
-		return r;
+//	@PostMapping("/create")
+//	public ResponseBase create(@RequestBody(required = true) ProdottoReq req) {
+//		log.debug("Create prodotto: " + req);
+//		ResponseBase r = new ResponseBase();
+//		r.setRc(true);
+//		try {
+//			prodS.create(req);
+//		} catch (Exception e) {
+//			log.error(e.getMessage());
+//			r.setMsg(e.getMessage());
+//			r.setRc(false);
+//		}
+//		return r;
+//	}
+	
+	@PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ResponseBase> createProdotto(
+	        @RequestPart("product") ProdottoReq req,
+	        @RequestPart("img") MultipartFile imgFile) {
+	    ResponseBase response = new ResponseBase();
+	    response.setRc(true);
+	    try {
+	        prodS.create(req, imgFile);
+	        response.setMsg("Nuovo prodotto creato con successo");
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        response.setRc(false);
+	        response.setMsg(e.getMessage());
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+	    }
 	}
+
 	
 	@PostMapping("/update")
 	public ResponseBase update(@RequestBody(required = true) ProdottoReq req) {

@@ -10,7 +10,16 @@ public class ProdottoReq {
     private Integer stock;
     private Boolean disponibile;
     private String img;
+    private String imgName;
     
+	public String getImgName() {
+		return imgName;
+	}
+
+	public void setImgName(String imgName) {
+		this.imgName = imgName;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -87,7 +96,9 @@ public class ProdottoReq {
 	public String toString() {
 		return "ProdottoReq [id=" + id + ", tipo=" + tipo + ", nome=" + nome + ", descrizione=" + descrizione
 				+ ", peso=" + peso + ", prezzo=" + prezzo + ", stock=" + stock + ", disponibile=" + disponibile
-				+ ", img=" + img + "]";
+				+ ", img=" + img + ", imgName=" + imgName + "]";
 	}
+
+	
 
 }
