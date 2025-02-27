@@ -32,7 +32,7 @@ public class Prodotto {
     @Column(nullable = false)
     public Boolean disponibile;
 
-    @OneToMany(mappedBy = "prodotto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "prodotto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CarrelloProdotto> carrelliProdotti;
     
     @Column(nullable = false)

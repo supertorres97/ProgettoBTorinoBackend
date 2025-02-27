@@ -10,7 +10,7 @@ public class Carrello {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "carrello", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "carrello", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CarrelloProdotto> prodottiCarrello;
     
     @OneToOne
