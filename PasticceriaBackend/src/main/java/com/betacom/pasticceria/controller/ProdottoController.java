@@ -33,22 +33,7 @@ public class ProdottoController {
 		this.prodS = prodS;
 		this.log = log;
 	}
-	
-//	@PostMapping("/create")
-//	public ResponseBase create(@RequestBody(required = true) ProdottoReq req) {
-//		log.debug("Create prodotto: " + req);
-//		ResponseBase r = new ResponseBase();
-//		r.setRc(true);
-//		try {
-//			prodS.create(req);
-//		} catch (Exception e) {
-//			log.error(e.getMessage());
-//			r.setMsg(e.getMessage());
-//			r.setRc(false);
-//		}
-//		return r;
-//	}
-	
+
 	@PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<ResponseBase> createProdotto(
 	        @RequestPart("prodottoReq") ProdottoReq req,
@@ -138,11 +123,7 @@ public class ProdottoController {
 			log.error(e.getMessage());
 			r.setMsg(e.getMessage());
 			r.setRc(false);
-		}
-		
-//		if(r.getRc() == false) 
-//			r.setDati(prodS.listAll());)
-		
+		}	
 		return r;
 	}
 	
@@ -158,9 +139,6 @@ public class ProdottoController {
 			r.setMsg(e.getMessage());
 			r.setRc(false);
 		}
-		
-//		if(r.getRc() == false) 
-//			r.setDati(prodS.listAll());)
 		
 		return r;
 	}

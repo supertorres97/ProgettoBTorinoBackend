@@ -7,8 +7,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.model.Prodotto;
@@ -23,6 +25,12 @@ import com.betacom.pasticceria.utils.Utilities;
 @Service
 public class ProdottoImpl implements ProdottoService {
 
+	@Value("${spring.mvc.static-path-pattern}")
+    private String staticPathPattern;
+	
+	@Value("${upload.directory}")
+	private String finaldirectory;
+	
 	private ProdottoRepository prodR;
 	private TipoProdottoRepository tPR;
 	private MessaggioService msgS;
@@ -36,100 +44,68 @@ public class ProdottoImpl implements ProdottoService {
 		this.msgS = msgS;
 	}
 
-//	@Override
-//	public void create(ProdottoReq req) throws Exception {
-//		log.debug("Create prodotto: " + req);
-//
-//		Optional<Prodotto> pr = prodR.findByNome(req.getNome());
-//		if (pr.isPresent())
-//			throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
-//
-//		Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
-//		if (tP.isEmpty())
-//			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
-//
-//		Prodotto p = new Prodotto();
-//		p.setTipo(tP.get());
-//		p.setNome(req.getNome());
-//		p.setDescrizione(req.getDescrizione());
-//		p.setPeso(req.getPeso());
-//		p.setPrezzo(req.getPrezzo());
-//		p.setStock(req.getStock());
-//		p.setDisponibile(req.getDisponibile());
-//
-//		String imageName = saveImage(req.getImg());
-//
-//		p.setImg(imageName);
-//
-//		prodR.save(p);
-//		msgS.getMessaggio("NEW_PRODOTTO");
-//	}
-
 	@Override
     public void create(ProdottoReq req, MultipartFile imgFile) throws Exception {
-        log.debug("Create prodotto: " + req);
+		 log.debug("Create prodotto: " + req);
 
-        // Verifica se il prodotto esiste già
-        Optional<Prodotto> pr = prodR.findByNome(req.getNome());
-        if(pr.isPresent())
-            throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
+	        Optional<Prodotto> pr = prodR.findByNome(req.getNome());
+	        if (pr.isPresent())
+	            throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
 
-        // Verifica il tipo di prodotto
-        Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
-        if(tP.isEmpty())
-            throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
+	        Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
+	        if (tP.isEmpty())
+	            throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
-        // Creazione del prodotto
-        Prodotto p = new Prodotto();
-        p.setTipo(tP.get());
-        p.setNome(req.getNome());
-        p.setDescrizione(req.getDescrizione());
-        p.setPeso(req.getPeso());
-        p.setPrezzo(req.getPrezzo());
-        p.setStock(req.getStock());
-        p.setDisponibile(req.getDisponibile());
+	        Prodotto p = new Prodotto();
+	        p.setTipo(tP.get());
+	        p.setNome(req.getNome());
+	        p.setDescrizione(req.getDescrizione());
+	        p.setPeso(req.getPeso());
+	        p.setPrezzo(req.getPrezzo());
+	        p.setStock(req.getStock());
+	        p.setDisponibile(req.getDisponibile());
 
-        // Salvataggio dell'immagine, usando il nome originale
-        String imageName = saveImage(imgFile);
-        log.debug("Immagine salvata con nome: " + imageName);
-        p.setImg(imageName);  // Salva solo il nome dell'immagine nel DB
+	        String imageUrl = saveImage(imgFile);
+	        log.debug("Immagine salvata con URL: " + imageUrl);
+	        p.setImg(imageUrl);
 
-        // Salvataggio nel database
-        prodR.save(p);
-        msgS.getMessaggio("NEW_PRODOTTO");        
+	        prodR.save(p);
+	        msgS.getMessaggio("NEW_PRODOTTO");
     }
     
-
-	    private String saveImage(MultipartFile imgFile) throws IOException {
-	        // Ottieni il nome originale
-	        String originalFileName = imgFile.getOriginalFilename();
+	 private String saveImage(MultipartFile imgFile) throws IOException {
+		 String originalFileName = imgFile.getOriginalFilename();
 	        if (originalFileName == null) {
 	            throw new IllegalArgumentException("Il nome originale del file non è disponibile.");
 	        }
 
-	        // Definisci la cartella in cui salvare le immagini
-	        String imageDirectory = "C:/Users/Betacom/angular-workspace/ProgettoBTorinoFrontend/public";
-	        File imageFolder = new File(imageDirectory);
-	        if (!imageFolder.exists()) {
-	            imageFolder.mkdirs();
+	        String uploadsDirectory = finaldirectory;
+	        File uploadsFolder = new File(uploadsDirectory);
+	        log.debug("Percorso uploads: " + uploadsFolder.getAbsolutePath());
+	        if (!uploadsFolder.exists()) {
+	            uploadsFolder.mkdirs();
 	        }
 
-	        // Usa il nome originale, aggiungendo un suffisso se il file esiste già
-	        File imageFile = new File(imageFolder, originalFileName);
+	        File imageFile = new File(uploadsFolder, originalFileName);
 	        int counter = 1;
 	        while (imageFile.exists()) {
 	            int dotIndex = originalFileName.lastIndexOf('.');
 	            String baseName = (dotIndex != -1) ? originalFileName.substring(0, dotIndex) : originalFileName;
 	            String extension = (dotIndex != -1) ? originalFileName.substring(dotIndex) : "";
 	            String newName = baseName + "_" + counter + extension;
-	            imageFile = new File(imageFolder, newName);
+	            imageFile = new File(uploadsFolder, newName);
 	            counter++;
 	        }
 
-	        // Salva il file
 	        imgFile.transferTo(imageFile);
-	        return imageFile.getName();
+	        String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+	        	    .path("/images/" + imageFile.getName())
+	        	    .toUriString();
+
+	        return imageUrl;
 	    }
+	    
+	    
 
 
 	@Override
@@ -230,7 +206,7 @@ public class ProdottoImpl implements ProdottoService {
 	public List<ProdottoDTO> listByTipoProdotto(Integer tipoProdotto) throws Exception {
 		Optional<TipoProdotto> tp = tPR.findById(tipoProdotto);
 		if (tp.isEmpty())
-			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
+			throw new Exception("Tipo Prodotto inesistente");
 
 		List<Prodotto> lP = prodR.findAllByTipo(tp.get());
 
