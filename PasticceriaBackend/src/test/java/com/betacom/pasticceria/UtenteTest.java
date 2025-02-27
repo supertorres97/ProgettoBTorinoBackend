@@ -66,13 +66,13 @@ public class UtenteTest {
 		ut.setCognome("Gino");
 		ut.setNome("Lucioni");
 		ut.setcFiscale("LKSNZT84S29A664N");
-		ut.setEmail("gino.frick@gmail.com");
+		ut.setEmail("ginoos.frick@gmail.com");
 		ut.setVia("Via Roma 3");
 		ut.setCitta("Torino");
 		ut.setCap("10144");
 		
 		CredenzialiReq cr = new CredenzialiReq();
-		cr.setUsername("gino90");
+		cr.setUsername("gino909s");
 		cr.setPassword("castello90");
 		
 		utSer.create(ut, cr);
@@ -95,12 +95,12 @@ public class UtenteTest {
 		ut.setCognome("Marco");
 		ut.setNome("Fistoni");
 		ut.setcFiscale("YFLCVZ95C04C216D");
-		ut.setEmail("fistoni.mark@gmail.com");
+		ut.setEmail("fistoniz.mark@gmail.com");
 		ut.setVia("Corso Giulio Cesare 22");
 		ut.setCitta("Torino");
 		ut.setCap("10140");
 		
-		cr.setUsername("mark45");
+		cr.setUsername("mark452");
 		cr.setPassword("intermerda45");
 		
 		utSer.create(ut, cr);
@@ -108,7 +108,7 @@ public class UtenteTest {
 		
 		List<Utente> lP = utRepo.findAll(); 
 		Assertions.assertThat(lP.size()).isGreaterThan(0);
-		Assertions.assertThat(lP.size()).isEqualTo(3);
+		Assertions.assertThat(lP.size()).isEqualTo(4);
 	}
 		
 	@Test
@@ -118,7 +118,7 @@ public class UtenteTest {
 		ut.setCognome("Hans");
 		ut.setNome("KLopp");
 		ut.setcFiscale("LKSNZT84S29A664N");
-		ut.setEmail("gino.frick@gmail.com");
+		ut.setEmail("ginoos.frick@gmail.com");
 		ut.setVia("Via Parma 3");
 		ut.setCitta("Torino");
 		ut.setCap("10111");
@@ -129,6 +129,7 @@ public class UtenteTest {
 					
 		assertThrows(Exception.class, () -> {utSer.create(ut, cr);}); 
 		
+		ut.setNome("fjfj2");
 		ut.setCognome("Gino");
 		ut.setCap("10144");
 		ut.setcFiscale(null);
@@ -187,7 +188,7 @@ public class UtenteTest {
 		
 		List<CredenzialiDTO> lP = credS.listAll();
 		Assertions.assertThat(lP.size()).isGreaterThan(0);
-		Assertions.assertThat(lP.size()).isEqualTo(3);
+		Assertions.assertThat(lP.size()).isEqualTo(4);
 		CredenzialiDTO dto = credS.listByID(3);
 		Assertions.assertThat(dto.getAttivo() == false);
 
@@ -198,7 +199,7 @@ public class UtenteTest {
 	public void listAll() throws Exception{
 		List<UtenteDTO> lP = utSer.listAll();
 		Assertions.assertThat(lP.size()).isGreaterThan(0);
-		Assertions.assertThat(lP.size()).isEqualTo(3);
+		Assertions.assertThat(lP.size()).isEqualTo(4);
 	}
 	
 	@Test
@@ -296,6 +297,35 @@ public class UtenteTest {
 	    Assertions.assertThat(updatedResponse.getRc()).isEqualTo(true);
 	    Assertions.assertThat(updatedResponse.getDati().getNome()).isEqualTo("Giovanni");
 
+	}
+	
+	@Test
+	@Order(1)
+	public void createAdminTest() throws Exception{
+		UtenteReq ut = new UtenteReq();
+		
+		CredenzialiReq cr = new CredenzialiReq();
+		
+		ut.setCognome("Marco");
+		ut.setNome("Fistoni");
+		ut.setcFiscale("YFLCVZ95C04C216D");
+		ut.setEmail("fistroni.mark@gmail.com");
+		ut.setVia("Corso Giulio Cesare 22");
+		ut.setCitta("Torino");
+		ut.setCap("10140");
+		
+		cr.setUsername("mark435");
+		cr.setPassword("intermerda45");
+		
+		utSer.createAdmin(ut, cr);
+		log.debug("utente e credenziali create con successo");
+		
+		UtenteDTO ud = credS.getUtenteByCredenziali(cr);
+		log.debug(ud.getEmail());
+		CredenzialiDTO cd = credS.getCredenzialiByUtente(ud.getId());
+		log.debug(cd.getUsername());
+		log.debug("*********************** " + cd);
+		Assertions.assertThat(cd.getRuolo().getDescrizione().toString()).isEqualTo("ADMIN");
 	}
 	
 }

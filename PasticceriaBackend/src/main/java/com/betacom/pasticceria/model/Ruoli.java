@@ -22,7 +22,7 @@ public class Ruoli {
     private String descrizione;
 
     @OneToMany(mappedBy = "ruolo",
-			fetch = FetchType.LAZY)
+			fetch = FetchType.EAGER)
     private List<Credenziali> credenziali;
 
     public Integer getId() {

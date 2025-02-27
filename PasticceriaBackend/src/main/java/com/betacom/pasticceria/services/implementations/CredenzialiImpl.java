@@ -1,6 +1,7 @@
 package com.betacom.pasticceria.services.implementations;
 
 import static com.betacom.pasticceria.utils.Utilities.buildUtenteDTO;
+import static com.betacom.pasticceria.utils.Utilities.buildRuoloDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -200,6 +201,7 @@ public class CredenzialiImpl implements CredenzialiService {
 
 		return new CredenzialiDTO.Builder().setId(cr.get().getId()).setIdUtente(buildUtenteDTO(cr.get().getUtente()))
 				.setUsername(cr.get().getUsername()).setPassword(cr.get().getPassword()).setAttivo(cr.get().getAttivo())
+				.setRuolo(buildRuoloDTO(cr.get().getRuolo()))
 				.build();
 	}
 

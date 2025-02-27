@@ -86,7 +86,7 @@ public class CredenzialiTest {
 		
 		List<CredenzialiDTO> lP = credS.listAll();
 		Assertions.assertThat(lP.size()).isGreaterThan(0);
-		Assertions.assertThat(lP.size()).isEqualTo(3);
+		Assertions.assertThat(lP.size()).isEqualTo(4);
 		CredenzialiDTO dto = credS.listByID(3);
 		Assertions.assertThat(dto.getAttivo() == false);
 
@@ -97,7 +97,7 @@ public class CredenzialiTest {
 	public void listAll() throws Exception{
 		List<CredenzialiDTO> lP = credS.listAll();
 		Assertions.assertThat(lP.size()).isGreaterThan(0);
-		Assertions.assertThat(lP.size()).isEqualTo(3);
+		Assertions.assertThat(lP.size()).isEqualTo(4);
 	}
 	
 	@Test

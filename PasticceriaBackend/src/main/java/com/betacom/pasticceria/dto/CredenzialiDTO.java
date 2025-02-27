@@ -84,7 +84,7 @@ public class CredenzialiDTO {
 	@Override
 	public String toString() {
 		return "CredenzialiDTO [id=" + id + ", idUtente=" + idUtente + ", username=" + username + ", password="
-				+ password + ", attivo=" + attivo + "]";
+				+ password + ", attivo=" + attivo + ", Ruolo=" + ruolo + "]";
 	}
     
 }
