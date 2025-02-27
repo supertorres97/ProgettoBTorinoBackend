@@ -158,7 +158,6 @@ public class DettagliOrdineImpl implements DettagliOrdineService {
 						.setQuantitaFinale(dr.getQuantitaFinale()).build();
 				dettagliOrdineDTO.add(detOrdDTO);
 			} else {
-				// Se ordine o prodotto non sono presenti, lancia un'eccezione (opzionale)
 				throw new Exception(msgS.getMessaggio("ORDINE/PRODOTTO_NOT_FOUND_CON_ID") + dr.getOrdine().getId());
 			}
 		}
