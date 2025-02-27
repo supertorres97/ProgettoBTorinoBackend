@@ -230,7 +230,7 @@ public class ProdottoImpl implements ProdottoService {
 	public List<ProdottoDTO> listByTipoProdotto(Integer tipoProdotto) throws Exception {
 		Optional<TipoProdotto> tp = tPR.findById(tipoProdotto);
 		if (tp.isEmpty())
-			throw new Exception("Tipo Prodotto inesistente");
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
 		List<Prodotto> lP = prodR.findAllByTipo(tp.get());
 
