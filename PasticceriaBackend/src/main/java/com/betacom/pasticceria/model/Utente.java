@@ -32,7 +32,7 @@ public class Utente {
 	private String email;
 	
 	@OneToMany(mappedBy = "utente",
-			fetch = FetchType.EAGER)
+			fetch = FetchType.LAZY)
 	private List<Feedback> feedback;
 	
 	@Column(nullable = false)
