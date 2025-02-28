@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.betacom.pasticceria.dto.OrdineDTO;
+import com.betacom.pasticceria.model.DettagliOrdine;
 import com.betacom.pasticceria.model.Ordine;
 import com.betacom.pasticceria.model.Status;
 import com.betacom.pasticceria.model.Utente;
+import com.betacom.pasticceria.repositories.DettagliOrdineRepository;
 import com.betacom.pasticceria.repositories.OrdineRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.OrdineReq;
@@ -24,11 +26,13 @@ public class OrdineImpl implements OrdineService {
 	private OrdineRepository ordR;
 	private UtenteRepository utnR;
 	private MessaggioService msgS;
+	private DettagliOrdineRepository doR;
 
-	public OrdineImpl(OrdineRepository ordR, UtenteRepository utnR, MessaggioService msgS) {
+	public OrdineImpl(OrdineRepository ordR, UtenteRepository utnR, MessaggioService msgS, DettagliOrdineRepository doR) {
 		this.ordR = ordR;
 		this.utnR = utnR;
 		this.msgS = msgS;
+		this.doR = doR;
 	}
 
 	@Override
@@ -86,7 +90,15 @@ public class OrdineImpl implements OrdineService {
 		if (o.getStatus() == Status.Consegnato || o.getStatus() == Status.Spedito) {
 			throw new Exception(msgS.getMessaggio("ORDINE_GIA_ANNULLATO"));
 		}
-
+		
+		List<DettagliOrdine> doL = doR.findByOrdine_Id(o.getId());
+		for(DettagliOrdine t : doL) {
+			t.getProdotto().setStock(t.getQuantitaFinale());
+			if(!(t.getProdotto().getDisponibile()) && (t.getProdotto().getStock() > 0)) {
+				t.getProdotto().setDisponibile(true);
+			}
+		}
+		
 		o.setStatus(Status.Annullato);
 		ordR.save(o);
 	}
