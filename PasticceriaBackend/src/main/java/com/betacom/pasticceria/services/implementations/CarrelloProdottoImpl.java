@@ -75,9 +75,9 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 		if (cprod.isPresent()) {
 			cp = cprod.get();
 			if (req.getQuantita() != null)
-				cp = addProduct(prod.get(), cp, req.getQuantita());
+				cp.setQuantita(req.getQuantita());
 			else
-				cp = addProduct(prod.get(), cp, 1);
+				cp.setQuantita(cp.getQuantita()+1);
 			cp.setPrezzoTotale(cp.getPrezzoTotale() + prod.get().getPrezzo());
 		} else {
 			log.debug("QUANTITA " + req.getQuantita());
@@ -85,22 +85,21 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 			cp.setProdotto(prod.get());
 			cp.setPrezzoTotale(prod.get().getPrezzo());
 			if (req.getQuantita() != null)
-				cp = addProduct(prod.get(), cp, req.getQuantita());
+				cp.setQuantita(req.getQuantita());
 			else
-				cp = addProduct(prod.get(), cp, 1);
+				cp.setQuantita(1);
 		}
 		cpR.save(cp);
 	}
-
+	
+	
 	// RIMUOVE IL PRODOTTO DAL CARRELLO (CARRELLOPRODOTTO) INDIPENDENTEMENTE DALLA
-	// QUANTITA
+	// QUANTITA	
 	@Override
 	public void remove(Integer idCarrelloProdotto) throws Exception {
 		Optional<CarrelloProdotto> cartP = cpR.findById(idCarrelloProdotto);
 		if (cartP.isEmpty())
 			throw new Exception(msgS.getMessaggio("CARRELLOPRODOTTO_INESISTENTE"));
-		CarrelloProdotto c = cartP.get();
-		c = addProduct(c.getProdotto(), c, c.getQuantita());
 		cpR.delete(cartP.get());
 	}
 
@@ -117,7 +116,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 
 		CarrelloProdotto cp = cartP.get();
 
-		cp = addProduct(prod.get(), cp, req.getQuantita());
+		cp.setQuantita(req.getQuantita());
 
 		if (cp.getQuantita() <= 0)
 			cpR.delete(cp);
@@ -157,7 +156,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 			doReq.setQuantitaFinale(cp.getQuantita());
 			doReq.setPrezzoTotale(cp.getPrezzoTotale());
 			totale = totale + cp.getPrezzoTotale();
-
+			cp = setStock(cp.getProdotto(), cp);
 			doS.create(doReq);
 		}
 
@@ -199,48 +198,38 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 				.collect(Collectors.toList());
 	}
 
+	
+	
 	// METODO AUSILIARIO PRIVATO
-	private CarrelloProdotto addProduct(Prodotto prodotto, CarrelloProdotto cartProd, Integer quantita)
-			throws Exception {
-		Optional<Prodotto> prod = prodR.findById(prodotto.getId());
-		CarrelloProdotto cp = cartProd;
+		private CarrelloProdotto setStock(Prodotto prodotto, CarrelloProdotto cartProd)
+				throws Exception {
+			Optional<Prodotto> prod = prodR.findById(prodotto.getId());
+			CarrelloProdotto cp = cartProd;
 
-		if (prod.get().getStock() == 0) {
-			prod.get().setDisponibile(false);
-			log.error("Stock vuoto" + prod.get().getStock());
-			throw new Exception(msgS.getMessaggio("STOCK_ESAURITO"));
-		}
+			if (prod.get().getStock() == 0) {
+				prod.get().setDisponibile(false);
+				log.error("Stock vuoto" + prod.get().getStock());
+				throw new Exception(msgS.getMessaggio("STOCK_ESAURITO"));
+			}
 
-		if (cp.getQuantita() != null)
-			quantita = quantita - cp.getQuantita();
-
-		if ((prod.get().getStock() - quantita) < 0) {
-			log.error(msgS.getMessaggio("QUANTITA>STOCK") + quantita + " stock: " + prod.get().getStock());
-			throw new Exception(msgS.getMessaggio("QUANTITA>STOCK"));
-		}
-		log.debug("cp quantita: " + cp.getQuantita());
-		if (cp.getQuantita() != null) {
-			cp.setQuantita(cp.getQuantita() + quantita);
+			if ((prod.get().getStock() - cp.getQuantita()) < 0) {
+				log.error(msgS.getMessaggio("QUANTITA>STOCK") + cp.getQuantita() + " stock: " + prod.get().getStock());
+				throw new Exception(msgS.getMessaggio("QUANTITA>STOCK"));
+			}
+			log.debug("cp quantita: " + cp.getQuantita());
+				
 			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
-		} else {
-			cp.setQuantita(quantita);
-			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
+
+			log.debug("QUANTITA FINALE " + cp.getQuantita());
+			prod.get().setStock(prod.get().getStock() - cp.getQuantita());
+
+			if (prod.get().getStock() == 0)
+				prod.get().setDisponibile(false);
+
+			return cp;
 		}
-
-		if (cp.getQuantita() < 0) {
-			cp.setQuantita(0);
-			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
-		}
-
-		log.debug("QUANTITA FINALE " + cp.getQuantita());
-		prod.get().setStock(prod.get().getStock() - quantita);
-
-		if (prod.get().getStock() == 0)
-			prod.get().setDisponibile(false);
-
-		return cp;
-	}
-
+	
+	
 	@Override
 	public void svuotaCarrello(Integer cartId) throws Exception {
 		Optional<Carrello> c = cartR.findById(cartId);
