@@ -74,20 +74,24 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 		Optional<CarrelloProdotto> cprod = cpR.findByProdottoAndCarrello(prod.get(), cart.get());
 		if (cprod.isPresent()) {
 			cp = cprod.get();
-			if (req.getQuantita() != null)
+			if (req.getQuantita() != null) {
 				cp.setQuantita(req.getQuantita());
+			}
 			else
 				cp.setQuantita(cp.getQuantita()+1);
-			cp.setPrezzoTotale(cp.getPrezzoTotale() + prod.get().getPrezzo());
+			cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
 		} else {
 			log.debug("QUANTITA " + req.getQuantita());
 			cp.setCarrello(cart.get());
 			cp.setProdotto(prod.get());
-			cp.setPrezzoTotale(prod.get().getPrezzo());
-			if (req.getQuantita() != null)
+			if (req.getQuantita() != null) {
 				cp.setQuantita(req.getQuantita());
-			else
+				cp.setPrezzoTotale(prod.get().getPrezzo() * cp.getQuantita());
+			}
+			else {
 				cp.setQuantita(1);
+				cp.setPrezzoTotale(prod.get().getPrezzo());
+			}
 		}
 		cpR.save(cp);
 	}
