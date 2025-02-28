@@ -42,7 +42,7 @@ public class OrdineImpl implements OrdineService {
 		Ordine o = new Ordine();
 		o.setUtente(utn.get());
 		o.setTotale(req.getTotale());
-		o.setIndirizzo(utn.get().getVia() + utn.get().getCAP() + utn.get().getCitta());
+		o.setIndirizzo(utn.get().getVia( )+ ", " + utn.get().getCAP()+ ", " + utn.get().getCitta());
 		o.setStatus(Status.Confermato);
 		o.setDataOrdine(Utilities.convertStringToDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date())));
 
