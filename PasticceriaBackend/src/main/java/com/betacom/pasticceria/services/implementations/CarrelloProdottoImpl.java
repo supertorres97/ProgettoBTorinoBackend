@@ -96,9 +96,6 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 		cpR.save(cp);
 	}
 	
-	
-	// RIMUOVE IL PRODOTTO DAL CARRELLO (CARRELLOPRODOTTO) INDIPENDENTEMENTE DALLA
-	// QUANTITA	
 	@Override
 	public void remove(Integer idCarrelloProdotto) throws Exception {
 		Optional<CarrelloProdotto> cartP = cpR.findById(idCarrelloProdotto);
@@ -204,7 +201,7 @@ public class CarrelloProdottoImpl implements CarrelloProdottoService {
 
 	
 	
-	// METODO AUSILIARIO PRIVATO
+	
 		private CarrelloProdotto setStock(Prodotto prodotto, CarrelloProdotto cartProd)
 				throws Exception {
 			Optional<Prodotto> prod = prodR.findById(prodotto.getId());

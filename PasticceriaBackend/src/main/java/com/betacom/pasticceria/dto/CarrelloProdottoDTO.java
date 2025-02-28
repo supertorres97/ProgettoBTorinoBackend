@@ -48,7 +48,7 @@ public class CarrelloProdottoDTO {
 			this.quantita = quantita;
 			return this;
 		}
-    }//Builder
+    }
 
 	public Integer getId() {
 		return id;

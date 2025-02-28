@@ -94,7 +94,6 @@ public class TipoProdottoImpl implements TipoProdottoService {
 	public TipoProdottoDTO listByID(Integer id) throws Exception {
 		Optional<TipoProdotto> tP = tPR.findById(id);
 		return buildTipoProdottoDTO(tP.get());
-//		return new TipoProdottoDTO.Builder().setId(tP.get().getId()).setDescrizione(tP.get().getDescrizione()).build();
 	}
 
 }

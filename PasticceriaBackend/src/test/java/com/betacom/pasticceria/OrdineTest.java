@@ -203,7 +203,6 @@ public class OrdineTest {
 		Assertions.assertThat(list.size()).isGreaterThan(0);
 	}
 
-	// ------------------------------------TEST ORDINE CONTROLLER------------------------------------------------
 	@Test
 	@Order(9)
 	public void createOrdineTestController() {
@@ -297,7 +296,7 @@ public class OrdineTest {
 	@Order(15)
 	public void updateOrdineErrorTestController() {
 		OrdineReq req = new OrdineReq();
-		req.setId(999); // ID non esistente
+		req.setId(999); 
 		req.setStatus("Inesistente");
 
 		ResponseBase r = ordC.update(req);

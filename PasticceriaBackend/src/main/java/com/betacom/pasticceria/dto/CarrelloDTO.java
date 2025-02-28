@@ -4,7 +4,6 @@ public class CarrelloDTO {
 	
 	private Integer id;
 	private UtenteDTO utente;
-//	private List<CarrelloProdottoDTO> prodottiCarrello;
 	
 	private CarrelloDTO() { }
 	
@@ -12,7 +11,6 @@ public class CarrelloDTO {
 		
 		private Integer id;
 		private UtenteDTO utente;
-//		private List<CarrelloProdottoDTO> prodottiCarrello;
 		
 		public Builder() { }
 		
@@ -21,7 +19,6 @@ public class CarrelloDTO {
 			
 			dto.id = this.id;
 			dto.utente = this.utente;
-//			dto.prodottiCarrello = this.prodottiCarrello;
 			
 			return dto;
 		}
@@ -36,11 +33,7 @@ public class CarrelloDTO {
 			return this;
 		}
 
-//		public Builder setProdottiCarrello(List<CarrelloProdottoDTO> prodottiCarrello) {
-//			this.prodottiCarrello = prodottiCarrello;
-//			return this;
-//		}
-	}//Builder
+	}
 
 	public Integer getId() {
 		return id;
@@ -49,10 +42,6 @@ public class CarrelloDTO {
 	public UtenteDTO getUtente() {
 		return utente;
 	}
-
-//	public List<CarrelloProdottoDTO> getProdottiCarrello() {
-//		return prodottiCarrello;
-//	}
 
 	@Override
 	public String toString() {

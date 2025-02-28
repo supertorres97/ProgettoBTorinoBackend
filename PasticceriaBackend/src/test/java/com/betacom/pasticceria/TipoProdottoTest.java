@@ -142,7 +142,6 @@ public class TipoProdottoTest {
 		Assertions.assertThat(lT != null);
 	}
 	
-	//--------------------------------------------------------TEST MODEL TIPOPRODOTTO-------------------------------------------------------------------
 	@Test
 	@Order(8)
 	public void testGetterSetterTipoProdotto() {

@@ -258,20 +258,16 @@ public class MessaggioTest {
         msg45.setMessaggio("Lo stock è esaurito!");
         msgR.save(msg45);
 		
-        // Preparazione dati
         Messaggio msg = new Messaggio();
         msg.setCodice("MSG001");
         msg.setMessaggio("Messaggio di test");
         msgR.save(msg);
 
-        // Esecuzione del metodo
         String result = msgS.getMessaggio("MSG001");
 
-        // Verifica del risultato
         Assertions.assertThat(result).isEqualTo("Messaggio di test");
     }
 	
-	//-------------------------------TEST MODEL PRODOTTO---------------------------------------------------------------------------------------------------
 	@Test
 	@Order(2)
 	public void testGetterSetter() {

@@ -102,7 +102,7 @@ public class UtenteDTO {
 			this.feedbackUtente = feedbackUtente;
 			return this;
 		}
-    }//Builder
+    }
 
 	public Integer getId() {
 		return id;
