@@ -18,18 +18,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.pasticceria.controller.UtenteController;
 import com.betacom.pasticceria.dto.CredenzialiDTO;
-import com.betacom.pasticceria.dto.ProdottoDTO;
 import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.Credenziali;
 import com.betacom.pasticceria.model.Feedback;
-import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
-import com.betacom.pasticceria.request.ProdottoReq;
-import com.betacom.pasticceria.request.SignUpReq;
 import com.betacom.pasticceria.request.UtenteReq;
 import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
@@ -210,7 +206,6 @@ public class UtenteTest {
 		Assertions.assertThat(lP != null);
 	}
 	
-	//---------------------------------------------TEST MODEL UTENTE---------------------------------------------------------------------------
 	@Test
     @Order(7)
     public void testGetterSetterUtente() {
@@ -239,7 +234,6 @@ public class UtenteTest {
         feedbackList.add(feedback);
         utente.setFeedback(feedbackList);
 
-        // Assertions per verificare ogni getter
         assertThat(utente.getId()).isEqualTo(1);
         assertThat(utente.getNome()).isEqualTo("Mario");
         assertThat(utente.getCognome()).isEqualTo("Rossi");
@@ -253,7 +247,6 @@ public class UtenteTest {
         assertThat(utente.getFeedback()).isEqualTo(feedbackList);
     }
 	
-	//-------------------------------------------TEST CONTROLLER UTENTE---------------------------------------------------------------	
 	@Test
 	@Order(8)
 	public void listTestController() {

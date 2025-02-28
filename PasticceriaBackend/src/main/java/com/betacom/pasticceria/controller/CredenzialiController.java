@@ -51,7 +51,7 @@ public class CredenzialiController {
 	    try {
 	        SignInDTO response = credS.signIn(req);
 	        return ResponseEntity.ok(response);
-	    }  catch (Exception e) { // gestisce gli errori generici
+	    }  catch (Exception e) { 
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 	                .body(Map.of("message", "Errore interno, riprova più tardi"));
 	    }

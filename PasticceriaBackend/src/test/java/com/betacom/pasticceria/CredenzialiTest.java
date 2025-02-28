@@ -3,7 +3,6 @@ package com.betacom.pasticceria;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,14 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.pasticceria.dto.CredenzialiDTO;
-import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Credenziali;
 import com.betacom.pasticceria.model.Ruoli;
 import com.betacom.pasticceria.model.Utente;
 import com.betacom.pasticceria.repositories.CredenzialiRepository;
 import com.betacom.pasticceria.repositories.UtenteRepository;
 import com.betacom.pasticceria.request.CredenzialiReq;
-import com.betacom.pasticceria.request.UtenteReq;
 import com.betacom.pasticceria.services.interfaces.CredenzialiService;
 import com.betacom.pasticceria.services.interfaces.UtenteService;
 
@@ -108,7 +105,6 @@ public class CredenzialiTest {
 		Assertions.assertThat(lP != null);
 	}
 	
-	//-------------------------------------TEST MODEL CREDENZIALI----------------------------------------------------------------------------
 	@Test
     @Order(6)
     public void testGetterSetterCredenziali() {
@@ -130,7 +126,6 @@ public class CredenzialiTest {
 
         credenziali.setAttivo(true);
 
-        // Assertions
         assertThat(credenziali.getId()).isEqualTo(1);
         assertThat(credenziali.getUsername()).isEqualTo("test_user");
         assertThat(credenziali.getPassword()).isEqualTo("password123");

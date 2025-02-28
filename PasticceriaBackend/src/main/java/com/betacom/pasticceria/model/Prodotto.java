@@ -46,7 +46,6 @@ public class Prodotto {
 		this.img = img;
 	}
 
-	// Getters e Setters
     public Integer getId() {
         return id;
     }

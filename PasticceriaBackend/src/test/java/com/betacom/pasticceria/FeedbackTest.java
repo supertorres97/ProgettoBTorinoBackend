@@ -72,7 +72,6 @@ public class FeedbackTest {
     @Transactional
     @Order(1)
     public void createFeedbackTest() throws Exception {
-        // Creazione di un Utente con email unica
         Utente u = new Utente();
         u.setEmail("feedback_create@test.com");
         u.setVia("Via Milano");
@@ -82,7 +81,6 @@ public class FeedbackTest {
         u.setCognome("User");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(100.0);
@@ -91,26 +89,13 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Optional<Prodotto> pr = prodR.findById(1);
         Prodotto p = pr.get();
-//        Prodotto p = new Prodotto();
-//        p.setDisponibile(true);
-//        p.setTipo(t);
-//        p.setNome("ProdottoFeedback");
-//        p.setDescrizione("Prodotto per feedback test");
-//        p.setPeso(1.0);
-//        p.setPrezzo(20.0);
-//        p.setStock(50);
-//        p.setImg("ciao");
-//        p = prodR.save(p);
-        
-        // Creazione di un DettagliOrdine per far superare il checkOrderedProduct
+
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -118,15 +103,11 @@ public class FeedbackTest {
         d.setQuantitaFinale(1);
         detR.save(d);
         
-        // Creazione di un FeedbackReq
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback positivo");
-        req.setVoto("CINQUE"); // Assumendo che l'enum Voto contenga "CINQUE"
-       // req.setDataFeedback(new Date());
-        
-        // Creazione del Feedback
+        req.setVoto("CINQUE"); 
         feedS.create(req);
         log.debug("Feedback creato con successo");
         
@@ -137,8 +118,7 @@ public class FeedbackTest {
     @Test
     @Order(2)
     public void createFeedbackErrorTest() throws Exception {
-        // Tentativo di creare un feedback senza che l'utente abbia acquistato il prodotto.
-        // Creazione di un Utente
+        
         Utente u = new Utente();
         u.setEmail("feedback_error@test.com");
         u.setVia("Via Napoli");
@@ -148,7 +128,6 @@ public class FeedbackTest {
         u.setCognome("UserError");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente, MA NON verrà creato un record di DettagliOrdine
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(80.0);
@@ -157,12 +136,10 @@ public class FeedbackTest {
         o.setStatus(Status.Confermato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback Error");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -174,14 +151,12 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Non creiamo un DettagliOrdine: quindi checkOrderedProduct restituirà false
         
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback negativo");
         req.setVoto("DUE");
-        //req.setDataFeedback(new Date());
         
         assertThrows(Exception.class, () -> { feedS.create(req); });
     }
@@ -190,7 +165,7 @@ public class FeedbackTest {
     @Transactional
     @Order(3)
     public void updateFeedbackTest() throws Exception {
-        // Creazione di un Utente
+
         Utente u = new Utente();
         u.setEmail("feedback_update@test.com");
         u.setVia("Via Torino");
@@ -200,7 +175,6 @@ public class FeedbackTest {
         u.setCognome("UserUpdate");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(120.0);
@@ -209,12 +183,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback Update");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -226,7 +198,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -234,33 +205,26 @@ public class FeedbackTest {
         d.setQuantitaFinale(2);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback iniziale");
         req.setVoto("TRE");
-        //req.setDataFeedback(new Date());
         feedS.create(req);
         
-        // Recupero del Feedback creato
         List<Feedback> list = feedR.findAll();
         Feedback feedbackCreato = list.get(list.size() - 1);
         
-        // Aggiornamento: modifica della descrizione e del voto
         FeedbackReq updateReq = new FeedbackReq();
         updateReq.setId(feedbackCreato.getId());
-        updateReq.setProdotto(feedbackCreato.getProdotto().getId());  // Aggiunto
-        updateReq.setUtente(feedbackCreato.getUtente().getId());  // Aggiunto
+        updateReq.setProdotto(feedbackCreato.getProdotto().getId()); 
+        updateReq.setUtente(feedbackCreato.getUtente().getId()); 
         updateReq.setDescrizione("Feedback aggiornato");
         updateReq.setVoto("CINQUE");
-       // updateReq.setDataFeedback(new Date());
         
-        // Chiamata del metodo update
         feedS.update(updateReq);
         log.debug("Feedback aggiornato con successo");
         
-        // Verifica dell'aggiornamento
         Optional<Feedback> updated = feedR.findById(feedbackCreato.getId());
         Assertions.assertThat(updated.get().getDescrizione()).isEqualTo("Feedback aggiornato");
         Assertions.assertThat(updated.get().getVoto().toString()).isEqualTo("CINQUE");
@@ -271,10 +235,9 @@ public class FeedbackTest {
     @Order(4)
     public void updateFeedbackErrorTest() throws Exception {
         FeedbackReq updateReq = new FeedbackReq();
-        updateReq.setId(9999); // id inesistente
+        updateReq.setId(9999); 
         updateReq.setDescrizione("Feedback error update");
         updateReq.setVoto("TRE");
-        //updateReq.setDataFeedback(new Date());
         assertThrows(Exception.class, () -> { feedS.update(updateReq); });
     }
     
@@ -282,7 +245,7 @@ public class FeedbackTest {
     @Transactional
     @Order(5)
     public void deleteFeedbackTest() throws Exception {
-        // Creazione di un Utente
+
         Utente u = new Utente();
         u.setEmail("feedback_delete@test.com");
         u.setVia("Via Palermo");
@@ -292,7 +255,6 @@ public class FeedbackTest {
         u.setCognome("UserDelete");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(110.0);
@@ -301,12 +263,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback Delete");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -318,7 +278,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -326,19 +285,16 @@ public class FeedbackTest {
         d.setQuantitaFinale(1);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback da eliminare");
         req.setVoto("QUATTRO");
-       // req.setDataFeedback(new Date());
         feedS.create(req);
         
         List<Feedback> list = feedR.findAll();
         Feedback feedbackCreato = list.get(list.size() - 1);
         
-        // Eliminazione
         FeedbackReq deleteReq = new FeedbackReq();
         deleteReq.setId(feedbackCreato.getId());
         feedS.delete(deleteReq);
@@ -352,7 +308,7 @@ public class FeedbackTest {
     @Transactional
     @Order(6)
     public void listAllFeedbackTest() throws Exception {
-    	// Creazione di un Utente
+
         Utente u = new Utente();
         u.setEmail("feedback_delete@test.com");
         u.setVia("Via Palermo");
@@ -362,7 +318,6 @@ public class FeedbackTest {
         u.setCognome("UserDelete");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(110.0);
@@ -371,12 +326,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback Delete");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -388,7 +341,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -396,13 +348,11 @@ public class FeedbackTest {
         d.setQuantitaFinale(1);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback da eliminare");
         req.setVoto("QUATTRO");
-       // req.setDataFeedback(new Date());
         feedS.create(req);
     	
         List<FeedbackDTO> list = feedS.listAll();
@@ -413,7 +363,7 @@ public class FeedbackTest {
     @Transactional
     @Order(7)
     public void listByIDFeedbackTest() throws Exception {
-        // Creazione di un Utente
+
         Utente u = new Utente();
         u.setEmail("feedback_listbyid@test.com");
         u.setVia("Via Venezia");
@@ -423,7 +373,6 @@ public class FeedbackTest {
         u.setCognome("UserListByID");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(130.0);
@@ -432,12 +381,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback ListByID");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -449,7 +396,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -457,13 +403,12 @@ public class FeedbackTest {
         d.setQuantitaFinale(2);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback per listByID");
         req.setVoto("TRE");
-        //req.setDataFeedback(new Date());
+
         feedS.create(req);
         
         List<Feedback> list = feedR.findAll();
@@ -474,14 +419,12 @@ public class FeedbackTest {
         Assertions.assertThat(dto.getId()).isEqualTo(feedbackCreato.getId());
     }
     
-    //-------------------------------------------------------------------------------------TEST CONTROLLER FEEDBACK-----------------------------------------------------------------------------
     
     @Test
     @Transactional
     @Order(8)
     public void listAllTestController() throws Exception {
     	
-    	// Creazione di un Utente
         Utente u = new Utente();
         u.setEmail("feedback_listbyid@test.com");
         u.setVia("Via Venezia");
@@ -491,7 +434,6 @@ public class FeedbackTest {
         u.setCognome("UserListByID");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(130.0);
@@ -500,12 +442,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback ListByID");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -517,7 +457,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -525,13 +464,12 @@ public class FeedbackTest {
         d.setQuantitaFinale(2);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback per listByID");
         req.setVoto("TRE");
-        //req.setDataFeedback(new Date());
+        
         feedS.create(req);
     	
         log.debug("Running listAllTest...");
@@ -546,7 +484,6 @@ public class FeedbackTest {
     @Order(9)
     public void listByIdTestController() throws Exception {
     	
-        // Creazione di un Utente
         Utente u = new Utente();
         u.setEmail("feedback_listbyid@test.com");
         u.setVia("Via Venezia");
@@ -556,7 +493,6 @@ public class FeedbackTest {
         u.setCognome("UserListByID");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(130.0);
@@ -565,12 +501,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback ListByID");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -582,7 +516,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -590,13 +523,12 @@ public class FeedbackTest {
         d.setQuantitaFinale(2);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback per listByID");
         req.setVoto("TRE");
-        //req.setDataFeedback(new Date());
+
         feedS.create(req);
         
         FeedbackDTO fd = feedS.findByUtenteAndProdotto(u.getId(), p.getId());
@@ -614,10 +546,10 @@ public class FeedbackTest {
     @Order(10)
     public void listByIdErrorTestController() {
         log.debug("Running listByIdErrorTest...");
-        ResponseObject<FeedbackDTO> r = fedC.listByID(99); // Assume che 99 sia un ID inesistente
+        ResponseObject<FeedbackDTO> r = fedC.listByID(99);
         
         Assertions.assertThat(r.getRc()).isFalse();
-        Assertions.assertThat(r.getMsg()).isEqualTo("No value present");  // Messaggio reale restituito dal controller
+        Assertions.assertThat(r.getMsg()).isEqualTo("No value present");
     }
         
     @Test
@@ -625,14 +557,14 @@ public class FeedbackTest {
     public void deleteFeedbackTestController() {
         log.debug("Running deleteFeedbackTest...");
         FeedbackReq req = new FeedbackReq();
-        req.setId(1);  // Assume che l'ID 1 esista
+        req.setId(1);  
         
         ResponseBase r = fedC.delete(req);
         
         Assertions.assertThat(r.getRc() == true);
         
         ResponseObject<FeedbackDTO> r1 = fedC.listByID(1);
-        Assertions.assertThat(r1.getRc()).isFalse();  // Dopo la cancellazione, il feedback non dovrebbe esistere
+        Assertions.assertThat(r1.getRc()).isFalse();  
     }
     
     @Test
@@ -640,7 +572,6 @@ public class FeedbackTest {
     @Order(12)
     public void listByIdProdottoTestController() throws Exception {
     	
-        // Creazione di un Utente
         Utente u = new Utente();
         u.setEmail("feedback_listbyid@test.com");
         u.setVia("Via Venezia");
@@ -650,7 +581,6 @@ public class FeedbackTest {
         u.setCognome("UserListByID");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(130.0);
@@ -659,12 +589,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback ListByID");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -676,7 +604,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -684,13 +611,11 @@ public class FeedbackTest {
         d.setQuantitaFinale(2);
         detR.save(d);
         
-        // Creazione di un Feedback
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback per listByID");
         req.setVoto("TRE");
-        //req.setDataFeedback(new Date());
         feedS.create(req);
 
         log.debug("Running listByIdTest...");
@@ -706,7 +631,6 @@ public class FeedbackTest {
     @Order(13)
     public void getByUtenteProdottoTestController() throws Exception {
     	
-        // Creazione di un Utente
         Utente u = new Utente();
         u.setEmail("feedback_listbyid@test.com");
         u.setVia("Via Venezia");
@@ -716,7 +640,6 @@ public class FeedbackTest {
         u.setCognome("UserListByID");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(130.0);
@@ -725,12 +648,10 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback ListByID");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Prodotto p = new Prodotto();
         p.setDisponibile(true);
         p.setTipo(t);
@@ -742,7 +663,6 @@ public class FeedbackTest {
         p.setImg("ciao");
         p = prodR.save(p);
         
-        // Creazione di un DettagliOrdine
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -750,13 +670,13 @@ public class FeedbackTest {
         d.setQuantitaFinale(2);
         detR.save(d);
         
-        // Creazione di un Feedback
+
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback per listByID");
         req.setVoto("TRE");
-        //req.setDataFeedback(new Date());
+
         feedS.create(req);
         
         FeedbackDTO fd = feedS.findByUtenteAndProdotto(u.getId(), p.getId());
@@ -773,7 +693,7 @@ public class FeedbackTest {
     @Transactional
     @Order(14)
     public void createFeedbackTestController() throws Exception {
-        // Creazione di un Utente con email unica
+
         Utente u = new Utente();
         u.setEmail("feedback_create@test.com");
         u.setVia("Via Milano");
@@ -783,7 +703,6 @@ public class FeedbackTest {
         u.setCognome("User");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(100.0);
@@ -792,16 +711,13 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Optional<Prodotto> pr = prodR.findById(1);
         Prodotto p = pr.get();
         
-        // Creazione di un DettagliOrdine per far superare il checkOrderedProduct
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -809,15 +725,13 @@ public class FeedbackTest {
         d.setQuantitaFinale(1);
         detR.save(d);
         
-        // Creazione di un FeedbackReq
+
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback positivo");
-        req.setVoto("CINQUE"); // Assumendo che l'enum Voto contenga "CINQUE"
-       // req.setDataFeedback(new Date());
+        req.setVoto("CINQUE"); 
         
-        // Creazione del Feedback
         ResponseBase r = fedC.create(req);
         log.debug("Feedback creato con successo");
         
@@ -828,7 +742,6 @@ public class FeedbackTest {
     @Transactional
     @Order(15)
     public void updateFeedbackTestController() throws Exception {
-        // Creazione di un Utente con email unica
         Utente u = new Utente();
         u.setEmail("feedback_create@test.com");
         u.setVia("Via Milano");
@@ -838,7 +751,6 @@ public class FeedbackTest {
         u.setCognome("User");
         u = utR.save(u);
         
-        // Creazione di un Ordine per l'utente
         Ordine o = new Ordine();
         o.setUtente(u);
         o.setTotale(100.0);
@@ -847,16 +759,13 @@ public class FeedbackTest {
         o.setStatus(Status.Consegnato);
         o = ordR.save(o);
         
-        // Creazione di un TipoProdotto
         TipoProdotto t = new TipoProdotto();
         t.setDescrizione("Tipo Feedback");
         t = tipoProdR.save(t);
         
-        // Creazione di un Prodotto
         Optional<Prodotto> pr = prodR.findById(1);
         Prodotto p = pr.get();
         
-        // Creazione di un DettagliOrdine per far superare il checkOrderedProduct
         DettagliOrdine d = new DettagliOrdine();
         d.setOrdine(o);
         d.setProdotto(p);
@@ -864,13 +773,11 @@ public class FeedbackTest {
         d.setQuantitaFinale(1);
         detR.save(d);
         
-        // Creazione di un FeedbackReq
         FeedbackReq req = new FeedbackReq();
         req.setProdotto(p.getId());
         req.setUtente(u.getId());
         req.setDescrizione("Feedback positivo");
-        req.setVoto("CINQUE"); // Assumendo che l'enum Voto contenga "CINQUE"
-       // req.setDataFeedback(new Date());
+        req.setVoto("CINQUE");
         feedS.create(req);
         
         List<Feedback> list = feedR.findAll();
@@ -878,12 +785,12 @@ public class FeedbackTest {
         
         FeedbackReq updateReq = new FeedbackReq();
         updateReq.setId(feedbackCreato.getId());
-        updateReq.setProdotto(feedbackCreato.getProdotto().getId());  // Aggiunto
-        updateReq.setUtente(feedbackCreato.getUtente().getId());  // Aggiunto
+        updateReq.setProdotto(feedbackCreato.getProdotto().getId());  
+        updateReq.setUtente(feedbackCreato.getUtente().getId());  
         updateReq.setDescrizione("Feedback aggiornato");
         updateReq.setVoto("CINQUE");
         
-        // Creazione del Feedback
+
         ResponseBase r = fedC.update(updateReq);
         log.debug("Feedback creato con successo");
         
@@ -894,13 +801,10 @@ public class FeedbackTest {
     @Order(16)
     public void createFeedbackErrorTestController() throws Exception {
         
-        // Creazione di un FeedbackReq
         FeedbackReq req = new FeedbackReq();
         req.setDescrizione("Feedback positivo");
-        req.setVoto("CINQUE"); // Assumendo che l'enum Voto contenga "CINQUE"
-       // req.setDataFeedback(new Date());
+        req.setVoto("CINQUE");
         
-        // Creazione del Feedback
         ResponseBase r = fedC.create(req);
         log.debug("Feedback creato con successo");
         
@@ -912,13 +816,10 @@ public class FeedbackTest {
     @Order(17)
     public void updateFeedbackErrorTestController() throws Exception {
         
-        // Creazione di un FeedbackReq
         FeedbackReq req = new FeedbackReq();
         req.setDescrizione("Feedback positivo");
-        req.setVoto("CINQUE"); // Assumendo che l'enum Voto contenga "CINQUE"
-       // req.setDataFeedback(new Date());
+        req.setVoto("CINQUE");
         
-        // Creazione del Feedback
         ResponseBase r = fedC.update(req);
         log.debug("Feedback creato con successo");
         

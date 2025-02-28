@@ -2,13 +2,14 @@ package com.betacom.pasticceria.config;
 
 import java.io.IOException;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
@@ -16,7 +17,7 @@ public class CorsConfig implements Filter {
 	@Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpServletRequest req = (HttpServletRequest) request;
+        
 
         // Imposta le CORS sempre
         res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");

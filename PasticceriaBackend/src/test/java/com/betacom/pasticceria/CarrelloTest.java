@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.betacom.pasticceria.dto.CarrelloDTO;
-import com.betacom.pasticceria.dto.UtenteDTO;
 import com.betacom.pasticceria.model.Carrello;
 import com.betacom.pasticceria.model.CarrelloProdotto;
 import com.betacom.pasticceria.model.Utente;
@@ -43,10 +42,8 @@ public class CarrelloTest {
 	public void listAll() throws Exception{
 		List<CarrelloDTO> lC = cartS.listAll();
 		Assertions.assertThat(lC.size()).isGreaterThan(0);
-//		Assertions.assertThat(lP.size()).isEqualTo(3);
 	}
 	
-	//------------------------------------------TEST MODEL PRODOTTO-------------------------------------------------------------------------------
 	@Test
 	@Order(3)
 	public void testGetterSetterCarrello() {

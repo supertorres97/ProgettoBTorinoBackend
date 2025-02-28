@@ -1,5 +1,18 @@
 package com.betacom.pasticceria;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import com.betacom.pasticceria.controller.RuoliController;
 import com.betacom.pasticceria.dto.RuoliDTO;
 import com.betacom.pasticceria.model.Credenziali;
@@ -10,17 +23,6 @@ import com.betacom.pasticceria.response.ResponseBase;
 import com.betacom.pasticceria.response.ResponseList;
 import com.betacom.pasticceria.response.ResponseObject;
 import com.betacom.pasticceria.services.implementations.RuoliImpl;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -70,7 +72,7 @@ public class RuoliTest {
     @Test
     @Order(2)
     public void updateRuoloTest() throws Exception {
-        // Recupera l'ultimo ruolo inserito
+
         List<Ruoli> ruoli = ruoliR.findAll();
         Ruoli ultimoRuolo = ruoli.get(ruoli.size() - 1);
 
@@ -96,7 +98,7 @@ public class RuoliTest {
     @Test
     @Order(4)
     public void listRuoloByIdTest() throws Exception {
-        // Recupera l'ultimo ruolo inserito
+    	
         List<Ruoli> ruoli = ruoliR.findAll();
         Ruoli ultimoRuolo = ruoli.get(ruoli.size() - 1);
 
@@ -108,7 +110,7 @@ public class RuoliTest {
     @Test
     @Order(5)
     public void deleteRuoloTest() throws Exception {
-        // Recupera l'ultimo ruolo inserito
+
         List<Ruoli> ruoli = ruoliR.findAll();
         Ruoli ultimoRuolo = ruoli.get(ruoli.size() - 1);
 
@@ -120,9 +122,7 @@ public class RuoliTest {
         Optional<Ruoli> ruoloCancellato = ruoliR.findById(ultimoRuolo.getId());
         Assertions.assertThat(ruoloCancellato).isEmpty();
     }
-    
-//------------------------------------------------------------------------------------TEST RUOLI CONTROLLER---------------------------------------------------------------------------------------------------    
-    
+        
     @Test
     @Order(6)
     public void createRuoloControllerTest() {
@@ -147,7 +147,6 @@ public class RuoliTest {
     public void updateRuoloControllerTest() {
         log.debug("Running updateRuoloControllerTest...");
 
-        // Recupera l'ultimo ruolo inserito
         List<Ruoli> ruoli = ruoliR.findAll();
         Ruoli ultimoRuolo = ruoli.get(ruoli.size() - 1);
 
@@ -171,7 +170,6 @@ public class RuoliTest {
     public void listRuoloByIdControllerTest() {
         log.debug("Running listRuoloByIdControllerTest...");
 
-        // Recupera l'ultimo ruolo inserito
         List<Ruoli> ruoli = ruoliR.findAll();
         Ruoli ultimoRuolo = ruoli.get(ruoli.size() - 1);
 
@@ -201,7 +199,6 @@ public class RuoliTest {
     public void deleteRuoloControllerTest() {
         log.debug("Running deleteRuoloControllerTest...");
 
-        // Recupera l'ultimo ruolo inserito
         List<Ruoli> ruoli = ruoliR.findAll();
         Ruoli ultimoRuolo = ruoli.get(ruoli.size() - 1);
 

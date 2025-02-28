@@ -3,7 +3,6 @@ package com.betacom.pasticceria;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.betacom.pasticceria.dto.CarrelloDTO;
 import com.betacom.pasticceria.dto.CarrelloProdottoDTO;
 import com.betacom.pasticceria.model.Prodotto;
 import com.betacom.pasticceria.model.TipoProdotto;
@@ -21,7 +19,6 @@ import com.betacom.pasticceria.repositories.ProdottoRepository;
 import com.betacom.pasticceria.repositories.TipoProdottoRepository;
 import com.betacom.pasticceria.request.CarrelloProdottoReq;
 import com.betacom.pasticceria.request.CarrelloReq;
-import com.betacom.pasticceria.request.ProdottoReq;
 import com.betacom.pasticceria.services.interfaces.CarrelloProdottoService;
 
 @SpringBootTest
@@ -224,13 +221,6 @@ public class CarrelloProdottoTest {
 	public void acquistaErrors() throws Exception {
 		CarrelloReq req = new CarrelloReq();
 		
-		//UTENTE INESISTENTE
-//		req.setId(1);
-//		req.setUtente(100);
-//		assertThrows(Exception.class, () -> {
-//			cpS.acuqista(req);
-//		});
-		
 		//CARRELLO INESISTENTE
 		req.setId(100);
 		req.setUtente(1);
@@ -284,8 +274,4 @@ public class CarrelloProdottoTest {
 			List<CarrelloProdottoDTO> lCP = cpS.listByProdotto(50);
 		});
 	}
-//	req.setCarrello(2);
-//	req.setProdotto(1);
-//	req.setQuantita(10);
-//	cpS.create(req);
 }
