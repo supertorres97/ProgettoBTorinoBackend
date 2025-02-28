@@ -110,7 +110,7 @@ public class ProdottoImpl implements ProdottoService {
 		Optional<Prodotto> pr = prodR.findById(req.getId());
 		if (pr.isEmpty())
 			throw new Exception(msgS.getMessaggio("PRODOTTO_INESISTENTE"));
-
+		
 		Prodotto p = pr.get();
 
 		if (req.getTipo() != null) {
@@ -120,8 +120,11 @@ public class ProdottoImpl implements ProdottoService {
 			p.setTipo(tP.get());
 		}
 
-		if (req.getNome() != null)
+		if (req.getNome() != null) {
+			if(p.getNome().equalsIgnoreCase(req.getNome()))
+				throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
 			p.setNome(req.getNome());
+		}
 		if (req.getDescrizione() != null)
 			p.setDescrizione(req.getDescrizione());
 		if (req.getPeso() != null)
@@ -202,7 +205,7 @@ public class ProdottoImpl implements ProdottoService {
 	public List<ProdottoDTO> listByTipoProdotto(Integer tipoProdotto) throws Exception {
 		Optional<TipoProdotto> tp = tPR.findById(tipoProdotto);
 		if (tp.isEmpty())
-			throw new Exception("Tipo Prodotto inesistente");
+			throw new Exception("TIPO_PRODOTTO_NOT_FOUND");
 
 		List<Prodotto> lP = prodR.findAllByTipo(tp.get());
 
