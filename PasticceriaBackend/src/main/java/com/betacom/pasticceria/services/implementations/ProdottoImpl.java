@@ -25,12 +25,18 @@ import com.betacom.pasticceria.utils.Utilities;
 @Service
 public class ProdottoImpl implements ProdottoService {
 
-	@Value("${spring.mvc.static-path-pattern}")
-    private String staticPathPattern;
+//	@Value("${spring.mvc.static-path-pattern}")
+//    private String staticPathPattern;
+//	
+//	@Value("${upload.directory}")
+//	private String finaldirectory;
 	
-	@Value("${upload.directory}")
+	@Value("${spring.mvc.static-path-pattern:/images/**}")
+	private String staticPathPattern;
+
+	@Value("${upload.directory:C:/PasticceriaImage}")
 	private String finaldirectory;
-	
+
 	private ProdottoRepository prodR;
 	private TipoProdottoRepository tPR;
 	private MessaggioService msgS;
