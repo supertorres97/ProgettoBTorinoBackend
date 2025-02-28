@@ -25,12 +25,6 @@ import com.betacom.pasticceria.utils.Utilities;
 @Service
 public class ProdottoImpl implements ProdottoService {
 
-//	@Value("${spring.mvc.static-path-pattern}")
-//    private String staticPathPattern;
-//	
-//	@Value("${upload.directory}")
-//	private String finaldirectory;
-	
 	@Value("${spring.mvc.static-path-pattern:/images/**}")
 	private String staticPathPattern;
 
@@ -51,68 +45,64 @@ public class ProdottoImpl implements ProdottoService {
 	}
 
 	@Override
-    public void create(ProdottoReq req, MultipartFile imgFile) throws Exception {
-		 log.debug("Create prodotto: " + req);
+	public void create(ProdottoReq req, MultipartFile imgFile) throws Exception {
+		log.debug("Create prodotto: " + req);
 
-	        Optional<Prodotto> pr = prodR.findByNome(req.getNome());
-	        if (pr.isPresent())
-	            throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
+		Optional<Prodotto> pr = prodR.findByNome(req.getNome());
+		if (pr.isPresent())
+			throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
 
-	        Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
-	        if (tP.isEmpty())
-	            throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
+		Optional<TipoProdotto> tP = tPR.findById(req.getTipo());
+		if (tP.isEmpty())
+			throw new Exception(msgS.getMessaggio("TIPO_PRODOTTO_NOT_FOUND"));
 
-	        Prodotto p = new Prodotto();
-	        p.setTipo(tP.get());
-	        p.setNome(req.getNome());
-	        p.setDescrizione(req.getDescrizione());
-	        p.setPeso(req.getPeso());
-	        p.setPrezzo(req.getPrezzo());
-	        p.setStock(req.getStock());
-	        p.setDisponibile(req.getDisponibile());
+		Prodotto p = new Prodotto();
+		p.setTipo(tP.get());
+		p.setNome(req.getNome());
+		p.setDescrizione(req.getDescrizione());
+		p.setPeso(req.getPeso());
+		p.setPrezzo(req.getPrezzo());
+		p.setStock(req.getStock());
+		p.setDisponibile(req.getDisponibile());
 
-	        String imageUrl = saveImage(imgFile);
-	        log.debug("Immagine salvata con URL: " + imageUrl);
-	        p.setImg(imageUrl);
+		String imageUrl = saveImage(imgFile);
+		log.debug("Immagine salvata con URL: " + imageUrl);
+		p.setImg(imageUrl);
 
-	        prodR.save(p);
-	        msgS.getMessaggio("NEW_PRODOTTO");
-    }
-    
-	 private String saveImage(MultipartFile imgFile) throws IOException {
-		 String originalFileName = imgFile.getOriginalFilename();
-	        if (originalFileName == null) {
-	            throw new IllegalArgumentException("Il nome originale del file non è disponibile.");
-	        }
+		prodR.save(p);
+		msgS.getMessaggio("NEW_PRODOTTO");
+	}
 
-	        String uploadsDirectory = finaldirectory;
-	        File uploadsFolder = new File(uploadsDirectory);
-	        log.debug("Percorso uploads: " + uploadsFolder.getAbsolutePath());
-	        if (!uploadsFolder.exists()) {
-	            uploadsFolder.mkdirs();
-	        }
+	private String saveImage(MultipartFile imgFile) throws IOException {
+		String originalFileName = imgFile.getOriginalFilename();
+		if (originalFileName == null) {
+			throw new IllegalArgumentException("Il nome originale del file non è disponibile.");
+		}
 
-	        File imageFile = new File(uploadsFolder, originalFileName);
-	        int counter = 1;
-	        while (imageFile.exists()) {
-	            int dotIndex = originalFileName.lastIndexOf('.');
-	            String baseName = (dotIndex != -1) ? originalFileName.substring(0, dotIndex) : originalFileName;
-	            String extension = (dotIndex != -1) ? originalFileName.substring(dotIndex) : "";
-	            String newName = baseName + "_" + counter + extension;
-	            imageFile = new File(uploadsFolder, newName);
-	            counter++;
-	        }
+		String uploadsDirectory = finaldirectory;
+		File uploadsFolder = new File(uploadsDirectory);
+		log.debug("Percorso uploads: " + uploadsFolder.getAbsolutePath());
+		if (!uploadsFolder.exists()) {
+			uploadsFolder.mkdirs();
+		}
 
-	        imgFile.transferTo(imageFile);
-	        String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-	        	    .path("/images/" + imageFile.getName())
-	        	    .toUriString();
+		File imageFile = new File(uploadsFolder, originalFileName);
+		int counter = 1;
+		while (imageFile.exists()) {
+			int dotIndex = originalFileName.lastIndexOf('.');
+			String baseName = (dotIndex != -1) ? originalFileName.substring(0, dotIndex) : originalFileName;
+			String extension = (dotIndex != -1) ? originalFileName.substring(dotIndex) : "";
+			String newName = baseName + "_" + counter + extension;
+			imageFile = new File(uploadsFolder, newName);
+			counter++;
+		}
 
-	        return imageUrl;
-	    }
-	    
-	    
+		imgFile.transferTo(imageFile);
+		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/" + imageFile.getName())
+				.toUriString();
 
+		return imageUrl;
+	}
 
 	@Override
 	public void update(ProdottoReq req) throws Exception {
