@@ -120,10 +120,12 @@ public class ProdottoImpl implements ProdottoService {
 			p.setTipo(tP.get());
 		}
 
-		if (req.getNome() != null) {
-			if(p.getNome().equalsIgnoreCase(req.getNome()))
-				throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
-			p.setNome(req.getNome());
+		if (req.getNome() != null && !req.getNome().equals(p.getNome())) {
+		    Optional<Prodotto> prodottoEsistente = prodR.findByNome(req.getNome());
+		    if (prodottoEsistente.isPresent()) {
+		        throw new Exception(msgS.getMessaggio("PRODOTTO_GIA_ESISTENTE"));
+		    }
+		    p.setNome(req.getNome());
 		}
 		if (req.getDescrizione() != null)
 			p.setDescrizione(req.getDescrizione());
